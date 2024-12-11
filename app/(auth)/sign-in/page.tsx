@@ -8,9 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { SignInForm } from "@/app/sign-in/sign-in-form";
 import { OrSeparator } from "@/app/_components/custom/forms/or-separator";
 import { GoogleSign } from "@/app/_components/custom/forms/google-sign";
+import { SignInForm } from "@/app/(auth)/sign-in/sign-in-form";
 
 export default function Page() {
   return (
