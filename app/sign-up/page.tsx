@@ -8,32 +8,36 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { SignInForm } from "@/app/sign-in/sign-in-form";
 import { OrSeparator } from "@/app/_components/custom/forms/or-separator";
 import { GoogleSign } from "@/app/_components/custom/forms/google-sign";
+import { SignUpForm } from "./sign-up-form";
 
 export default function Page() {
   return (
-    <div className="flex h-screen w-full  items-center justify-center px-4">
+    <div className="flex min-h-screen w-full  items-center justify-center px-4">
       <Card className="max-w-md w-full">
         <CardHeader>
-          <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
+          <CardTitle className="text-xl">
+            Welcome, Create your account
+          </CardTitle>
+          <CardDescription>
+            Enter details to create your account and continue.
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <SignInForm />
+          <SignUpForm />
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <OrSeparator />
           <GoogleSign />
           <div>
             <p className="text-xs font-medium text-muted-foreground">
-              Don&apos;t have an Account ?{" "}
+              Already have an Account ?{" "}
               <Link
-                href="/sign-up"
+                href="/sign-in"
                 className="underline text-blue-500 underline-offset-2"
               >
-                Sign Up
+                Sign In
               </Link>
             </p>
           </div>
