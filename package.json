@@ -6,9 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx ./drizzle/migrate.ts",
+    "db:push": "npm run db:generate && npm run db:migrate",
+    "db:seed": "tsx ./drizzle/seed.ts"
   },
   "dependencies": {
+    "@auth/drizzle-adapter": "^1.7.4",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-aspect-ratio": "^1.1.0",
     "@radix-ui/react-avatar": "^1.1.1",
@@ -20,12 +25,20 @@
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.4",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
+    "dotenv-expand": "^12.0.1",
+    "drizzle-orm": "^0.38.0",
+    "eslint-plugin-drizzle": "^0.2.3",
     "lucide-react": "^0.468.0",
     "next": "14.2.20",
+    "next-auth": "^5.0.0-beta.25",
+    "postgres": "^3.4.5",
     "react": "^18",
     "react-day-picker": "8.10.1",
     "react-dom": "^18",
@@ -35,13 +48,14 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "drizzle-kit": "^0.30.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.20",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.20"
+    "typescript": "^5"
   }
 }
