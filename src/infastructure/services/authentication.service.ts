@@ -1,11 +1,26 @@
 import { SignInInput } from "@/drizzle/schemas/user";
 import { IAuthenticationService } from "@/src/application/services/authentication-service.interface";
-import { signIn } from "@/src/auth";
+import { signIn, signOut } from "@/src/auth";
 import { injectable } from "inversify";
 import { AuthError } from "next-auth";
 
 @injectable()
 export class AuthenticationService implements IAuthenticationService {
+  public async signOut(): Promise<void> {
+    try {
+      await signOut({ redirect: false });
+    } catch (error) {
+      if (error instanceof AuthError) {
+        switch (error.type) {
+          case "SignOutError":
+            throw new Error("sign out error!");
+          default:
+            throw new Error("Something went wrong!");
+        }
+      }
+      throw error;
+    }
+  }
   public async signIn(data: SignInInput): Promise<void> {
     try {
       await signIn("credentials", {

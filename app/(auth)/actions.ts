@@ -7,6 +7,7 @@ import { signInFormSchema } from "./sign-in/sign-in-form";
 import { signInWithCredentialsController } from "@/src/interface-adapter/controllers/authentication/sign-in-with-credentials.controller";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { redirect } from "next/navigation";
+import { signOutController } from "@/src/interface-adapter/controllers/authentication/sign-out.controller";
 
 export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
   try {
@@ -28,4 +29,14 @@ export const credentialsSignIn = async (
     console.log(error);
   }
   redirect(DEFAULT_LOGIN_REDIRECT);
+};
+
+export const signOut = async () => {
+  try {
+    await signOutController();
+    console.log("success sign out");
+  } catch (error) {
+    console.log(error);
+  }
+  redirect("/sign-in");
 };
