@@ -15,10 +15,11 @@ import {
 import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
+import { signUp } from "../actions";
 
-const signUpFormSchema = z
+export const signUpFormSchema = z
   .object({
-    username: z
+    name: z
       .string()
       .min(3, { message: "User name must contain at least 3 characters" }),
     email: z.string().email({ message: "Invalid email address" }),
@@ -33,11 +34,10 @@ const signUpFormSchema = z
   });
 
 export function SignUpForm() {
-  // 1. Define  form.
   const form = useForm<z.infer<typeof signUpFormSchema>>({
     resolver: zodResolver(signUpFormSchema),
     defaultValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
       passwordConfirm: "",
@@ -45,10 +45,8 @@ export function SignUpForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof signUpFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof signUpFormSchema>) {
+    await signUp(values);
   }
 
   return (
@@ -56,7 +54,7 @@ export function SignUpForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="username"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
@@ -110,7 +108,12 @@ export function SignUpForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full" size={"lg"}>
+        <Button
+          type="submit"
+          className="w-full"
+          size={"lg"}
+          disabled={form.formState.isSubmitting}
+        >
           Create an account
         </Button>
       </form>

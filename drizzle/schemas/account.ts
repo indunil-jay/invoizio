@@ -1,6 +1,7 @@
 import type { AdapterAccountType } from "next-auth/adapters";
 import { pgTable, text, primaryKey, integer } from "drizzle-orm/pg-core";
 import { users } from "@/drizzle/schemas";
+import { InferSelectModel, relations } from "drizzle-orm";
 
 export const accounts = pgTable(
   "account",
@@ -25,3 +26,13 @@ export const accounts = pgTable(
     }),
   })
 );
+
+export const accountsRelations = relations(accounts, ({ one }) => ({
+  //one user has one account
+  users: one(users, {
+    fields: [accounts.userId],
+    references: [users.id],
+  }),
+}));
+
+export type AccountsCollection = InferSelectModel<typeof accounts>;

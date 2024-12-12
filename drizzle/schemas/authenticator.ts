@@ -6,6 +6,7 @@ import {
   text,
 } from "drizzle-orm/pg-core";
 import { users } from "@/drizzle/schemas";
+import { InferSelectModel, relations } from "drizzle-orm";
 
 export const authenticators = pgTable(
   "authenticator",
@@ -27,3 +28,12 @@ export const authenticators = pgTable(
     }),
   })
 );
+
+export const authenticatorsRelations = relations(authenticators, ({ one }) => ({
+  users: one(users, {
+    fields: [authenticators.userId],
+    references: [users.id],
+  }),
+}));
+
+export type authenticatorsCollection = InferSelectModel<typeof authenticators>;

@@ -1,3 +1,6 @@
-export { users } from "@/drizzle/schemas/user";
-export { accounts } from "@/drizzle/schemas/account";
-export { authenticators } from "@/drizzle/schemas/authenticator";
+export { users, usersRelations } from "@/drizzle/schemas/user";
+export { accounts, accountsRelations } from "@/drizzle/schemas/account";
+export {
+  authenticators,
+  authenticatorsRelations,
+} from "@/drizzle/schemas/authenticator";
