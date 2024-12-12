@@ -24,6 +24,6 @@ export const signInWithCredentialsUseCase = {
 
     //sign in
     const authenticationService = getInjection("IAuthenticationService");
-    await authenticationService.signIn(data);
+    await authenticationService.signInWithCredentials(data);
   },
 };

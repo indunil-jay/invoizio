@@ -6,6 +6,12 @@ import { AuthError } from "next-auth";
 
 @injectable()
 export class AuthenticationService implements IAuthenticationService {
+  public async signInWithGoogle(): Promise<string> {
+    const response = await signIn("google", { redirect: false });
+    console.log({ response });
+    return response;
+  }
+
   public async signOut(): Promise<void> {
     try {
       await signOut({ redirect: false });
@@ -21,7 +27,7 @@ export class AuthenticationService implements IAuthenticationService {
       throw error;
     }
   }
-  public async signIn(data: SignInInput): Promise<void> {
+  public async signInWithCredentials(data: SignInInput): Promise<void> {
     try {
       await signIn("credentials", {
         email: data.email,

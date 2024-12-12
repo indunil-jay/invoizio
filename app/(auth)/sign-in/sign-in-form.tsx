@@ -16,7 +16,8 @@ import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { FogotPasswordLink } from "@/app/_components/custom/forms/forgot-password.-link";
-import { credentialsSignIn } from "../actions";
+
+import { signInWithCredentials } from "@/app/(auth)/actions";
 
 export const signInFormSchema = z.object({
   email: z.string().email().min(1, {
@@ -40,7 +41,7 @@ export function SignInForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof signInFormSchema>) {
-    await credentialsSignIn(values);
+    await signInWithCredentials(values);
   }
 
   return (

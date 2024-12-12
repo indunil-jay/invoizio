@@ -8,6 +8,7 @@ import { signInWithCredentialsController } from "@/src/interface-adapter/control
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { redirect } from "next/navigation";
 import { signOutController } from "@/src/interface-adapter/controllers/authentication/sign-out.controller";
+import { signInWithGoogleController } from "@/src/interface-adapter/controllers/authentication/sign-in-with-google.controller";
 
 export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
   try {
@@ -19,7 +20,7 @@ export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
   redirect("/sign-in");
 };
 
-export const credentialsSignIn = async (
+export const signInWithCredentials = async (
   values: z.infer<typeof signInFormSchema>
 ) => {
   try {
@@ -39,4 +40,14 @@ export const signOut = async () => {
     console.log(error);
   }
   redirect("/sign-in");
+};
+
+export const signInWithGoogle = async () => {
+  let url: string = "";
+  try {
+    url = await signInWithGoogleController();
+  } catch (error) {
+    console.log(error);
+  }
+  redirect(url);
 };

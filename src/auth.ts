@@ -6,6 +6,8 @@ import { db } from "@/drizzle";
 import Credentials from "next-auth/providers/credentials";
 import { strictSignInWithCredentialSchema } from "../drizzle/schemas/user";
 import { getInjection } from "@/di/container";
+import envValidationSchema from "@/lib/env-validation-schema";
+import Google from "next-auth/providers/google";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db),
@@ -29,12 +31,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     },
   },
   pages: {
-    signIn: "/sign-in",
-    signOut: "/sign-in",
+    // signIn: "/sign-in",
+    // signOut: "/sign-in",
     error: "/error",
   },
 
   providers: [
+    Google({
+      clientId: envValidationSchema.AUTH_GOOGLE_ID,
+      clientSecret: envValidationSchema.AUTH_GOOGLE_SECRET,
+    }),
     Credentials({
       async authorize(credentials) {
         const validatedFields =

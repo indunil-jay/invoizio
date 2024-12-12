@@ -20,6 +20,8 @@ const envSchema = z.object({
   DATABASE_URL: z.string().min(1),
   DB_MIGRATING: stringBoolean,
   DB_SEEDING: stringBoolean,
+  AUTH_GOOGLE_SECRET: z.string().min(1),
+  AUTH_GOOGLE_ID: z.string().min(1),
 });
 
 export type EnvTypes = z.infer<typeof envSchema>;

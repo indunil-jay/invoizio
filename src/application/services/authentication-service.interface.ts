@@ -1,6 +1,7 @@
 import { SignInInput } from "@/drizzle/schemas/user";
 
 export interface IAuthenticationService {
-  signIn(data: SignInInput): Promise<void>;
+  signInWithCredentials(data: SignInInput): Promise<void>;
+  signInWithGoogle(): Promise<string>;
   signOut(): Promise<void>;
 }
