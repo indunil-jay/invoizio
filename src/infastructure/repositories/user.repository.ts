@@ -4,15 +4,18 @@ import { SignUpInput, UsersCollectionDocument } from "@/drizzle/schemas/user";
 import { IUserRepository } from "@/src/application/repositories/user-repository.interface";
 import { eq } from "drizzle-orm";
 import { injectable } from "inversify";
-import { RowList } from "postgres";
 
 //TODO:error handler
 
 @injectable()
 export class UserRepository implements IUserRepository {
-  public async create(data: SignUpInput): Promise<RowList<never[]>> {
+  public async create(data: SignUpInput): Promise<UsersCollectionDocument> {
     try {
-      return await db.insert(users).values(data);
+      const [insertedUser] = await db.insert(users).values(data).returning();
+      if (!insertedUser) {
+        throw new Error("User creation failed, no data returned.");
+      }
+      return insertedUser;
     } catch (error) {
       console.error(`Database insert failed: ${error}`, { data });
       throw new Error("Unable to insert user. Please try again later.");

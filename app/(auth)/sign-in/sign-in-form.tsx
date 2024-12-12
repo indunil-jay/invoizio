@@ -16,8 +16,9 @@ import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { FogotPasswordLink } from "@/app/_components/custom/forms/forgot-password.-link";
+import { credentialsSignIn } from "../actions";
 
-const signInFormSchema = z.object({
+export const signInFormSchema = z.object({
   email: z.string().email().min(1, {
     message: "email is required.",
   }),
@@ -38,10 +39,8 @@ export function SignInForm() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof signInFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof signInFormSchema>) {
+    await credentialsSignIn(values);
   }
 
   return (
@@ -76,7 +75,12 @@ export function SignInForm() {
           )}
         />
         <FogotPasswordLink />
-        <Button type="submit" className="w-full" size={"lg"}>
+        <Button
+          type="submit"
+          className="w-full"
+          size={"lg"}
+          disabled={form.formState.isSubmitting}
+        >
           Sign in
         </Button>
       </form>

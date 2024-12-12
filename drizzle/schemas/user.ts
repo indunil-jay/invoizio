@@ -36,9 +36,17 @@ export const signInWithCredentialSchema = createInsertSchema(users, {
   password: true,
 });
 
-export type SignInWithCredentialSchema = z.infer<
-  typeof signInWithCredentialSchema
->;
+// Transform parsed output
+export const strictSignInWithCredentialSchema =
+  signInWithCredentialSchema.transform((data) => {
+    return {
+      ...data,
+      email: data.email || "",
+      password: data.password || "",
+    };
+  });
+
+export type SignInInput = z.infer<typeof strictSignInWithCredentialSchema>;
 
 export const signUpSchema = createInsertSchema(users, {
   name: (schema) => schema.min(1).transform((value) => value.trim()),
@@ -50,6 +58,7 @@ export const signUpSchema = createInsertSchema(users, {
   name: true,
 });
 
+// Transform parsed output
 export const strictSignUpSchema = signUpSchema.transform((data) => {
   return {
     ...data,
