@@ -7,7 +7,13 @@ export const publicRoutes: string[] = [];
  * An array of routes that are accessible to the public and use for authentications
  * These routes will redirects logged in user to application
  */
-export const authRoutes: string[] = ["/sign-in", "/sign-up"];
+export const authRoutes: string[] = [
+  "/auth/sign-in",
+  "/auth/sign-up",
+  "/auth/error",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+];
 
 /**
  * The prefix for API authentication routes

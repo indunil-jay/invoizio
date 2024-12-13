@@ -17,7 +17,7 @@ import { Input } from "@/app/_components/ui/input";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { FogotPasswordLink } from "@/app/_components/custom/forms/forgot-password.-link";
 
-import { signInWithCredentials } from "@/app/(auth)/actions";
+import { signInWithCredentials } from "@/app/(auth)/auth/actions";
 
 export const signInFormSchema = z.object({
   email: z.string().email().min(1, {

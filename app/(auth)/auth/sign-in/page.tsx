@@ -10,7 +10,7 @@ import {
 } from "@/app/_components/ui/card";
 import { OrSeparator } from "@/app/_components/custom/forms/or-separator";
 import { GoogleSign } from "@/app/_components/custom/forms/google-sign";
-import { SignInForm } from "@/app/(auth)/sign-in/sign-in-form";
+import { SignInForm } from "@/app/(auth)/auth/sign-in/sign-in-form";
 
 export default function Page() {
   return (

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "@/app/_components/ui/button";
 import GoogleIcon from "@/app/_assets/svgs/google.svg";
 import { useForm } from "react-hook-form";
-import { signInWithGoogle } from "@/app/(auth)/actions";
+import { signInWithGoogle } from "@/app/(auth)/auth/actions";
 
 export const GoogleSign = () => {
   const form = useForm({});

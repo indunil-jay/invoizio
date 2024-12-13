@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { Button } from "./ui/button";
-import { signOut } from "../(auth)/actions";
+import { signOut } from "../(auth)/auth/actions";
 
 export const SignOut = () => {
   const form = useForm({});
