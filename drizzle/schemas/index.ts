@@ -4,3 +4,4 @@ export {
   authenticators,
   defineAuthenticatorsRelations,
 } from "@/drizzle/schemas/authenticator";
+export { verificationTokens } from "@/drizzle/schemas/verification-token";

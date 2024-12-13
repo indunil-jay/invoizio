@@ -1,6 +1,6 @@
 {
-  "id": "274c1f39-cac8-4b34-a0c4-3208f34e2243",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "b71e137d-f35d-498c-be89-40991d83087c",
+  "prevId": "274c1f39-cac8-4b34-a0c4-3208f34e2243",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -293,8 +293,7 @@
           "name": "expires",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
+          "notNull": true
         }
       },
       "indexes": {},

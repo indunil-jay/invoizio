@@ -3,7 +3,10 @@ import authConfig from "./auth.config";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/drizzle";
 import Credentials from "next-auth/providers/credentials";
-import { strictSignInWithCredentialSchema } from "../drizzle/schemas/user";
+import {
+  strictSignInWithCredentialSchema,
+  UsersCollectionDocument,
+} from "../drizzle/schemas/user";
 import { getInjection } from "@/di/container";
 import envValidationSchema from "@/lib/env-validation-schema";
 import Google from "next-auth/providers/google";
@@ -62,9 +65,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     },
 
     async signIn({ user }) {
-      //TODO: check email veified or not
-      console.log(user);
-      return true;
+      //TODO: check email verified or not
+      let existingUser: UsersCollectionDocument | undefined = undefined;
+      if (user && user.email) {
+        const userRepository = getInjection("IUserRepository");
+        existingUser = await userRepository.getByEmail(user.email);
+        if (!existingUser) return false;
+      }
+      return existingUser?.emailVerified ? true : false;
     },
   },
   events: {
