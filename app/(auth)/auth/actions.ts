@@ -17,7 +17,7 @@ export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
   } catch (error) {
     console.log(error);
   }
-  redirect("/auth/sign-in");
+  // redirect("/auth/sign-in");
 };
 
 export const signInWithCredentials = async (
