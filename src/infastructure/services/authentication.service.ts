@@ -8,7 +8,6 @@ import { AuthError } from "next-auth";
 export class AuthenticationService implements IAuthenticationService {
   public async signInWithGoogle(): Promise<string> {
     const response = await signIn("google", { redirect: false });
-    console.log({ response });
     return response;
   }
 

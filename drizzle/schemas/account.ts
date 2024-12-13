@@ -27,7 +27,7 @@ export const accounts = pgTable(
   })
 );
 
-export const accountsRelations = relations(accounts, ({ one }) => ({
+export const defineAccountsRelations = relations(accounts, ({ one }) => ({
   //one user has one account
   users: one(users, {
     fields: [accounts.userId],

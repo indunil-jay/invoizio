@@ -29,11 +29,14 @@ export const authenticators = pgTable(
   })
 );
 
-export const authenticatorsRelations = relations(authenticators, ({ one }) => ({
-  users: one(users, {
-    fields: [authenticators.userId],
-    references: [users.id],
-  }),
-}));
+export const defineAuthenticatorsRelations = relations(
+  authenticators,
+  ({ one }) => ({
+    users: one(users, {
+      fields: [authenticators.userId],
+      references: [users.id],
+    }),
+  })
+);
 
-export type authenticatorsCollection = InferSelectModel<typeof authenticators>;
+export type AuthenticatorsCollection = InferSelectModel<typeof authenticators>;

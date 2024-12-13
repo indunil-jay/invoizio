@@ -21,7 +21,7 @@ export const users = pgTable("user", {
 });
 
 //define relation here
-export const usersRelations = relations(users, ({ one }) => ({
+export const defineUsersRelations = relations(users, ({ one }) => ({
   //one user has one account
   accounts: one(accounts),
   authenticators: one(authenticators),
@@ -71,3 +71,12 @@ export const strictSignUpSchema = signUpSchema.transform((data) => {
 export type SignUpInput = z.infer<typeof strictSignUpSchema>;
 
 export type UsersCollectionDocument = InferSelectModel<typeof users>;
+
+export type PartialUserUpdate = Partial<
+  Omit<
+    UsersCollectionDocument,
+    "password" | "email" | "createdAt" | "updatedAt" | "id"
+  >
+>;
+
+export type UserModel = UsersCollectionDocument;

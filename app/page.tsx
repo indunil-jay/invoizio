@@ -1,17 +1,13 @@
-"use client";
-import { useForm } from "react-hook-form";
-import { signOut } from "./(auth)/actions";
-import { Button } from "./_components/ui/button";
+import { auth } from "@/src/auth";
+import { SignOut } from "./_components/signOut";
 
-export default function Home() {
-  const form = useForm({});
+export default async function Home() {
+  const session = await auth();
 
-  const onSubmit = async () => {
-    await signOut();
-  };
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
-      <Button type="submit">sign out</Button>
-    </form>
+    <>
+      <SignOut />
+      {JSON.stringify(session)}
+    </>
   );
 }

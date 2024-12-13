@@ -1,6 +1,6 @@
-export { users, usersRelations } from "@/drizzle/schemas/user";
-export { accounts, accountsRelations } from "@/drizzle/schemas/account";
+export { users, defineUsersRelations } from "@/drizzle/schemas/user";
+export { accounts, defineAccountsRelations } from "@/drizzle/schemas/account";
 export {
   authenticators,
-  authenticatorsRelations,
+  defineAuthenticatorsRelations,
 } from "@/drizzle/schemas/authenticator";
