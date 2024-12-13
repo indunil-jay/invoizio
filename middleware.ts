@@ -31,7 +31,7 @@ export default auth(async function middleware(req) {
   }
   //anything else, redirect to the sign in auth route
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL("/sign-in", req.nextUrl), 307);
+    return Response.redirect(new URL("/auth/sign-in", req.nextUrl), 307);
   }
 
   return;

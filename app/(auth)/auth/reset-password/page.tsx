@@ -13,7 +13,7 @@ export default function Page() {
     <div className="flex h-screen w-full items-center justify-center px-4">
       <Card className="max-w-md w-full">
         <CardHeader>
-          <BackButton src="/sign-in" />
+          <BackButton src="/auth/sign-in" />
           <CardTitle className="text-xl">Reset Your Password</CardTitle>
           <CardDescription>
             Please enter the required details to reset your password. Once

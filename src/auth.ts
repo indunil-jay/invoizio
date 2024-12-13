@@ -10,9 +10,9 @@ import Google from "next-auth/providers/google";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   pages: {
-    signIn: "/sign-in",
-    signOut: "/sign-in",
-    error: "/error",
+    signIn: "/auth/sign-in",
+    signOut: "/auth/sign-in",
+    error: "/auth/error",
   },
 
   adapter: DrizzleAdapter(db),

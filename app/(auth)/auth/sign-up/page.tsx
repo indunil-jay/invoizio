@@ -34,7 +34,7 @@ export default function Page() {
             <p className="text-xs font-medium text-muted-foreground">
               Already have an Account ?{" "}
               <Link
-                href="/sign-in"
+                href="/auth/sign-in"
                 className="underline text-blue-500 underline-offset-2"
               >
                 Sign In

@@ -17,7 +17,7 @@ export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
   } catch (error) {
     console.log(error);
   }
-  redirect("/sign-in");
+  redirect("/auth/sign-in");
 };
 
 export const signInWithCredentials = async (
@@ -39,7 +39,7 @@ export const signOut = async () => {
   } catch (error) {
     console.log(error);
   }
-  redirect("/sign-in");
+  redirect("/auth/sign-in");
 };
 
 export const signInWithGoogle = async () => {
