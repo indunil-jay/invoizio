@@ -65,7 +65,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     },
 
     async signIn({ user }) {
-      //TODO: check email verified or not
+      // TODO: check email verified or not
       let existingUser: UsersCollectionDocument | undefined = undefined;
       if (user && user.email) {
         const userRepository = getInjection("IUserRepository");
@@ -84,4 +84,5 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       }
     },
   },
+  trustHost: true,
 });

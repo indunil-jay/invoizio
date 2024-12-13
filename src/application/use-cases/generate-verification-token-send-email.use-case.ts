@@ -6,12 +6,11 @@ import { TOKEN_EXPIRATION_MS } from "@/src/constants";
 export const generateVerificationTokenAndSendEmailUseCase = async (
   email: string
 ) => {
-  // Check if existing token and is expired
   const verificationTokenRepository = getInjection(
     "IVerificationTokenRepository"
   );
-  const existingverificationTokenDocument =
-    await verificationTokenRepository.getByEmail(email);
+
+  const emailService = getInjection("IEmailService");
 
   // Get the current date for comparisons
   const currentDate = new Date();
@@ -21,6 +20,10 @@ export const generateVerificationTokenAndSendEmailUseCase = async (
 
   // Set new expiration time (10 minutes)
   const expires = new Date(currentDate.getTime() + TOKEN_EXPIRATION_MS);
+
+  // Check if existing token and is expired
+  const existingverificationTokenDocument =
+    await verificationTokenRepository.getByEmail(email);
 
   // Check if token exists and has not expired
   if (
@@ -43,11 +46,16 @@ export const generateVerificationTokenAndSendEmailUseCase = async (
       existingverificationTokenDocument.id
     );
 
-    await verificationTokenRepository.create({
-      token: token,
-      email,
-      expires,
-    });
+    const newVerificationTokenDocument =
+      await verificationTokenRepository.create({
+        token: token,
+        email,
+        expires,
+      });
+    await emailService.sendVerificationEmail(
+      newVerificationTokenDocument.email,
+      newVerificationTokenDocument.token
+    );
     console.log(
       "Your previous verification link expired. A new one has been sent to your inbox."
     );
@@ -55,11 +63,18 @@ export const generateVerificationTokenAndSendEmailUseCase = async (
   }
 
   // Create new verification token document
-  await verificationTokenRepository.create({
-    token: token,
-    email,
-    expires,
-  });
+  const newVerificationTokenDocument = await verificationTokenRepository.create(
+    {
+      token: token,
+      email,
+      expires,
+    }
+  );
+
+  await emailService.sendVerificationEmail(
+    newVerificationTokenDocument.email,
+    newVerificationTokenDocument.token
+  );
   console.log(
     "A verification link has been sent to your inbox. Please check your email."
   );

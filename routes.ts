@@ -1,7 +1,7 @@
 /**
  * An array of routes that are accessible to the public
  */
-export const publicRoutes: string[] = [];
+export const publicRoutes: string[] = ["/auth/new-verification"];
 
 /**
  * An array of routes that are accessible to the public and use for authentications

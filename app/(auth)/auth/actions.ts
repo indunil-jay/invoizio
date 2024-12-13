@@ -9,6 +9,7 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { redirect } from "next/navigation";
 import { signOutController } from "@/src/interface-adapter/controllers/authentication/sign-out.controller";
 import { signInWithGoogleController } from "@/src/interface-adapter/controllers/authentication/sign-in-with-google.controller";
+import { emailVerificationController } from "@/src/interface-adapter/controllers/authentication/email-verification.controller";
 
 export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
   try {
@@ -50,4 +51,13 @@ export const signInWithGoogle = async () => {
     console.log(error);
   }
   redirect(url);
+};
+
+export const emailVerification = async (token: string) => {
+  try {
+    await emailVerificationController(token);
+  } catch (error) {
+    console.log(error);
+  }
+  redirect("/");
 };
