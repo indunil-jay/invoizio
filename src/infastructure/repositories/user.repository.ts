@@ -24,6 +24,7 @@ export class UserRepository implements IUserRepository {
           emailVerified: data.emailVerified,
           image: data.image,
           name: data.image,
+          password:data.password
         })
         .where(eq(users.id, id));
       if (updatedUser) {

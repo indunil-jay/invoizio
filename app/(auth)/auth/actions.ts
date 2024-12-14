@@ -10,6 +10,10 @@ import { redirect } from "next/navigation";
 import { signOutController } from "@/src/interface-adapter/controllers/authentication/sign-out.controller";
 import { signInWithGoogleController } from "@/src/interface-adapter/controllers/authentication/sign-in-with-google.controller";
 import { emailVerificationController } from "@/src/interface-adapter/controllers/authentication/email-verification.controller";
+import { forgotPasswordController } from "@/src/interface-adapter/controllers/authentication/forgot-password.controller";
+import { forgotPasswordFormSchema } from "./forgot-password/forgot-password-form";
+import { resetPasswordFormSchema } from "./reset-password/reset-password-form";
+import { resetPasswordController } from "@/src/interface-adapter/controllers/authentication/reset-password.controller";
 
 export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
   try {
@@ -56,6 +60,28 @@ export const signInWithGoogle = async () => {
 export const emailVerification = async (token: string) => {
   try {
     await emailVerificationController(token);
+  } catch (error) {
+    console.log(error);
+  }
+  redirect("/");
+};
+
+export const forgotPassword = async (
+  values: z.infer<typeof forgotPasswordFormSchema>
+) => {
+  try {
+    await forgotPasswordController(values);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const resetPassword = async (
+  values: z.infer<typeof resetPasswordFormSchema>,
+  token: string | null
+) => {
+  try {
+    await resetPasswordController(values, token);
   } catch (error) {
     console.log(error);
   }

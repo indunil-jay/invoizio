@@ -14,25 +14,23 @@ import {
 } from "@/app/_components/ui/form";
 import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
+import { forgotPassword } from "../actions";
+import { Loader2 } from "lucide-react";
 
-const signInFormSchema = z.object({
+export const forgotPasswordFormSchema = z.object({
   email: z.string().email({ message: "Invalid email" }),
 });
 
 export const ForgotPasswordForm = () => {
-  // 1. Define  form.
-  const form = useForm<z.infer<typeof signInFormSchema>>({
-    resolver: zodResolver(signInFormSchema),
+  const form = useForm<z.infer<typeof forgotPasswordFormSchema>>({
+    resolver: zodResolver(forgotPasswordFormSchema),
     defaultValues: {
       email: "",
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof signInFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof forgotPasswordFormSchema>) {
+    await forgotPassword(values);
   }
   return (
     <Form {...form}>
@@ -52,8 +50,16 @@ export const ForgotPasswordForm = () => {
           )}
         />
 
-        <Button type="submit" className="w-full" size={"lg"}>
-          Submit
+        <Button
+          type="submit"
+          disabled={form.formState.isSubmitting || form.formState.isSubmitted}
+          className="w-full"
+        >
+          {form.formState.isSubmitting ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            "Verify Email"
+          )}
         </Button>
       </form>
     </Form>

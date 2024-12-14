@@ -1,1 +1,0 @@
-ALTER TABLE "verificationToken" ALTER COLUMN "expires" DROP DEFAULT;

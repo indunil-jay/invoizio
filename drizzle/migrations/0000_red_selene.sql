@@ -26,6 +26,14 @@ CREATE TABLE "authenticator" (
 	CONSTRAINT "authenticator_credentialID_unique" UNIQUE("credentialID")
 );
 --> statement-breakpoint
+CREATE TABLE "passwordResetToken" (
+	"id" text PRIMARY KEY NOT NULL,
+	"email" text NOT NULL,
+	"token" text NOT NULL,
+	"expires" timestamp NOT NULL,
+	CONSTRAINT "passwordResetToken_email_token_unique" UNIQUE("email","token")
+);
+--> statement-breakpoint
 CREATE TABLE "user" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text,
@@ -42,7 +50,7 @@ CREATE TABLE "verificationToken" (
 	"id" text PRIMARY KEY NOT NULL,
 	"email" text NOT NULL,
 	"token" text NOT NULL,
-	"expires" timestamp DEFAULT now() NOT NULL,
+	"expires" timestamp NOT NULL,
 	CONSTRAINT "verificationToken_email_token_unique" UNIQUE("email","token")
 );
 --> statement-breakpoint

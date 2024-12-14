@@ -17,8 +17,21 @@ export class EmailService implements IEmailService {
     EmailService.resend.emails.send({
       from: "onboarding@resend.dev",
       to: email,
-      subject: "Hello World",
+      subject: "Email Verification",
       html: `<p>Click <a href="${confirmLink}">here to confirm</a>your email.</p>`,
+    });
+  }
+
+  public async sendPasswordResetEmail(
+    email: string,
+    token: string
+  ): Promise<void> {
+    const confirmLink = `http://localhost:3000/auth/reset-password?token=${token}`;
+    EmailService.resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: email,
+      subject: "Reset Password",
+      html: `<p>Click <a href="${confirmLink}">here to reset</a>your password.</p>`,
     });
   }
 }

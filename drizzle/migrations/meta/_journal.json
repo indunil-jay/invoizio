@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1734063942031,
-      "tag": "0000_dusty_epoch",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1734067960627,
-      "tag": "0001_right_giant_girl",
+      "when": 1734141188200,
+      "tag": "0000_red_selene",
       "breakpoints": true
     }
   ]

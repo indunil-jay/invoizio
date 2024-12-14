@@ -73,10 +73,7 @@ export type SignUpInput = z.infer<typeof strictSignUpSchema>;
 export type UsersCollectionDocument = InferSelectModel<typeof users>;
 
 export type PartialUserUpdate = Partial<
-  Omit<
-    UsersCollectionDocument,
-    "password" | "email" | "createdAt" | "updatedAt" | "id"
-  >
+  Omit<UsersCollectionDocument, "email" | "createdAt" | "updatedAt" | "id">
 >;
 
 export type UserModel = UsersCollectionDocument;

@@ -14,8 +14,11 @@ import {
 } from "@/app/_components/ui/form";
 import { Button } from "@/app/_components/ui/button";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
+import { Loader2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { resetPassword } from "../actions";
 
-const resetPasswordFormSchema = z
+export const resetPasswordFormSchema = z
   .object({
     password: z
       .string()
@@ -28,7 +31,6 @@ const resetPasswordFormSchema = z
   });
 
 export const ResetPasswordForm = () => {
-  // 1. Define  form.
   const form = useForm<z.infer<typeof resetPasswordFormSchema>>({
     resolver: zodResolver(resetPasswordFormSchema),
     defaultValues: {
@@ -36,12 +38,11 @@ export const ResetPasswordForm = () => {
       passwordConfirm: "",
     },
   });
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof resetPasswordFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof resetPasswordFormSchema>) {
+    await resetPassword(values, token);
   }
   return (
     <Form {...form}>
@@ -75,8 +76,16 @@ export const ResetPasswordForm = () => {
           )}
         />
 
-        <Button type="submit" className="w-full" size={"lg"}>
-          Submit
+        <Button
+          type="submit"
+          disabled={form.formState.isSubmitting || form.formState.isSubmitted}
+          className="w-full"
+        >
+          {form.formState.isSubmitting ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            "Reset Password"
+          )}
         </Button>
       </form>
     </Form>

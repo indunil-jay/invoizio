@@ -1,3 +1,4 @@
+import { IPasswordResetTokenRepository } from "@/src/application/repositories/password-reset-token-repository.interface";
 import { IUserRepository } from "@/src/application/repositories/user-repository.interface";
 import { IVerificationTokenRepository } from "@/src/application/repositories/verification-token-repository.interface";
 import { IAuthenticationService } from "@/src/application/services/authentication-service.interface";
@@ -14,6 +15,7 @@ export const DI_SYMBOLS = {
   // Repositories
   IUserRepository: Symbol.for("IUserRepository"),
   IVerificationTokenRepository: Symbol.for("IVerificationTokenRepository"),
+  IPasswordResetTokenRepository: Symbol.for("IPasswordResetTokenRepository"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -25,4 +27,5 @@ export interface DI_RETURN_TYPES {
   // Repositories
   IUserRepository: IUserRepository;
   IVerificationTokenRepository: IVerificationTokenRepository;
+  IPasswordResetTokenRepository: IPasswordResetTokenRepository;
 }
