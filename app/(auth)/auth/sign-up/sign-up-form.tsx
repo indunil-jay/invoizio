@@ -16,6 +16,7 @@ import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { signUp } from "../actions";
+import { toast } from "@/app/_lib/execute.action";
 
 export const signUpFormSchema = z
   .object({
@@ -44,10 +45,10 @@ export function SignUpForm() {
     },
   });
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof signUpFormSchema>) {
-    await signUp(values);
-  }
+  const onSubmit = async (values: z.infer<typeof signUpFormSchema>) => {
+    const response = await signUp(values);
+    toast(response);
+  };
 
   return (
     <Form {...form}>

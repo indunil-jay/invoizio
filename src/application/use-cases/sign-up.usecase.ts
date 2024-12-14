@@ -1,19 +1,23 @@
 import { getInjection } from "@/di/container";
-import { SignUpInput } from "@/drizzle/schemas/user";
 import { generateVerificationTokenAndSendEmailUseCase } from "@/src/application/use-cases/generate-verification-token-send-email.use-case";
+import { createUserDTO } from "@/src/application/dtos/user.dto";
+import { ConflictError } from "@/src/domain/errors/errors";
+import { ResponseDTO } from "@/src/application/dtos/response.dto";
 
 export const signUpUseCase = {
-  async execute(data: SignUpInput) {
-    //check already user inside the database
+  async execute(data: createUserDTO): Promise<ResponseDTO> {
+    //di
     const userRepository = getInjection("IUserRepository");
+    const hashingService = getInjection("IHashingService");
+
+    // check if user already exists
     const userDocument = await userRepository.getByEmail(data.email);
 
     if (userDocument) {
-      throw new Error("user email already exists.");
+      throw new ConflictError("email already exists", { statusCode: 409 });
     }
 
     //hash the password
-    const hashingService = getInjection("IHashingService");
     const hashedPassword = await hashingService.hash(data.password);
 
     //insert
@@ -24,6 +28,8 @@ export const signUpUseCase = {
     });
 
     //generate verification token
-    await generateVerificationTokenAndSendEmailUseCase(newUserDocument.email);
+    return await generateVerificationTokenAndSendEmailUseCase(
+      newUserDocument.email
+    );
   },
 };

@@ -14,15 +14,13 @@ import { forgotPasswordController } from "@/src/interface-adapter/controllers/au
 import { forgotPasswordFormSchema } from "./forgot-password/forgot-password-form";
 import { resetPasswordFormSchema } from "./reset-password/reset-password-form";
 import { resetPasswordController } from "@/src/interface-adapter/controllers/authentication/reset-password.controller";
+import { executeAction } from "@/app/_lib/execute.action";
 
 export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
-  try {
-    await signUpController(values);
-    console.log("success");
-  } catch (error) {
-    console.log(error);
-  }
-  // redirect("/auth/sign-in");
+  return executeAction({
+    actionFn: async () => await signUpController(values),
+    title: "Sign Up",
+  });
 };
 
 export const signInWithCredentials = async (

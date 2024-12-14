@@ -75,5 +75,3 @@ export type UsersCollectionDocument = InferSelectModel<typeof users>;
 export type PartialUserUpdate = Partial<
   Omit<UsersCollectionDocument, "email" | "createdAt" | "updatedAt" | "id">
 >;
-
-export type UserModel = UsersCollectionDocument;

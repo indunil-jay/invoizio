@@ -1,45 +1,46 @@
 import { getInjection } from "@/di/container";
-import { TOKEN_EXPIRATION_MS } from "@/src/constants";
-
-//TODO:add emails later
+import {
+  CURRENT_DATE,
+  VERIFICATION_TOKEN_EXPIRATION_MS,
+} from "@/src/constants";
+import { ActionRequiredError } from "@/src/domain/errors/errors";
+import { SuccessResponseDTO } from "../dtos/response.dto";
 
 export const generateVerificationTokenAndSendEmailUseCase = async (
   email: string
-) => {
+): Promise<SuccessResponseDTO> => {
+  //di
   const verificationTokenRepository = getInjection(
     "IVerificationTokenRepository"
   );
-
   const emailService = getInjection("IEmailService");
-
-  // Get the current date for comparisons
-  const currentDate = new Date();
-  // Generate a new token
   const tokenGeneratorService = getInjection("ITokenGeneratorService");
+
+  // generate a new token
   const token = tokenGeneratorService.generate();
 
-  // Set new expiration time (10 minutes)
-  const expires = new Date(currentDate.getTime() + TOKEN_EXPIRATION_MS);
+  // set new expiration time (10 minutes)
+  const expires = new Date(
+    CURRENT_DATE.getTime() + VERIFICATION_TOKEN_EXPIRATION_MS
+  );
 
-  // Check if existing token and is expired
+  // check if existing token and is expired
   const existingverificationTokenDocument =
     await verificationTokenRepository.getByEmail(email);
 
-  // Check if token exists and has not expired
+  // check if token exists and has not expired
   if (
     existingverificationTokenDocument &&
-    existingverificationTokenDocument.expires > currentDate
+    existingverificationTokenDocument.expires > CURRENT_DATE
   ) {
-    console.log(
+    throw new ActionRequiredError(
       "Your email is not verified. A verification link has been sent to your inbox. Please check your email."
     );
-    return "Your email is not verified. A verification link has been sent to your inbox. Please check your email.";
   }
-
-  // Check if token exists and has expired
+  // check if token exists and has expired
   if (
     existingverificationTokenDocument &&
-    existingverificationTokenDocument.expires < currentDate
+    existingverificationTokenDocument.expires < CURRENT_DATE
   ) {
     //TODO:database transactins
     await verificationTokenRepository.deleteById(
@@ -52,14 +53,17 @@ export const generateVerificationTokenAndSendEmailUseCase = async (
         email,
         expires,
       });
+
     await emailService.sendVerificationEmail(
       newVerificationTokenDocument.email,
       newVerificationTokenDocument.token
     );
-    console.log(
-      "Your previous verification link expired. A new one has been sent to your inbox."
-    );
-    return "Your previous verification link expired. A new one has been sent to your inbox.";
+
+    return {
+      success: true,
+      message:
+        "Your previous verification link expired. A new one has been sent to your inbox.",
+    };
   }
 
   // Create new verification token document
@@ -75,8 +79,10 @@ export const generateVerificationTokenAndSendEmailUseCase = async (
     newVerificationTokenDocument.email,
     newVerificationTokenDocument.token
   );
-  console.log(
-    "A verification link has been sent to your inbox. Please check your email."
-  );
-  return "A verification link has been sent to your inbox. Please check your email.";
+
+  return {
+    success: true,
+    message:
+      "A verification link has been sent to your inbox. Please check your email.",
+  };
 };

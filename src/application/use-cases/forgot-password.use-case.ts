@@ -1,5 +1,5 @@
 import { getInjection } from "@/di/container";
-import { TOKEN_EXPIRATION_MS } from "@/src/constants";
+import { PASSWORD_RESET_TOKEN_EXPIRATION_MS } from "@/src/constants";
 
 export const forgotPasswordUseCase = async (email: string) => {
   //check email exists
@@ -21,7 +21,9 @@ export const forgotPasswordUseCase = async (email: string) => {
   const currentDate = new Date();
 
   // Set new expiration time (10 minutes)
-  const expires = new Date(currentDate.getTime() + TOKEN_EXPIRATION_MS);
+  const expires = new Date(
+    currentDate.getTime() + PASSWORD_RESET_TOKEN_EXPIRATION_MS
+  );
 
   //check if there existing document
   const passwordResetTokenRepository = getInjection(

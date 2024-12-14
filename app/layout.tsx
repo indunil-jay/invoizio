@@ -3,6 +3,7 @@ import "reflect-metadata";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Toaster } from "./_components/ui/toaster";
 
 const geistSans = localFont({
   src: "./_fonts/GeistVF.woff",
@@ -30,6 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
+        <Toaster />
         {children}
       </body>
     </html>

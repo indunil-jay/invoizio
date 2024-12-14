@@ -1,4 +1,4 @@
-import { cn } from "@/app/_lib/utils"
+import { cn } from "@/app/_lib/tailwind-css/utils";
 
 function Skeleton({
   className,
@@ -9,7 +9,7 @@ function Skeleton({
       className={cn("animate-pulse rounded-md bg-primary/10", className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Skeleton }
+export { Skeleton };
