@@ -78,7 +78,7 @@ export const forgotPassword = async (
 
 export const resetPassword = async (
   values: z.infer<typeof resetPasswordFormSchema>,
-  token: string | null
+  token: string | undefined
 ) => {
   try {
     await resetPasswordController(values, token);

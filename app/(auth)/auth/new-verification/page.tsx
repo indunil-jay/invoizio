@@ -1,17 +1,15 @@
-import { Suspense } from "react";
 import { NewVerificationForm } from "./new-verification-form";
 
-export default function Page() {
+export default async function Page(props: {
+  searchParams: Promise<{ token: string }>;
+}) {
+  const searchParams = await props.searchParams;
+  const token = searchParams.token;
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">
       <nav>
-        <Suspense fallback={<Fallback />}>
-          <NewVerificationForm />
-        </Suspense>
+        <NewVerificationForm token={token} />
       </nav>
     </div>
   );
-}
-function Fallback() {
-  return <>loading</>;
 }

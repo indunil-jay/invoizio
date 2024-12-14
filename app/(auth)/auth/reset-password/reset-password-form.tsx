@@ -15,7 +15,6 @@ import {
 import { Button } from "@/app/_components/ui/button";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { Loader2 } from "lucide-react";
-import { useSearchParams } from "next/navigation";
 import { resetPassword } from "../actions";
 
 export const resetPasswordFormSchema = z
@@ -30,7 +29,11 @@ export const resetPasswordFormSchema = z
     message: "Passwords does not match.",
   });
 
-export const ResetPasswordForm = () => {
+interface ResetPasswordFormPorps {
+  token: string | undefined;
+}
+
+export const ResetPasswordForm = ({ token }: ResetPasswordFormPorps) => {
   const form = useForm<z.infer<typeof resetPasswordFormSchema>>({
     resolver: zodResolver(resetPasswordFormSchema),
     defaultValues: {
@@ -38,8 +41,6 @@ export const ResetPasswordForm = () => {
       passwordConfirm: "",
     },
   });
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
 
   async function onSubmit(values: z.infer<typeof resetPasswordFormSchema>) {
     await resetPassword(values, token);

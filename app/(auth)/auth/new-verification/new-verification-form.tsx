@@ -9,13 +9,14 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 import { Loader2 } from "lucide-react";
-import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { emailVerification } from "../actions";
 
-export const NewVerificationForm = () => {
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+interface NewVerificationFormProps {
+  token: string | undefined;
+}
+
+export const NewVerificationForm = ({ token }: NewVerificationFormProps) => {
   const form = useForm();
 
   const onSubmit = async () => {

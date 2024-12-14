@@ -1,7 +1,7 @@
 import { InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp, unique } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
-
+import { z } from "zod";
 export const passwordResetTokens = pgTable(
   "passwordResetToken",
   {
@@ -28,6 +28,8 @@ export const passwordResetTokensSchema = createInsertSchema(
   token: true,
   expires: true,
 });
+
+export type PasswordResetToken = z.infer<typeof passwordResetTokensSchema>;
 
 export type PasswordResetTokenCollectionDocument = InferSelectModel<
   typeof passwordResetTokens

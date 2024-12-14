@@ -8,7 +8,13 @@ import {
 import { ResetPasswordForm } from "./reset-password-form";
 import { BackButton } from "@/app/_components/custom/back-button";
 
-export default function Page() {
+export default async function Page(props: {
+  searchParams?: Promise<{
+    token?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const token = searchParams?.token;
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
       <Card className="max-w-md w-full">
@@ -22,7 +28,7 @@ export default function Page() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResetPasswordForm />
+          <ResetPasswordForm token={token} />
         </CardContent>
       </Card>
     </div>

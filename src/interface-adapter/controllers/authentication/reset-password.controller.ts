@@ -6,7 +6,7 @@ import {
 
 export const resetPasswordController = async (
   input: NewPasswordInput,
-  token: string | null
+  token: string | undefined
 ) => {
   if (!token) {
     throw new Error("Missing Token");
