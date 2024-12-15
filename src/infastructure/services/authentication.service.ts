@@ -1,4 +1,5 @@
 import { SignInInput } from "@/drizzle/schemas/user";
+import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
 import { IAuthenticationService } from "@/src/application/services/authentication-service.interface";
 import { signIn, signOut } from "@/src/auth";
 import { injectable } from "inversify";
@@ -6,9 +7,17 @@ import { AuthError } from "next-auth";
 
 @injectable()
 export class AuthenticationService implements IAuthenticationService {
-  public async signInWithGoogle(): Promise<string> {
-    const response = await signIn("google", { redirect: false });
-    return response;
+  public async signInWithGoogle(): Promise<ClientResponseDTO> {
+    try {
+      const url = await signIn("google", { redirect: false });
+      return {
+        success: true,
+        message: "Sign in success with Google",
+        redirectUrl: url,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   public async signOut(): Promise<void> {

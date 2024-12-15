@@ -16,7 +16,7 @@ import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { signUp } from "../actions";
-import { toast } from "@/app/_lib/execute.action";
+import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
 
 export const signUpFormSchema = z
   .object({
@@ -44,7 +44,7 @@ export function SignUpForm() {
       passwordConfirm: "",
     },
   });
-
+  const toast = useShowToast();
   const onSubmit = async (values: z.infer<typeof signUpFormSchema>) => {
     const response = await signUp(values);
     toast(response);

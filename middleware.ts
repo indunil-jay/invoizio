@@ -8,6 +8,7 @@ import authConfig from "./src/auth.config";
 import NextAuth from "next-auth";
 
 const { auth } = NextAuth(authConfig);
+
 export default auth(async function middleware(req) {
   //check user logged-in
   const isLoggedIn = !!req.auth;
@@ -22,16 +23,13 @@ export default auth(async function middleware(req) {
   //always allows these routes also,but if there is valid session redirect to the app
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return Response.redirect(
-        new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl),
-        303
-      );
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
     }
     return;
   }
   //anything else, redirect to the sign in auth route
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL("/auth/sign-in", req.nextUrl), 307);
+    return Response.redirect(new URL("/auth/sign-in", req.nextUrl));
   }
 
   return;

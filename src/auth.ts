@@ -12,12 +12,7 @@ import envValidationSchema from "@/lib/env-validation-schema";
 import Google from "next-auth/providers/google";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
-  pages: {
-    signIn: "/auth/sign-in",
-    signOut: "/auth/sign-in",
-    error: "/auth/error",
-  },
-
+  trustHost: true,
   adapter: DrizzleAdapter(db),
   session: { strategy: "jwt" },
   ...authConfig,
@@ -53,6 +48,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     }),
   ],
 
+  events: {
+    async linkAccount({ user }) {
+      //mark verified user as when login with google
+      if (user && user.id) {
+        const userRepository = getInjection("IUserRepository");
+        await userRepository.update(user.id, { emailVerified: new Date() });
+      }
+    },
+  },
+
   callbacks: {
     async jwt({ token }) {
       return token;
@@ -64,8 +69,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return session;
     },
 
-    async signIn({ user }) {
-      // TODO: check email verified or not
+    async signIn({ user, credentials }) {
+      //allow to login with providers
+      if (!credentials) return true;
+
+      //check email is verified or not
       let existingUser: UsersCollectionDocument | undefined = undefined;
       if (user && user.email) {
         const userRepository = getInjection("IUserRepository");
@@ -75,14 +83,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       return existingUser?.emailVerified ? true : false;
     },
   },
-  events: {
-    async linkAccount({ user }) {
-      //mark verified user as when login with google
-      if (user && user.id) {
-        const userRepository = getInjection("IUserRepository");
-        await userRepository.update(user.id, { emailVerified: new Date() });
-      }
-    },
+
+  pages: {
+    signIn: "/auth/sign-in",
+    signOut: "/auth/sign-in",
+    error: "/auth/error",
   },
-  trustHost: true,
 });

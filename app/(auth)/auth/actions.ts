@@ -20,6 +20,7 @@ export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
   return executeAction({
     actionFn: async () => await signUpController(values),
     title: "Sign Up",
+    redirectUrl: "/auth/sign-in",
   });
 };
 
@@ -46,13 +47,10 @@ export const signOut = async () => {
 };
 
 export const signInWithGoogle = async () => {
-  let url: string = "";
-  try {
-    url = await signInWithGoogleController();
-  } catch (error) {
-    console.log(error);
-  }
-  redirect(url);
+  return executeAction({
+    actionFn: async () => await signInWithGoogleController(),
+    title: "Sign With Google",
+  });
 };
 
 export const emailVerification = async (token: string) => {
