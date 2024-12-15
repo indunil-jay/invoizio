@@ -29,3 +29,16 @@ export class ActionRequiredError extends Error {
     }
   }
 }
+
+export class NotFoundError extends Error {
+  public readonly options?: IOption;
+  constructor(message: string, options: IOption = { statusCode: 404 }) {
+    super(message);
+    this.name = "NotFoundError";
+    this.options = options;
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, NotFoundError);
+    }
+  }
+}

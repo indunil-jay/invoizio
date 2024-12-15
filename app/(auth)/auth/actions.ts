@@ -34,6 +34,14 @@ export const signInWithCredentials = async (
   });
 };
 
+export const signInWithGoogle = async () => {
+  return executeAction({
+    actionFn: async () => await signInWithGoogleController(),
+    title: "Sign With Google",
+  });
+};
+
+//later TODO:
 export const signOut = async () => {
   try {
     await signOutController();
@@ -44,20 +52,12 @@ export const signOut = async () => {
   redirect("/auth/sign-in");
 };
 
-export const signInWithGoogle = async () => {
-  return executeAction({
-    actionFn: async () => await signInWithGoogleController(),
-    title: "Sign With Google",
-  });
-};
-
 export const emailVerification = async (token: string) => {
-  try {
-    await emailVerificationController(token);
-  } catch (error) {
-    console.log(error);
-  }
-  redirect("/");
+  return executeAction({
+    actionFn: async () => await emailVerificationController(token),
+    title: "Email Verification",
+    redirectUrl: "/auth/sign-in",
+  });
 };
 
 export const forgotPassword = async (

@@ -10,6 +10,7 @@ import {
 } from "@/app/_components/ui/card";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
 import { emailVerification } from "../actions";
 
 interface NewVerificationFormProps {
@@ -18,10 +19,12 @@ interface NewVerificationFormProps {
 
 export const NewVerificationForm = ({ token }: NewVerificationFormProps) => {
   const form = useForm();
+  const toast = useShowToast();
 
   const onSubmit = async () => {
     if (token) {
-      await emailVerification(token);
+      const response = await emailVerification(token);
+      toast(response);
     }
   };
 

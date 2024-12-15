@@ -1,5 +1,8 @@
+import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
 import { emailVerifyUseCase } from "@/src/application/use-cases/email-verify.use-case";
 
-export const emailVerificationController = async (token: string) => {
-  await emailVerifyUseCase(token);
+export const emailVerificationController = async (
+  token: string
+): Promise<ClientResponseDTO> => {
+  return await emailVerifyUseCase(token);
 };
