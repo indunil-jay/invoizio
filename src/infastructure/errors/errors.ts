@@ -43,3 +43,18 @@ export class UnauthenticatedError extends Error {
     }
   }
 }
+
+export class DataBaseError extends Error {
+  public readonly options?: IOption;
+  constructor(options: IOption = { statusCode: 401 }) {
+    const message =
+      "Something went wrong. Our team has been notified and is working to resolve the issue. Please try again later.";
+    super(message);
+    this.name = "DataBaseError";
+    this.options = options;
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, DataBaseError);
+    }
+  }
+}

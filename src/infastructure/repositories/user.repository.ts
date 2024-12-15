@@ -8,8 +8,7 @@ import {
 import { IUserRepository } from "@/src/application/repositories/user-repository.interface";
 import { eq } from "drizzle-orm";
 import { injectable } from "inversify";
-
-//TODO:error handler
+import { DataBaseError } from "@/src/infastructure/errors/errors";
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -24,7 +23,7 @@ export class UserRepository implements IUserRepository {
           emailVerified: data.emailVerified,
           image: data.image,
           name: data.image,
-          password:data.password
+          password: data.password,
         })
         .where(eq(users.id, id));
       if (updatedUser) {
@@ -32,8 +31,8 @@ export class UserRepository implements IUserRepository {
       }
       return updatedUser;
     } catch (error) {
-      console.error(`Database update failed: ${error}`, { data });
-      throw new Error("Unable to insert user. Please try again later.");
+      console.error(`DATABASE_ERROR::UserRepository::update: ${error}`);
+      throw new DataBaseError();
     }
   }
 
@@ -45,8 +44,8 @@ export class UserRepository implements IUserRepository {
       }
       return insertedUser;
     } catch (error) {
-      console.error(`Database insert failed: ${error}`, { data });
-      throw new Error("Unable to insert user. Please try again later.");
+      console.error(`DATABASE_ERROR::UserRepository::create: ${error}`);
+      throw new DataBaseError();
     }
   }
   public async getByEmail(
@@ -57,9 +56,8 @@ export class UserRepository implements IUserRepository {
         where: eq(users.email, email),
       });
     } catch (error) {
-      console.error(`Database query failed: ${error}`, { email });
-
-      throw new Error("Unable to fetch user by email. Please try again later.");
+      console.error(`DATABASE_ERROR::UserRepository::getByEmail: ${error}`);
+      throw new DataBaseError();
     }
   }
   public async getById(
@@ -70,9 +68,8 @@ export class UserRepository implements IUserRepository {
         where: eq(users.id, id),
       });
     } catch (error) {
-      console.error(`Database query failed: ${error}`, { id });
-
-      throw new Error("Unable to fetch user by id. Please try again later.");
+      console.error(`DATABASE_ERROR::UserRepository::getById: ${error}`);
+      throw new DataBaseError();
     }
   }
 }

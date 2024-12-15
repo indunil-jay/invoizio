@@ -7,6 +7,7 @@ import {
 import { IVerificationTokenRepository } from "@/src/application/repositories/verification-token-repository.interface";
 import { eq } from "drizzle-orm";
 import { injectable } from "inversify";
+import { DataBaseError } from "@/src/infastructure/errors/errors";
 
 @injectable()
 export class VerificationTokenRepository
@@ -27,15 +28,22 @@ export class VerificationTokenRepository
       }
       return insertedToken;
     } catch (error) {
-      console.error(`Database insert failed: ${error}`, { data });
-      throw new Error(
-        "Unable to insert verificationToken. Please try again later."
+      console.error(
+        `DATABASE_ERROR::VerificationTokenRepository::create: ${error}`
       );
+      throw new DataBaseError();
     }
   }
 
   public async deleteById(id: string): Promise<void> {
-    await db.delete(verificationTokens).where(eq(verificationTokens.id, id));
+    try {
+      await db.delete(verificationTokens).where(eq(verificationTokens.id, id));
+    } catch (error) {
+      console.error(
+        `DATABASE_ERROR::VerificationTokenRepository::deleteById: ${error}`
+      );
+      throw new DataBaseError();
+    }
   }
   public async getByToken(
     token: string
@@ -45,9 +53,10 @@ export class VerificationTokenRepository
         where: eq(verificationTokens.token, token),
       });
     } catch (error) {
-      throw new Error(
-        `Error fetching the verifcation token by token",${error}`
+      console.error(
+        `DATABASE_ERROR::VerificationTokenRepository::getByToken: ${error}`
       );
+      throw new DataBaseError();
     }
   }
   public async getByEmail(
@@ -58,7 +67,10 @@ export class VerificationTokenRepository
         where: eq(verificationTokens.email, email),
       });
     } catch (error) {
-      throw new Error(`Error fetching the verifcation token email, ${error}`);
+      console.error(
+        `DATABASE_ERROR::VerificationTokenRepository::getByEmail: ${error}`
+      );
+      throw new DataBaseError();
     }
   }
 }

@@ -7,6 +7,7 @@ import {
 } from "@/drizzle/schemas/password-reset-token";
 import { passwordResetTokens } from "@/drizzle/schemas";
 import { IPasswordResetTokenRepository } from "@/src/application/repositories/password-reset-token-repository.interface";
+import { DataBaseError } from "@/src/infastructure/errors/errors";
 
 @injectable()
 export class PasswordResetTokenRepository
@@ -27,15 +28,24 @@ export class PasswordResetTokenRepository
       }
       return insertedToken;
     } catch (error) {
-      console.error(`Database insert failed: ${error}`, { data });
-      throw new Error(
-        "Unable to insert password reset token. Please try again later."
+      console.error(
+        `DATABASE_ERROR::PasswordResetTokenRepository::create: ${error}`
       );
+      throw new DataBaseError();
     }
   }
 
   public async deleteById(id: string): Promise<void> {
-    await db.delete(passwordResetTokens).where(eq(passwordResetTokens.id, id));
+    try {
+      await db
+        .delete(passwordResetTokens)
+        .where(eq(passwordResetTokens.id, id));
+    } catch (error) {
+      console.error(
+        `DATABASE_ERROR::PasswordResetTokenRepository::delete: ${error}`
+      );
+      throw new DataBaseError();
+    }
   }
   public async getByToken(
     token: string
@@ -45,9 +55,10 @@ export class PasswordResetTokenRepository
         where: eq(passwordResetTokens.token, token),
       });
     } catch (error) {
-      throw new Error(
-        `Error fetching the password reset token by token",${error}`
+      console.error(
+        `DATABASE_ERROR::PasswordResetTokenRepository::getByToken: ${error}`
       );
+      throw new DataBaseError();
     }
   }
   public async getByEmail(
@@ -58,9 +69,10 @@ export class PasswordResetTokenRepository
         where: eq(passwordResetTokens.email, email),
       });
     } catch (error) {
-      throw new Error(
-        `Error fetching the password reset token email, ${error}`
+      console.error(
+        `DATABASE_ERROR::PasswordResetTokenRepository::getByEmail: ${error}`
       );
+      throw new DataBaseError();
     }
   }
 }
