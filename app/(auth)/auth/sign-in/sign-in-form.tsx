@@ -18,6 +18,7 @@ import { PasswordField } from "@/app/_components/custom/forms/password-input-fie
 import { FogotPasswordLink } from "@/app/_components/custom/forms/forgot-password.-link";
 
 import { signInWithCredentials } from "@/app/(auth)/auth/actions";
+import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
 
 export const signInFormSchema = z.object({
   email: z.string().email().min(1, {
@@ -30,7 +31,6 @@ export const signInFormSchema = z.object({
 });
 
 export function SignInForm() {
-  // 1. Define  form.
   const form = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
@@ -38,10 +38,10 @@ export function SignInForm() {
       password: "",
     },
   });
-
-  // 2. Define a submit handler.
+  const toast = useShowToast();
   async function onSubmit(values: z.infer<typeof signInFormSchema>) {
-    await signInWithCredentials(values);
+    const response = await signInWithCredentials(values);
+    toast(response);
   }
 
   return (

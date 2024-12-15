@@ -1,8 +1,8 @@
-import { SignInInput } from "@/drizzle/schemas/user";
 import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
+import { SignInUserDTO } from "@/src/application/dtos/user.dto";
 
 export interface IAuthenticationService {
-  signInWithCredentials(data: SignInInput): Promise<void>;
+  signInWithCredentials(data: SignInUserDTO): Promise<void>;
   signInWithGoogle(): Promise<ClientResponseDTO>;
   signOut(): Promise<void>;
 }

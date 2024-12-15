@@ -1,36 +1,49 @@
-import { generateVerificationTokenAndSendEmailUseCase } from "@/src/application/use-cases/generate-verification-token-send-email.use-case";
 import { getInjection } from "@/di/container";
-import { SignInInput } from "@/drizzle/schemas/user";
+import { AuthenticationError } from "@/src/infastructure/errors/errors";
+import { generateVerificationTokenAndSendEmailUseCase } from "@/src/application/use-cases/generate-verification-token-send-email.use-case";
+import { SignInUserDTO } from "@/src/application/dtos/user.dto";
 
 export const signInWithCredentialsUseCase = {
-  async execute(data: SignInInput) {
-    // Check if user exists
+  async execute(data: SignInUserDTO) {
+    // DI
+    const hashingService = getInjection("IHashingService");
     const userRepository = getInjection("IUserRepository");
+    const authenticationService = getInjection("IAuthenticationService");
+
+    // Check if user exists
     const existingUser = await userRepository.getByEmail(data.email);
 
     if (!existingUser || !existingUser.password) {
-      throw new Error(
-        "Invalid credentials. Please check your email and password."
+      throw new AuthenticationError(
+        "Invalid credentials. Please check your email and password and try again."
       );
     }
 
     // Verify password
-    const hashingService = getInjection("IHashingService");
     const isMatchingPassword = await hashingService.compare(
       data.password,
       existingUser.password
     );
 
     if (!isMatchingPassword) {
-      throw new Error("Incorrect password. Please check and try again.");
+      throw new AuthenticationError(
+        "Incorrect password. Please ensure it's the correct password and try again."
+      );
     }
 
     // Check if email is verified
     if (!existingUser.emailVerified) {
-      await generateVerificationTokenAndSendEmailUseCase(existingUser.email);
+      return await generateVerificationTokenAndSendEmailUseCase(
+        existingUser.email
+      );
     }
+
     // Proceed with sign-in
-    const authenticationService = getInjection("IAuthenticationService");
     await authenticationService.signInWithCredentials(data);
+
+    return {
+      success: true,
+      message: "Successfully signed in. Welcome back!",
+    };
   },
 };

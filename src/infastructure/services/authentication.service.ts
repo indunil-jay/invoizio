@@ -1,5 +1,5 @@
-import { SignInInput } from "@/drizzle/schemas/user";
 import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
+import { SignInUserDTO } from "@/src/application/dtos/user.dto";
 import { IAuthenticationService } from "@/src/application/services/authentication-service.interface";
 import { signIn, signOut } from "@/src/auth";
 import { injectable } from "inversify";
@@ -35,12 +35,11 @@ export class AuthenticationService implements IAuthenticationService {
       throw error;
     }
   }
-  public async signInWithCredentials(data: SignInInput): Promise<void> {
+  public async signInWithCredentials(data: SignInUserDTO): Promise<void> {
     try {
       await signIn("credentials", {
         email: data.email,
         password: data.password,
-        // redirectTo: DEFAULT_LOGIN_REDIRECT,
         redirect: false,
       });
     } catch (error) {

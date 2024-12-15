@@ -1,11 +1,11 @@
 import { getInjection } from "@/di/container";
 import { generateVerificationTokenAndSendEmailUseCase } from "@/src/application/use-cases/generate-verification-token-send-email.use-case";
-import { createUserDTO } from "@/src/application/dtos/user.dto";
-import { ConflictError } from "@/src/domain/errors/errors";
-import { ResponseDTO } from "@/src/application/dtos/response.dto";
+import { CreateUserDTO } from "@/src/application/dtos/user.dto";
+import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
+import { AuthenticationError } from "@/src/infastructure/errors/errors";
 
 export const signUpUseCase = {
-  async execute(data: createUserDTO): Promise<ResponseDTO> {
+  async execute(data: CreateUserDTO): Promise<ClientResponseDTO> {
     //di
     const userRepository = getInjection("IUserRepository");
     const hashingService = getInjection("IHashingService");
@@ -14,7 +14,9 @@ export const signUpUseCase = {
     const userDocument = await userRepository.getByEmail(data.email);
 
     if (userDocument) {
-      throw new ConflictError("email already exists", { statusCode: 409 });
+      throw new AuthenticationError("email already exists", {
+        statusCode: 409,
+      });
     }
 
     //hash the password

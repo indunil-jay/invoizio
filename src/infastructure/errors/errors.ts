@@ -16,3 +16,17 @@ export class HashingError extends Error {
     }
   }
 }
+
+export class AuthenticationError extends Error {
+  public readonly options?: IOption;
+
+  constructor(message: string, options: IOption = { statusCode: 500 }) {
+    super(message);
+    this.name = "AuthenticationError";
+    this.options = options;
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, HashingError);
+    }
+  }
+}

@@ -27,13 +27,11 @@ export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
 export const signInWithCredentials = async (
   values: z.infer<typeof signInFormSchema>
 ) => {
-  try {
-    await signInWithCredentialsController(values);
-    console.log("success signin");
-  } catch (error) {
-    console.log(error);
-  }
-  redirect(DEFAULT_LOGIN_REDIRECT);
+  return executeAction({
+    actionFn: async () => await signInWithCredentialsController(values),
+    title: "Sign In",
+    redirectUrl: DEFAULT_LOGIN_REDIRECT,
+  });
 };
 
 export const signOut = async () => {

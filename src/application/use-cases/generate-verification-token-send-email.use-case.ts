@@ -4,11 +4,11 @@ import {
   VERIFICATION_TOKEN_EXPIRATION_MS,
 } from "@/src/constants";
 import { ActionRequiredError } from "@/src/domain/errors/errors";
-import { SuccessResponseDTO } from "../dtos/response.dto";
+import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
 
 export const generateVerificationTokenAndSendEmailUseCase = async (
   email: string
-): Promise<SuccessResponseDTO> => {
+): Promise<ClientResponseDTO> => {
   //di
   const verificationTokenRepository = getInjection(
     "IVerificationTokenRepository"
@@ -75,6 +75,7 @@ export const generateVerificationTokenAndSendEmailUseCase = async (
     }
   );
 
+  // send a email
   await emailService.sendVerificationEmail(
     newVerificationTokenDocument.email,
     newVerificationTokenDocument.token
