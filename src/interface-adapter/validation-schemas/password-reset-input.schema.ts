@@ -1,11 +1,5 @@
 import { z } from "zod";
 
-export const passwordResetInputSchema = z.object({
-  email: z.string().email(),
-});
-
-export type PasswordResetInput = z.infer<typeof passwordResetInputSchema>;
-
 export const newPasswordInputSchema = z
   .object({
     password: z

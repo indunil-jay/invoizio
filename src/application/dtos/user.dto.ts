@@ -1,16 +1,22 @@
 import { z } from "zod";
 
-export const createUserDTOschema = z.object({
+export const createUserSchema = z.object({
   email: z.string().email().min(1),
   password: z.string().min(1).min(8),
   name: z.string().min(1),
 });
 
-export type CreateUserDTO = z.infer<typeof createUserDTOschema>;
+export type CreateUserRequestDTO = z.infer<typeof createUserSchema>;
 
-export const signInUserDTOschema = z.object({
+export const signInUserSchema = z.object({
   email: z.string().email().min(1),
   password: z.string().min(1).min(8),
 });
 
-export type SignInUserDTO = z.infer<typeof signInUserDTOschema>;
+export type SignInUserRequestDTO = z.infer<typeof signInUserSchema>;
+
+export const passwordResetSchema = z.object({
+  email: z.string().email(),
+});
+
+export type PasswordResetRequestDTO = z.infer<typeof passwordResetSchema>;
