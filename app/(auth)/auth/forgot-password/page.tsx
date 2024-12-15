@@ -12,8 +12,8 @@ export default function Page() {
   return (
     <div className="flex h-screen w-full items-center justify-center px-4">
       <Card className="max-w-md w-full">
-        <BackButton src="/auth/sign-in" />
         <CardHeader>
+          <BackButton src="/auth/sign-in" />
           <CardTitle className="text-xl">Forgot Password</CardTitle>
           <CardDescription>
             Please enter your email address to receive a password reset link.

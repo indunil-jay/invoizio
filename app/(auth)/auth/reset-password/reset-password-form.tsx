@@ -16,6 +16,7 @@ import { Button } from "@/app/_components/ui/button";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { Loader2 } from "lucide-react";
 import { resetPassword } from "../actions";
+import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
 
 export const resetPasswordFormSchema = z
   .object({
@@ -42,9 +43,12 @@ export const ResetPasswordForm = ({ token }: ResetPasswordFormPorps) => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof resetPasswordFormSchema>) {
-    await resetPassword(values, token);
-  }
+  const toast = useShowToast();
+
+  const onSubmit = async (values: z.infer<typeof resetPasswordFormSchema>) => {
+    const response = await resetPassword(values, token);
+    toast(response);
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

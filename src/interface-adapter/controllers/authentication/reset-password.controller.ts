@@ -1,22 +1,29 @@
-import { resetPasswordUseCase } from "@/src/application/use-cases/reset-password.use-case";
+import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
 import {
-  NewPasswordInput,
-  newPasswordInputSchema,
-} from "@/src/interface-adapter/validation-schemas/password-reset-input.schema";
+  CreateNewPasswordRequestDTO,
+  newPasswordSchema,
+} from "@/src/application/dtos/user.dto";
+import { BadRequestError } from "@/src/application/errors/errors";
+import { resetPasswordUseCase } from "@/src/application/use-cases/reset-password.use-case";
+import { UnauthenticatedError } from "@/src/infastructure/errors/errors";
 
 export const resetPasswordController = async (
-  input: NewPasswordInput,
+  input: CreateNewPasswordRequestDTO,
   token: string | undefined
-) => {
+): Promise<ClientResponseDTO> => {
   if (!token) {
-    throw new Error("Missing Token");
+    throw new UnauthenticatedError(
+      "Authentication token is required. Please provide a valid token to proceed with resetting your password."
+    );
   }
-  const { data, error: inputParseError } =
-    newPasswordInputSchema.safeParse(input);
+
+  const { data, error: inputParseError } = newPasswordSchema.safeParse(input);
 
   if (inputParseError) {
-    throw new Error("reset password parse error");
+    throw new BadRequestError(
+      "There was an issue processing your request. Please ensure the provided data is in the correct format."
+    );
   }
 
-  await resetPasswordUseCase(data.password, token);
+  return await resetPasswordUseCase.execute(data.password, token);
 };

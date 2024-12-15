@@ -16,5 +16,5 @@ export const forgotPasswordController = async (
     throw new BadRequestError("password reset email parse error");
   }
 
-  return await forgotPasswordUseCase(data.email);
+  return await forgotPasswordUseCase.execute(data.email);
 };
