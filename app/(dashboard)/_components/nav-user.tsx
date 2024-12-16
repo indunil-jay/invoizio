@@ -23,6 +23,7 @@ import {
   useSidebar,
 } from "@/app/_components/ui/sidebar";
 import { signOut } from "@/app/(auth)/auth/actions";
+import Link from "next/link";
 
 export function NavUser({
   user,
@@ -82,13 +83,23 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+                <Link
+                  href="/dashboard/account"
+                  className=" flex items-center gap-2 [&>svg]:size-4 [&>svg]:shrink-0"
+                >
+                  <BadgeCheck />
+                  Account
+                </Link>
               </DropdownMenuItem>
 
               <DropdownMenuItem>
-                <Bell />
-                Notifications
+                <Link
+                  href="/dashboard/activities"
+                  className=" flex items-center gap-2 [&>svg]:size-4 [&>svg]:shrink-0"
+                >
+                  <Bell />
+                  Activities
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
