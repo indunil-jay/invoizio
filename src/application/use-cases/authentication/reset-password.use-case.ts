@@ -3,7 +3,7 @@ import {
   AuthenticationError,
   UnauthenticatedError,
 } from "@/src/infastructure/errors/errors";
-import { ClientResponseDTO } from "../dtos/response.dto";
+import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
 
 export const resetPasswordUseCase = {
   async execute(

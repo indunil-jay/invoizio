@@ -44,6 +44,19 @@ export class UnauthenticatedError extends Error {
   }
 }
 
+export class UnauthorizedError extends Error {
+  public readonly options?: IOption;
+  constructor(message: string, options: IOption = { statusCode: 401 }) {
+    super(message);
+    this.name = "UnauthorizedError";
+    this.options = options;
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, UnauthorizedError);
+    }
+  }
+}
+
 export class DataBaseError extends Error {
   public readonly options?: IOption;
   constructor(options: IOption = { statusCode: 401 }) {

@@ -1,10 +1,10 @@
 import { getInjection } from "@/di/container";
 import { AuthenticationError } from "@/src/infastructure/errors/errors";
-import { generateVerificationTokenAndSendEmailUseCase } from "@/src/application/use-cases/generate-verification-token-send-email.use-case";
-import { SignInUserDTO } from "@/src/application/dtos/user.dto";
+import { SignInUserRequestDTO } from "@/src/application/dtos/user.dto";
+import { generateVerificationTokenAndSendEmailUseCase } from "@/src/application/use-cases/authentication/generate-verification-token-send-email.use-case";
 
 export const signInWithCredentialsUseCase = {
-  async execute(data: SignInUserDTO) {
+  async execute(data: SignInUserRequestDTO) {
     // DI
     const hashingService = getInjection("IHashingService");
     const userRepository = getInjection("IUserRepository");

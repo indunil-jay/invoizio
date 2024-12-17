@@ -4,7 +4,7 @@ import {
   newPasswordSchema,
 } from "@/src/application/dtos/user.dto";
 import { BadRequestError } from "@/src/application/errors/errors";
-import { resetPasswordUseCase } from "@/src/application/use-cases/reset-password.use-case";
+import { resetPasswordUseCase } from "@/src/application/use-cases/authentication/reset-password.use-case";
 import { UnauthenticatedError } from "@/src/infastructure/errors/errors";
 
 export const resetPasswordController = async (

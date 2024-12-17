@@ -17,14 +17,14 @@ import { Loader2 } from "lucide-react";
 import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
 import { Input } from "@/app/_components/ui/input";
 
-export const changePasswordFormSchema = z.object({
+export const changeUserDetailsFormSchema = z.object({
   name: z.string().min(1),
   email: z.string().min(1).email(),
 });
 
 export const UpdateProfileForm = () => {
-  const form = useForm<z.infer<typeof changePasswordFormSchema>>({
-    resolver: zodResolver(changePasswordFormSchema),
+  const form = useForm<z.infer<typeof changeUserDetailsFormSchema>>({
+    resolver: zodResolver(changeUserDetailsFormSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -33,7 +33,9 @@ export const UpdateProfileForm = () => {
 
   const toast = useShowToast();
 
-  const onSubmit = async (values: z.infer<typeof changePasswordFormSchema>) => {
+  const onSubmit = async (
+    values: z.infer<typeof changeUserDetailsFormSchema>
+  ) => {
     //...
   };
   return (

@@ -16,6 +16,7 @@ import { Button } from "@/app/_components/ui/button";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { Loader2 } from "lucide-react";
 import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
+import { changePassword } from "../actions";
 
 export const changePasswordFormSchema = z.object({
   currentPassword: z
@@ -38,7 +39,9 @@ export const ChangePasswordForm = () => {
   const toast = useShowToast();
 
   const onSubmit = async (values: z.infer<typeof changePasswordFormSchema>) => {
-    //...
+    const response = await changePassword(values);
+    toast(response);
+    form.reset();
   };
   return (
     <Form {...form}>

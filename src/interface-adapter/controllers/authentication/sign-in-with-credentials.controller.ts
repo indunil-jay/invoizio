@@ -3,7 +3,7 @@ import {
   signInUserSchema,
 } from "@/src/application/dtos/user.dto";
 import { BadRequestError } from "@/src/application/errors/errors";
-import { signInWithCredentialsUseCase } from "@/src/application/use-cases/sign-in-with-credentials.use-case";
+import { signInWithCredentialsUseCase } from "@/src/application/use-cases/authentication/sign-in-with-credentials.use-case";
 
 export const signInWithCredentialsController = async (
   input: SignInUserRequestDTO

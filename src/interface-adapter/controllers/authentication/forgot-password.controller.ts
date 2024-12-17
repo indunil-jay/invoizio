@@ -4,7 +4,7 @@ import {
   passwordResetSchema,
 } from "@/src/application/dtos/user.dto";
 import { BadRequestError } from "@/src/application/errors/errors";
-import { forgotPasswordUseCase } from "@/src/application/use-cases/forgot-password.use-case";
+import { forgotPasswordUseCase } from "@/src/application/use-cases/authentication/forgot-password.use-case";
 
 export const forgotPasswordController = async (
   values: PasswordResetRequestDTO

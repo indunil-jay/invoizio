@@ -1,12 +1,21 @@
 import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
-import { SignInUserDTO } from "@/src/application/dtos/user.dto";
+import { SignInUserRequestDTO } from "@/src/application/dtos/user.dto";
 import { IAuthenticationService } from "@/src/application/services/authentication-service.interface";
-import { signIn, signOut } from "@/src/auth";
+import { auth, signIn, signOut } from "@/src/auth";
 import { injectable } from "inversify";
-import { AuthError } from "next-auth";
+import { AuthError, Session } from "next-auth";
 
 @injectable()
 export class AuthenticationService implements IAuthenticationService {
+  public async getSession(): Promise<Session | null> {
+    try {
+      return await auth();
+    } catch (error) {
+      console.log("ERROR SESSION", error);
+      throw error;
+    }
+  }
+
   public async signInWithGoogle(): Promise<ClientResponseDTO> {
     try {
       const url = await signIn("google", { redirect: false });
@@ -16,6 +25,15 @@ export class AuthenticationService implements IAuthenticationService {
         redirectUrl: url,
       };
     } catch (error) {
+      console.error("Error getting session:", error);
+      if (error instanceof AuthError) {
+        switch (error.type) {
+          case "SessionTokenError":
+            throw new Error("Something went wrong!");
+          default:
+            throw new Error("Something went wrong!");
+        }
+      }
       throw error;
     }
   }
@@ -35,7 +53,9 @@ export class AuthenticationService implements IAuthenticationService {
       throw error;
     }
   }
-  public async signInWithCredentials(data: SignInUserDTO): Promise<void> {
+  public async signInWithCredentials(
+    data: SignInUserRequestDTO
+  ): Promise<void> {
     try {
       await signIn("credentials", {
         email: data.email,
