@@ -10,6 +10,7 @@ export const updateUserProfileUseCase = {
     // DI
     const authenticationService = getInjection("IAuthenticationService");
     const userRepository = getInjection("IUserRepository");
+    const accountRepository = getInjection("IAccountRepository");
 
     // Verify if the session is valid
     const session = await authenticationService.getSession();
@@ -32,7 +33,7 @@ export const updateUserProfileUseCase = {
     if (data.email) {
       const existingEmailDocument = await userRepository.getByEmail(data.email);
 
-      if (existingEmailDocument?.email === existingUserDocument.email) {
+      if (data.email === existingUserDocument.email) {
         throw new ConflictError(
           "this email is current address,please use different one."
         );
@@ -42,6 +43,16 @@ export const updateUserProfileUseCase = {
         throw new ConflictError(
           "The requested email already exists. Please delete that account or provide a different email."
         );
+      }
+
+      //check if email is provider
+
+      const providerEmailDocument = await accountRepository.getById(
+        existingUserDocument.id
+      );
+
+      if (providerEmailDocument) {
+        await accountRepository.deleteById(existingUserDocument.id);
       }
 
       await userRepository.update(existingUserDocument.id, {

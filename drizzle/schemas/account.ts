@@ -35,4 +35,4 @@ export const defineAccountsRelations = relations(accounts, ({ one }) => ({
   }),
 }));
 
-export type AccountsCollection = InferSelectModel<typeof accounts>;
+export type AccountsCollectionDocument = InferSelectModel<typeof accounts>;

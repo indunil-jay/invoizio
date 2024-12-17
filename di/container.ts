@@ -8,6 +8,7 @@ import { VerificationTokenModule } from "@/di/modules/verification-token.module"
 import { TokenGeneratorModule } from "@/di/modules/token-generator.module";
 import { EmailModule } from "@/di/modules/email.module";
 import { PasswordResetTokenModule } from "@/di/modules/password-reset-token.module";
+import { AccountModule } from "@/di/modules/account.module";
 
 const ApplicationContainer = new Container({
   defaultScope: "Singleton",
@@ -21,6 +22,7 @@ export const initializeContainer = () => {
   ApplicationContainer.load(TokenGeneratorModule);
   ApplicationContainer.load(EmailModule);
   ApplicationContainer.load(PasswordResetTokenModule);
+  ApplicationContainer.load(AccountModule);
 };
 
 export const destroyContainer = () => {
@@ -31,6 +33,7 @@ export const destroyContainer = () => {
   ApplicationContainer.unload(TokenGeneratorModule);
   ApplicationContainer.unload(EmailModule);
   ApplicationContainer.unload(PasswordResetTokenModule);
+  ApplicationContainer.unload(AccountModule);
 };
 
 if (process.env.NODE_ENV !== "test") {

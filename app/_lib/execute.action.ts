@@ -6,6 +6,7 @@ export type Response = {
   description: string;
   success: boolean;
   redirectUrl?: string;
+  pageRefresh?: boolean;
 };
 
 type Options = {

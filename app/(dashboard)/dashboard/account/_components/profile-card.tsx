@@ -12,8 +12,14 @@ import {
 import { Separator } from "@/app/_components/ui/separator";
 import { ChangePasswordForm } from "./change-password-form";
 import { UpdateProfileForm } from "./update-profile-form";
+import { fallbackUsername } from "@/app/_lib/fallback-username";
+import { type User } from "@/app/(dashboard)/dashboard/account/types";
 
-export const ProfileCard = () => {
+interface ProfileCardProps {
+  user: User;
+}
+
+export const ProfileCard = ({ user }: ProfileCardProps) => {
   return (
     <Card className="w-full">
       <CardHeader className="p-0 rounded-br-none rounded-bl-none rounded-tr-md rounded-tl-md overflow-clip">
@@ -24,16 +30,16 @@ export const ProfileCard = () => {
           <Avatar className="h-24 w-24 border-white/80 border-2">
             <AvatarImage
               className="h-24 w-24"
-              src="https://github.com/shadcn.png"
-              alt="@shadcn"
+              src={user.image ?? ""}
+              alt="@user-profile-img"
             />
-            <AvatarFallback className="h-24 w-24">CN</AvatarFallback>
+            <AvatarFallback className="h-24 w-24">
+              {fallbackUsername(user.name)}
+            </AvatarFallback>
           </Avatar>
           <div className="self-end">
-            <p className="text-2xl font-semibold">Your Name</p>
-            <p className="text-sm text-muted-foreground">
-              #youremail@gmail.com
-            </p>
+            <p className="text-2xl font-semibold">{user.name}</p>
+            <p className="text-sm text-muted-foreground">{user.email}</p>
           </div>
         </div>
         <div className="my-4">
@@ -41,7 +47,7 @@ export const ProfileCard = () => {
         </div>
         <div className="space-y-6">
           <CardDescription>Change Your Details</CardDescription>
-          <UpdateProfileForm />
+          <UpdateProfileForm user={user} />
         </div>
         <div className="my-4">
           <Separator />
