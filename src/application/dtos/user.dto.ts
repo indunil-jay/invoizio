@@ -35,18 +35,23 @@ export const newPasswordSchema = z
 export type CreateNewPasswordRequestDTO = z.infer<typeof newPasswordSchema>;
 
 export const updatePasswordSchema = z.object({
-  currentPassword: z
-    .string()
-    .min(1)
-    .min(8, {
-      message: "current password doest not contain at least 8 characters.",
-    }),
-  newPassword: z
-    .string()
-    .min(1)
-    .min(8, {
-      message: "new password doest not contain at least 8 characters.",
-    }),
+  currentPassword: z.string().min(1).min(8, {
+    message: "current password doest not contain at least 8 characters.",
+  }),
+  newPassword: z.string().min(1).min(8, {
+    message: "new password doest not contain at least 8 characters.",
+  }),
 });
 
 export type UpdatePasswordRequestDTO = z.infer<typeof updatePasswordSchema>;
+
+export const updateUserProfileSchema = z
+  .object({
+    email: z.string().email().min(1),
+    name: z.string().min(1),
+  })
+  .partial();
+
+export type UpdateUserProfileRequestDTO = z.infer<
+  typeof updateUserProfileSchema
+>;

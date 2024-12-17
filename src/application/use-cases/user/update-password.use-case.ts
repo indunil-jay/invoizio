@@ -18,8 +18,6 @@ export const updatePasswordUseCase = {
       );
     }
 
-    console.log({ session: session.user });
-
     // Check if the user exists in the system
     const existingUserDocument = await userRepository.getById(session.user.id);
     if (!existingUserDocument) {
@@ -33,7 +31,6 @@ export const updatePasswordUseCase = {
       data.currentPassword,
       existingUserDocument.password!
     );
-    console.log({ isCurrentPasswordCorrect });
 
     if (!isCurrentPasswordCorrect) {
       throw new ConflictError(
@@ -49,7 +46,6 @@ export const updatePasswordUseCase = {
       password: hashedNewPassword,
     });
 
-    console.log("Password updated successfully");
     return {
       success: true,
       message: "Your password has been updated successfully.",
