@@ -23,6 +23,8 @@ import { SidebarLogo } from "./nav-logo";
 import { TeamSwitcher } from "./nav-team-switcher";
 import { NavMain } from "./nav-main";
 import { User } from "../dashboard/account/types";
+import { Business } from "../dashboard/business/type";
+import { Dialog } from "@radix-ui/react-dialog";
 
 const data = {
   user: {
@@ -136,17 +138,23 @@ const data = {
   ],
 };
 
+interface AppSidebarProps {
+  user: User;
+  businesses: Business[];
+}
+
 export function AppSidebar({
   user,
+  businesses,
   ...props
-}: React.ComponentProps<typeof Sidebar> & { user: User }) {
+}: React.ComponentProps<typeof Sidebar> & AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarLogo />
       </SidebarHeader>
       <SidebarContent>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher businesses={businesses} />
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>

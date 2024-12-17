@@ -17,6 +17,8 @@ import { auth } from "@/src/auth";
 import { redirect } from "next/navigation";
 import { getUserById } from "./dashboard/account/queries";
 import { DynamicBreadCumb } from "../_components/custom/dynamic-breadcumb";
+import { getAllBusiness } from "./dashboard/business/queries";
+import { Dialog } from "../_components/ui/dialog";
 
 export default async function DashboardLayout({
   children,
@@ -29,9 +31,15 @@ export default async function DashboardLayout({
   const user = await getUserById(session.user.id);
   if (!user) return null;
 
+  const businesses = await getAllBusiness();
+
+  if (!businesses || businesses.length === 0) {
+    redirect("/dashboard/business/create");
+  }
+
   return (
     <SidebarProvider>
-      <AppSidebar user={user} />
+      <AppSidebar user={user} businesses={businesses} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">

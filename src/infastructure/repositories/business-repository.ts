@@ -7,9 +7,22 @@ import {
 import { IBusinessRepository } from "@/src/application/repositories/business-repository.interface";
 import { injectable } from "inversify";
 import { DataBaseError } from "../errors/errors";
+import { eq } from "drizzle-orm";
 
 @injectable()
 export class BusinessRepository implements IBusinessRepository {
+  public async getAllByUserId(
+    userId: string
+  ): Promise<BusinessCollectionDocument[] | []> {
+    try {
+      return await db.query.businesses.findMany({
+        where: eq(businesses.userId, userId),
+      });
+    } catch (error) {
+      console.error(`DATABASE_ERROR::BusinessRepository::getAllById: ${error}`);
+      throw new DataBaseError();
+    }
+  }
   getById(id: string): Promise<BusinessCollectionDocument | undefined> {
     throw new Error("Method not implemented.");
   }
