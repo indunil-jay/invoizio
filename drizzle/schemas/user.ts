@@ -3,6 +3,7 @@ import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { accounts, authenticators } from "@/drizzle/schemas";
+import { businesses } from "./business";
 
 export const users = pgTable("user", {
   id: text("id")
@@ -21,10 +22,12 @@ export const users = pgTable("user", {
 });
 
 //define relation here
-export const defineUsersRelations = relations(users, ({ one }) => ({
+export const defineUsersRelations = relations(users, ({ one, many }) => ({
   //one user has one account
   accounts: one(accounts),
   authenticators: one(authenticators),
+  //one user has many business
+  businesses: many(businesses),
 }));
 
 //schema validation

@@ -6,3 +6,7 @@ export {
 } from "@/drizzle/schemas/authenticator";
 export { verificationTokens } from "@/drizzle/schemas/verification-token";
 export { passwordResetTokens } from "@/drizzle/schemas/password-reset-token";
+export {
+  businesses,
+  defineBusinessRelations,
+} from "@/drizzle/schemas/business";
