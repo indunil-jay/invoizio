@@ -10,16 +10,17 @@ import {
   FormMessage,
 } from "@/app/_components/ui/form";
 import { Input } from "@/app/_components/ui/input";
-import { cn } from "@/app/_lib/tailwind-css/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageIcon } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { createNewBusiness } from "../create/actions";
+import { toast } from "@/app/_hooks/use-toast";
+import { useRouter } from "next/navigation";
 
-const createBusinessFormSchema = z.object({
+export const createBusinessFormSchema = z.object({
   name: z
     .string()
     .trim()
@@ -44,6 +45,7 @@ export const CreateBusinessForm = () => {
   });
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -53,13 +55,16 @@ export const CreateBusinessForm = () => {
     }
   };
 
-  const onSubmit = (values: z.infer<typeof createBusinessFormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof createBusinessFormSchema>) => {
     const formData = {
       ...values,
       image: values.image instanceof File ? values.image : undefined,
     };
-
-    console.log(formData);
+    const response = await createNewBusiness(formData);
+    toast(response);
+    if (response.success === true) {
+      router.push(`/dashboard/business/${response.id}`);
+    }
   };
 
   return (

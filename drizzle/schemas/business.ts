@@ -30,6 +30,10 @@ export const defineBusinessRelations = relations(businesses, ({ one }) => ({
 const businessSchema = createInsertSchema(businesses, {
   name: (schema) => schema.min(1),
   userId: (schema) => schema.min(1),
+}).pick({
+  name: true,
+  userId: true,
+  image: true,
 });
 
 export type InsertBusinessSchema = z.infer<typeof businessSchema>;

@@ -7,11 +7,17 @@ export type Response = {
   success: boolean;
   redirectUrl?: string;
   pageRefresh?: boolean;
+  id?: string;
 };
 
 type Options = {
   actionFn: {
-    (): Promise<{ success: boolean; message: string; redirectUrl?: string }>;
+    (): Promise<{
+      success: boolean;
+      message: string;
+      redirectUrl?: string;
+      id?: string;
+    }>;
   };
   title?: string;
   redirectUrl?: string;
@@ -29,6 +35,7 @@ export async function executeAction({
       description: response.message,
       success: true,
       redirectUrl: response.redirectUrl || redirectUrl,
+      id: response.id ? response.id : undefined,
     };
   } catch (error) {
     if (isRedirectError(error)) {

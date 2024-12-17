@@ -1,4 +1,5 @@
 import { IAccountRepository } from "@/src/application/repositories/account-repository.interface";
+import { IBusinessRepository } from "@/src/application/repositories/business-repository.interface";
 import { IPasswordResetTokenRepository } from "@/src/application/repositories/password-reset-token-repository.interface";
 import { IUserRepository } from "@/src/application/repositories/user-repository.interface";
 import { IVerificationTokenRepository } from "@/src/application/repositories/verification-token-repository.interface";
@@ -18,6 +19,7 @@ export const DI_SYMBOLS = {
   IVerificationTokenRepository: Symbol.for("IVerificationTokenRepository"),
   IPasswordResetTokenRepository: Symbol.for("IPasswordResetTokenRepository"),
   IAccountRepository: Symbol.for("IAccountRepository"),
+  IBusinessRepository: Symbol.for("IBusinessRepository"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -26,9 +28,11 @@ export interface DI_RETURN_TYPES {
   IAuthenticationService: IAuthenticationService;
   ITokenGeneratorService: ITokenGeneratorService;
   IEmailService: IEmailService;
+
   // Repositories
   IUserRepository: IUserRepository;
   IVerificationTokenRepository: IVerificationTokenRepository;
   IPasswordResetTokenRepository: IPasswordResetTokenRepository;
   IAccountRepository: IAccountRepository;
+  IBusinessRepository: IBusinessRepository;
 }
