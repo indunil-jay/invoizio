@@ -13,11 +13,13 @@ export const ConfirmationModal = ({
   onConfirm,
   onCancel,
   message,
+  isPending,
 }: {
   isOpen: boolean;
   onConfirm: () => void;
   onCancel: () => void;
   message: string;
+  isPending?: boolean;
 }) => {
   if (!isOpen) return null;
 
@@ -30,8 +32,14 @@ export const ConfirmationModal = ({
         </DialogHeader>
         <DialogFooter>
           <div className="flex gap-4 justify-end mt-4">
-            <Button onClick={onCancel}>Cancel</Button>
-            <Button variant={"destructive"} onClick={onConfirm}>
+            <Button disabled={isPending} onClick={onCancel}>
+              Cancel
+            </Button>
+            <Button
+              disabled={isPending}
+              variant={"destructive"}
+              onClick={onConfirm}
+            >
               Confirm
             </Button>
           </div>

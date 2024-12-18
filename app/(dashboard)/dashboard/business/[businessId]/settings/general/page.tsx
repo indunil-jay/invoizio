@@ -20,7 +20,6 @@ export default async function Page({
 
   if (!business) return redirect("/dashboard");
 
-  console.log({ business });
   return (
     <div className="mx-auto max-w-lg py-20 w-full">
       <Card>
@@ -48,7 +47,7 @@ export default async function Page({
         </CardHeader>
 
         <CardContent>
-          <DeleteBusiness />
+          <DeleteBusiness businessId={business.id} />
         </CardContent>
       </Card>
     </div>

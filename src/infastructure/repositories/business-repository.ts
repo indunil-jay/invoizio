@@ -11,6 +11,15 @@ import { desc, eq } from "drizzle-orm";
 
 @injectable()
 export class BusinessRepository implements IBusinessRepository {
+  public async deleteById(id: string): Promise<void> {
+    try {
+      await db.delete(businesses).where(eq(businesses.id, id));
+    } catch (error) {
+      console.error(`DATABASE_ERROR::BusinessRepository::deleteById: ${error}`);
+      throw new DataBaseError();
+    }
+  }
+
   public async getAllByUserId(
     userId: string
   ): Promise<BusinessCollectionDocument[] | []> {
