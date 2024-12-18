@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { getAllBusiness } from "./business/queries";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const getAllBusinessArr = await getAllBusiness();
 

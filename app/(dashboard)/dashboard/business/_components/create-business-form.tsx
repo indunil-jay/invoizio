@@ -37,8 +37,8 @@ export const createBusinessFormSchema = z.object({
 });
 
 interface CreateBusinessFormProps {
-  handleBusinessCreate: (business: Business) => void;
-  onCloseModal: (value: boolean) => void;
+  handleBusinessCreate?: (business: Business) => void;
+  onCloseModal?: (value: boolean) => void;
 }
 
 export const CreateBusinessForm = ({
@@ -173,7 +173,7 @@ export const CreateBusinessForm = ({
 
         <div className="flex items-center justify-between mt-7">
           <Button
-            onClick={() => onCloseModal(!true)}
+            onClick={() => onCloseModal?.(!true)}
             type="button"
             size={"lg"}
             variant={"secondary"}
