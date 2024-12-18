@@ -19,6 +19,7 @@ import { z } from "zod";
 import { createNewBusiness } from "../create/actions";
 import { toast } from "@/app/_hooks/use-toast";
 import { useRouter } from "next/navigation";
+import { Business } from "../type";
 
 export const createBusinessFormSchema = z.object({
   name: z
@@ -35,7 +36,15 @@ export const createBusinessFormSchema = z.object({
   ]),
 });
 
-export const CreateBusinessForm = () => {
+interface CreateBusinessFormProps {
+  handleBusinessCreate: (business: Business) => void;
+  onCloseModal: (value: boolean) => void;
+}
+
+export const CreateBusinessForm = ({
+  handleBusinessCreate,
+  onCloseModal,
+}: CreateBusinessFormProps) => {
   const form = useForm<z.infer<typeof createBusinessFormSchema>>({
     resolver: zodResolver(createBusinessFormSchema),
     defaultValues: {
@@ -62,8 +71,14 @@ export const CreateBusinessForm = () => {
     };
     const response = await createNewBusiness(formData);
     toast(response);
-    if (response.success === true) {
-      router.push(`/dashboard/business/${response.id}`);
+
+    if (response.success === true && response.newBusinessDocument) {
+      router.push(`/dashboard/business/${response.newBusinessDocument.id}`);
+      if (typeof handleBusinessCreate === "function") {
+        handleBusinessCreate(response.newBusinessDocument);
+      } else {
+        console.error("onCreate is not a function");
+      }
     }
   };
 
@@ -157,7 +172,12 @@ export const CreateBusinessForm = () => {
         </div>
 
         <div className="flex items-center justify-between mt-7">
-          <Button type="button" size={"lg"} variant={"secondary"}>
+          <Button
+            onClick={() => onCloseModal(!true)}
+            type="button"
+            size={"lg"}
+            variant={"secondary"}
+          >
             Cancel
           </Button>
           <Button type="submit" size={"lg"}>

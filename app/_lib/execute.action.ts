@@ -1,51 +1,47 @@
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { getErrorMessage } from "./get-error";
 
-export type Response = {
-  title?: string;
-  description: string;
+type Response = {
+  title: string;
   success: boolean;
-  redirectUrl?: string;
-  pageRefresh?: boolean;
-  id?: string;
-};
-
-type Options = {
-  actionFn: {
-    (): Promise<{
-      success: boolean;
-      message: string;
-      redirectUrl?: string;
-      id?: string;
-    }>;
-  };
-  title?: string;
+  message: string;
   redirectUrl?: string;
 };
 
-export async function executeAction({
+export type DefaultResponse = {
+  success: boolean;
+  message: string;
+  redirectUrl?: string;
+};
+
+type Options<T> = {
+  actionFn: () => Promise<T>;
+  title: string;
+  redirectUrl?: string;
+};
+
+export async function executeAction<T extends DefaultResponse>({
   actionFn,
   title,
   redirectUrl,
-}: Options): Promise<Response> {
+}: Options<T>): Promise<Response & Partial<T>> {
   try {
     const response = await actionFn();
     return {
-      title: title ? title : undefined,
+      title,
       description: response.message,
-      success: true,
       redirectUrl: response.redirectUrl || redirectUrl,
-      id: response.id ? response.id : undefined,
+      ...response,
     };
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;
     }
+
     return {
       success: false,
-      title: title ? title : undefined,
-      description: getErrorMessage(error),
+      message: getErrorMessage(error),
       redirectUrl,
-    };
+    } as Response & Partial<T>;
   }
 }

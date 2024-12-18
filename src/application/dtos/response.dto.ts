@@ -7,11 +7,3 @@ export const responseDTOschema = z.object({
 });
 
 export type ClientResponseDTO = z.infer<typeof responseDTOschema>;
-
-export const createBusinessSchemaResponse = responseDTOschema.merge(
-  z.object({
-    id: z.string(),
-  })
-);
-
-export type BusinessResponseDTO  = z.infer<typeof createBusinessSchemaResponse>

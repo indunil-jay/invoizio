@@ -28,7 +28,7 @@ export const createNewBusinessUseCase = {
     }
 
     //upload serice //TODO:
-    let imgUrl = "";
+    const imgUrl = "";
 
     //create
     const newBusinessDocument = await businessRepository.create({
@@ -40,7 +40,7 @@ export const createNewBusinessUseCase = {
     return {
       success: true,
       message: "The business profile has been created successfully.",
-      id: newBusinessDocument.id,
+      newBusinessDocument,
     };
   },
 };
