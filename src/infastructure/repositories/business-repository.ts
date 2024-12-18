@@ -20,13 +20,23 @@ export class BusinessRepository implements IBusinessRepository {
         orderBy: desc(businesses.createdAt),
       });
     } catch (error) {
-      console.error(`DATABASE_ERROR::BusinessRepository::getAllById: ${error}`);
+      console.error(
+        `DATABASE_ERROR::BusinessRepository::getAllByUserId: ${error}`
+      );
       throw new DataBaseError();
     }
   }
-  getById(id: string): Promise<BusinessCollectionDocument | undefined> {
-    console.log(id);
-    throw new Error("Method not implemented.");
+  public async getById(
+    id: string
+  ): Promise<BusinessCollectionDocument | undefined> {
+    try {
+      return await db.query.businesses.findFirst({
+        where: eq(businesses.id, id),
+      });
+    } catch (error) {
+      console.error(`DATABASE_ERROR::BusinessRepository::getById: ${error}`);
+      throw new DataBaseError();
+    }
   }
   public async create(
     data: InsertBusinessSchema

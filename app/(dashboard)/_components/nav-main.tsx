@@ -1,6 +1,7 @@
 "use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import { Settings2 } from "lucide-react";
 
 import {
   Collapsible,
@@ -17,26 +18,35 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/app/_components/ui/sidebar";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: LucideIcon;
-    isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
-  }[];
-}) {
+const data = [
+  {
+    title: "Settings",
+    url: "#",
+    icon: Settings2,
+    isActive: true,
+    items: [
+      {
+        title: "General",
+        url: "/dashboard/business/[businessId]/settings/general",
+      },
+    ],
+  },
+];
+
+export function NavMain() {
+  const params = useParams();
+  const businessId = Array.isArray(params.businessId)
+    ? params.businessId[0]
+    : params.businessId;
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {data.map((item) => (
           <Collapsible
             key={item.title}
             asChild
@@ -56,9 +66,11 @@ export function NavMain({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
+                        <Link
+                          href={subItem.url.replace("[businessId]", businessId)}
+                        >
                           <span>{subItem.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}
