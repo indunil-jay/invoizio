@@ -16,3 +16,7 @@ export const createBusinessSchema = z.object({
 });
 
 export type CreateBusinessRequestDTO = z.infer<typeof createBusinessSchema>;
+
+export const updateBusinessSchema = createBusinessSchema.partial();
+
+export type UpdateBusinessRequestDTO = z.infer<typeof updateBusinessSchema>;

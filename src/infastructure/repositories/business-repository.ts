@@ -3,6 +3,7 @@ import {
   BusinessCollectionDocument,
   businesses,
   InsertBusinessSchema,
+  UpdateBusinessSchema,
 } from "@/drizzle/schemas/business";
 import { IBusinessRepository } from "@/src/application/repositories/business-repository.interface";
 import { injectable } from "inversify";
@@ -11,6 +12,28 @@ import { desc, eq } from "drizzle-orm";
 
 @injectable()
 export class BusinessRepository implements IBusinessRepository {
+  public async update(
+    id: string,
+    data: UpdateBusinessSchema
+  ): Promise<BusinessCollectionDocument> {
+    try {
+      const [updatedBusiness] = await db
+        .update(businesses)
+        .set({
+          image: data.image,
+          name: data.name,
+        })
+        .where(eq(businesses.id, id));
+      if (updatedBusiness) {
+        throw new Error("Business updated failed, no data returned.");
+      }
+      return updatedBusiness;
+    } catch (error) {
+      console.error(`DATABASE_ERROR::BusinessRepository::update: ${error}`);
+      throw new DataBaseError();
+    }
+  }
+
   public async deleteById(id: string): Promise<void> {
     try {
       await db.delete(businesses).where(eq(businesses.id, id));

@@ -16,33 +16,35 @@ import Image from "next/image";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { createNewBusiness } from "../create/actions";
 import { toast } from "@/app/_hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Business } from "../type";
+import { updateBusinessById } from "../[businessId]/settings/actions";
 
-export const createBusinessFormSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Required")
-    .min(3, "Must be 3 or more characters"),
-  image: z.union([
-    z.instanceof(File),
-    z
+export const updateBusinessFormSchema = z
+  .object({
+    name: z
       .string()
-      .transform((value) => (value === "" ? undefined : value))
-      .optional(),
-  ]),
-});
+      .trim()
+      .min(1, "Required")
+      .min(3, "Must be 3 or more characters"),
+    image: z.union([
+      z.instanceof(File),
+      z
+        .string()
+        .transform((value) => (value === "" ? undefined : value))
+        .optional(),
+    ]),
+  })
+  .partial();
 
 interface UpdateBusinessFormProps {
   business: Business;
 }
 
 export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
-  const form = useForm<z.infer<typeof createBusinessFormSchema>>({
-    resolver: zodResolver(createBusinessFormSchema),
+  const form = useForm<z.infer<typeof updateBusinessFormSchema>>({
+    resolver: zodResolver(updateBusinessFormSchema),
     defaultValues: {
       name: business.name,
       image: business.image ? business.image : undefined,
@@ -60,16 +62,16 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
     }
   };
 
-  const onSubmit = async (values: z.infer<typeof createBusinessFormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof updateBusinessFormSchema>) => {
     const formData = {
       ...values,
       image: values.image instanceof File ? values.image : undefined,
     };
-    const response = await createNewBusiness(formData);
+    const response = await updateBusinessById(business.id, formData);
     toast(response);
 
-    if (response.success === true && response.newBusinessDocument) {
-      router.push(`/dashboard/business/${response.newBusinessDocument.id}`);
+    if (response.success === true && response.updatedBusinessDocument) {
+      router.push(`/dashboard/business/${response.updatedBusinessDocument.id}`);
     }
   };
 
@@ -169,10 +171,10 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
           <Button type="submit" size={"lg"}>
             {form.formState.isSubmitting ? (
               <span className="flex gap-2 items-center">
-                <span>Creating Business </span>
+                <span>Updating Business </span>
               </span>
             ) : (
-              "Create Business"
+              "Update Business"
             )}
           </Button>
         </div>

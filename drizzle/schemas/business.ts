@@ -27,7 +27,7 @@ export const defineBusinessRelations = relations(businesses, ({ one }) => ({
   }),
 }));
 
-const businessSchema = createInsertSchema(businesses, {
+export const businessSchema = createInsertSchema(businesses, {
   name: (schema) => schema.min(1),
   userId: (schema) => schema.min(1),
 }).pick({
@@ -37,5 +37,6 @@ const businessSchema = createInsertSchema(businesses, {
 });
 
 export type InsertBusinessSchema = z.infer<typeof businessSchema>;
+export type UpdateBusinessSchema = Partial<z.infer<typeof businessSchema>>;
 
 export type BusinessCollectionDocument = InferSelectModel<typeof businesses>;
