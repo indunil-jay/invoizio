@@ -9,7 +9,7 @@ import {
 import { Plus } from "lucide-react";
 import { InvoiceTable } from "./invoice-table";
 
-export const CreateNewInvoice = () => {
+export const Invoices = () => {
   return (
     <Card>
       <CardHeader className="p-6">

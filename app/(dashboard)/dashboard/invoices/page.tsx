@@ -1,9 +1,9 @@
-import { CreateNewInvoice } from "./_components/create-new-invoice";
+import { Invoices } from "./_components/invoices";
 
 export default function Page() {
   return (
     <div>
-      <CreateNewInvoice />
+      <Invoices />
     </div>
   );
 }
