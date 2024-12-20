@@ -1,4 +1,11 @@
 "use client";
+import { format } from "date-fns";
+import { z } from "zod";
+import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { CalendarIcon } from "lucide-react";
+
 import { Button } from "@/app/_components/ui/button";
 import { Calendar } from "@/app/_components/ui/calendar";
 import {
@@ -16,203 +23,152 @@ import {
 } from "@/app/_components/ui/popover";
 import { Separator } from "@/app/_components/ui/separator";
 import { Textarea } from "@/app/_components/ui/textarea";
+import { Label } from "@/app/_components/ui/label";
 import { cn } from "@/app/_lib/tailwind-css/utils";
-import { CalendarIcon, Plus } from "lucide-react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { format } from "date-fns";
-import { z } from "zod";
+
+import { type User } from "@/app/(dashboard)/dashboard/account/types";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/app/_components/ui/table";
+  createProductFormSchema,
+  Product,
+} from "@/app/(dashboard)/dashboard/invoices/_components/add-product-form";
+import { ProductsList } from "@/app/(dashboard)/dashboard/invoices/_components/product-list";
+
+const addressSchema = z.object({
+  addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
+  addressLine2: z.string().optional(),
+  city: z.string().min(1, { message: "City is required." }),
+  postalCode: z.coerce
+    .number()
+    .optional()
+    .refine((val) => (val ? /^\d{5,6}$/.test(val.toString()) : true), {
+      message: "Postal code must be a valid 5-6 digit number.",
+    }),
+});
 
 export const createInvoiceSchema = z.object({
   user: z.object({
     id: z.string(),
-    email: z.string().email(),
+    email: z.string().email({ message: "Please enter a valid email address." }),
   }),
   business: z.object({
     id: z.string(),
     name: z.string(),
-    address: z.object({
-      addressLine1: z.string(),
-      addressLine2: z.string().optional(),
-      city: z.string(),
-      postalCode: z.coerce.number(),
-    }),
+    address: addressSchema,
+  }),
+  client: z.object({
+    name: z.string().min(1, { message: "Client name is required." }),
+    email: z
+      .string()
+      .email({ message: "Please enter a valid client email address." }),
+    address: addressSchema,
   }),
   invoice: z.object({
-    issueDate: z.coerce.date(),
-    dueDate: z.coerce.date(),
-    description: z.string().min(1),
+    issueDate: z.date({ message: "Issue date is required." }),
+    dueDate: z.date({ message: "Due date is required." }),
+    description: z.string().min(1, { message: "Description is required." }),
   }),
+  products: z
+    .array(createProductFormSchema)
+    .min(1, { message: "At least one product is required." }),
 });
 
-export const CreateInvoiceForm = () => {
-  const form = useForm();
+interface CreateInvoiceFormProps {
+  user: User;
+}
 
+export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  const form = useForm<z.infer<typeof createInvoiceSchema>>({
+    resolver: zodResolver(createInvoiceSchema),
+    defaultValues: {
+      user: {
+        id: user.id,
+        email: user.email,
+      },
+      business: {
+        address: {
+          addressLine1: "test-address-1",
+          addressLine2: "test-address-2",
+          city: "test-city",
+          postalCode: 2019,
+        },
+        id: "278yio2",
+        name: "wood nr",
+      },
+      invoice: {
+        description: "",
+        issueDate: new Date(),
+        dueDate: undefined,
+      },
+      client: {
+        name: "",
+        email: "",
+        address: {
+          addressLine1: "",
+          addressLine2: undefined,
+          city: "",
+          postalCode: undefined,
+        },
+      },
+      products: products,
+    },
+  });
+
+  const handleAddProduct = (product: Product) => {
+    setProducts((prevProducts) => [...prevProducts, { ...product }]);
+  };
+
+  const onSubmit = (data: z.infer<typeof createInvoiceSchema>) => {
+    const invoiceData = {
+      ...data,
+      products,
+    };
+    console.log("Invoice Data: ", invoiceData);
+  };
   return (
     <FormProvider {...form}>
-      <form
-        onSubmit={form.handleSubmit((data) => console.log(data))}
-        className="space-y-8"
-      >
-        <div className="grid grid-cols-2 gap-6">
-          <BillFromForm />
-          <BillToForm />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <BillFromFormSection />
+          <BillToFormSection />
         </div>
         <Separator />
-        <BillDetailsForm />
+        <BillDetailsFormSection />
+
         <Separator />
-        <ProductsList />
+        <ProductsList products={products} onAddProduct={handleAddProduct} />
         <Separator />
         <div className="flex justify-end items-center gap-5">
           <Button size={"lg"} variant={"destructive"}>
             Cancle
           </Button>
-          <Button size={"lg"}>Create an Invoice</Button>
+          <Button type="submit" size={"lg"}>
+            Create an Invoice
+          </Button>
         </div>
       </form>
     </FormProvider>
   );
 };
 
-interface Product {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-  taxRate: number; // Percentage (e.g., 2 for 2%)
-}
-
-const products: Product[] = [
-  { id: 1, name: "Car Light", quantity: 1, price: 400, taxRate: 2 },
-  { id: 2, name: "Some Product", quantity: 2, price: 400, taxRate: 1.15 },
-];
-
-export const ProductTable = () => {
-  const calculateTax = (price: number, quantity: number, taxRate: number) =>
-    ((price * taxRate) / 100) * quantity;
-
-  const calculateTotal = (price: number, quantity: number, tax: number) =>
-    price * quantity + tax;
-
-  return (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead scope="col">ID</TableHead>
-            <TableHead scope="col">Product Name</TableHead>
-            <TableHead scope="col">Qty</TableHead>
-            <TableHead scope="col">Price</TableHead>
-            <TableHead scope="col">Tax %</TableHead>
-            <TableHead className="text-right" scope="col">
-              Total
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {products.map((product) => {
-            const tax = calculateTax(
-              product.price,
-              product.quantity,
-              product.taxRate
-            );
-            const total = calculateTotal(product.price, product.quantity, tax);
-
-            return (
-              <TableRow key={product.id}>
-                <TableCell>{`#${product.id}`}</TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>{product.quantity}</TableCell>
-                <TableCell>{`$${product.price.toFixed(2)}`}</TableCell>
-                <TableCell>{`$${product.taxRate.toFixed(2)}`}</TableCell>
-                <TableCell className="text-right">
-                  <div className="flex flex-col items-end">
-                    <p className="text-xs text-muted-foreground">{`Base: $${(
-                      product.price * product.quantity
-                    ).toFixed(2)}`}</p>
-                    <p className="text-xs text-muted-foreground">{`+ Tax: $${tax.toFixed(
-                      2
-                    )}`}</p>
-                    <Separator className="my-1 w-1/2" />
-                    <p className="text-sm font-medium">{`$${total.toFixed(
-                      2
-                    )}`}</p>
-                  </div>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={5}>Total</TableCell>
-            <TableCell className="text-right">
-              <div className="flex flex-col items-end">
-                <p className="text-xs text-muted-foreground">{`Base: $${(4000).toFixed(
-                  2
-                )}`}</p>
-                <p className="text-xs text-muted-foreground">{`+ Tax: $${(120.7823).toFixed(
-                  2
-                )}`}</p>
-                <Separator className="my-1 w-1/2" />
-                <p className="text-sm font-medium">{`$${4100.242}`}</p>
-              </div>
-            </TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </div>
-  );
-};
-
-export const ProductsList = () => {
-  return (
-    <>
-      <div className="flex items-start justify-between">
-        <p className="text-xs text-muted-foreground ">
-          Add product details individually by clicking the button
-        </p>
-        <Button size={"sm"}>
-          <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
-            <Plus className="size-4 text-primary-foreground " />
-          </div>
-
-          <div className="font-medium text-primary-foreground ">
-            Add Product
-          </div>
-        </Button>
-      </div>
-      <ProductTable />
-    </>
-  );
-};
-
-export const BillFromForm = () => {
-  const form = useFormContext();
+export const BillFromFormSection = () => {
+  const form = useFormContext<z.infer<typeof createInvoiceSchema>>();
 
   // Check if the address is complete
   const billFromAddress =
-    form.getValues("billFromAddressLine1") &&
-    form.getValues("billFromCity") &&
-    form.getValues("billFromPostalCode")
-      ? `${form.getValues("billFromAddressLine1")}, ${form.getValues(
-          "billFromCity"
-        )}, ${form.getValues("billFromPostalCode")}`
+    form.getValues("business.address.addressLine1") &&
+    form.getValues("business.address.city")
+      ? `${form.getValues("business.address.addressLine1")}, ${form.getValues(
+          "business.address.city"
+        )}`
       : "";
 
   return (
     <div className="space-y-4">
       <FormField
         control={form.control}
-        name="billFromName"
+        name="business.name"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-primary/80 text-xs">
@@ -227,7 +183,7 @@ export const BillFromForm = () => {
       />
       <FormField
         control={form.control}
-        name="billFromEmail"
+        name="user.email"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-primary/80 text-xs">
@@ -257,38 +213,36 @@ export const BillFromForm = () => {
           </FormItem>
         </PopoverTrigger>
         <PopoverContent>
-          <AddressForm fieldPrefix="billFrom" disabled={true} />
+          <AddressForm fieldPrefix="business.address" disabled={true} />
         </PopoverContent>
       </Popover>
     </div>
   );
 };
 
-export const BillToForm = () => {
-  const form = useFormContext();
+export const BillToFormSection = () => {
+  const form = useFormContext<z.infer<typeof createInvoiceSchema>>();
 
-  // Check if the address is complete
   const billToAddress =
-    form.getValues("billToAddressLine1") &&
-    form.getValues("billToCity") &&
-    form.getValues("billToPostalCode")
-      ? `${form.getValues("billToAddressLine1")}, ${form.getValues(
-          "billToCity"
-        )}, ${form.getValues("billToPostalCode")}`
+    form.getValues("client.address.addressLine1") &&
+    form.getValues("client.address.city")
+      ? `${form.getValues("client.address.addressLine1")}, ${form.getValues(
+          "client.address.city"
+        )}`
       : "";
 
   return (
     <div className="space-y-4">
       <FormField
         control={form.control}
-        name="billToName"
+        name="client.name"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-primary/80 text-xs">
               Bill To (Name):
             </FormLabel>
             <FormControl>
-              <Input placeholder="Client's name" {...field} />
+              <Input placeholder="client's name" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -296,7 +250,7 @@ export const BillToForm = () => {
       />
       <FormField
         control={form.control}
-        name="billToEmail"
+        name="client.email"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-primary/80 text-xs">
@@ -312,48 +266,47 @@ export const BillToForm = () => {
       <Popover>
         <PopoverTrigger asChild>
           <FormItem>
-            <FormLabel className="text-primary/80 text-xs">
+            <Label className="text-primary/80 text-xs">
               Bill To (Address):
-            </FormLabel>
-            <FormControl>
-              <Input
-                className="text-muted-foreground"
-                value={billToAddress || "client adress"}
-                placeholder="123 ct main street ,kandy"
-                readOnly
-              />
-            </FormControl>
+            </Label>
+
+            <div
+              className={cn(
+                "flex items-center h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+                billToAddress ? "text-primary" : "text-muted-foreground"
+              )}
+            >
+              {billToAddress || "client address"}
+            </div>
           </FormItem>
         </PopoverTrigger>
         <PopoverContent>
-          <AddressForm fieldPrefix="billTo" disabled={false} />
+          <AddressForm fieldPrefix="client.address" disabled={false} />
         </PopoverContent>
       </Popover>
     </div>
   );
 };
 
-export const BillDetailsForm = () => {
-  const form = useFormContext();
+export const BillDetailsFormSection = () => {
+  const form = useFormContext<z.infer<typeof createInvoiceSchema>>();
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <FormField
           control={form.control}
-          name="issueDate"
+          name="invoice.issueDate"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-primary/80 text-xs">
-                Issue Date:
-              </FormLabel>
+            <FormItem className="flex-col flex">
+              <Label className="text-primary/80 text-xs">Issue Date:</Label>
               <FormControl>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[280px] justify-start text-left font-normal",
+                        "w-full  lg:w-[280px]  justify-start text-left font-normal",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -382,19 +335,17 @@ export const BillDetailsForm = () => {
         />
         <FormField
           control={form.control}
-          name="dueDate"
+          name="invoice.dueDate"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-primary/80 text-xs">
-                Due Date:
-              </FormLabel>
+            <FormItem className="flex-col flex">
+              <Label className="text-primary/80 text-xs">Due Date:</Label>
               <FormControl>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
                       className={cn(
-                        "w-[280px] justify-start text-left font-normal",
+                        "w-full lg:w-[280px] justify-start text-left font-normal",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -425,7 +376,7 @@ export const BillDetailsForm = () => {
 
       <FormField
         control={form.control}
-        name="description"
+        name="invoice.description"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-primary/80 text-xs">
@@ -457,8 +408,7 @@ export const AddressForm = ({
 }: AddressFormProps) => {
   const form = useFormContext();
 
-  const createFieldName = (fieldName: string) =>
-    `${fieldPrefix}${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}`;
+  const createFieldName = (fieldName: string) => `${fieldPrefix}.${fieldName}`;
 
   return (
     <div className="space-y-4">
@@ -473,7 +423,6 @@ export const AddressForm = ({
             <FormControl>
               <Input
                 placeholder="Enter address line 1"
-                defaultValue={form.getValues(createFieldName("addressLine1"))}
                 {...field}
                 disabled={disabled}
               />
@@ -493,7 +442,6 @@ export const AddressForm = ({
             <FormControl>
               <Input
                 placeholder="Enter address line 2"
-                defaultValue={form.getValues(createFieldName("addressLine2"))}
                 {...field}
                 disabled={disabled}
               />
@@ -509,12 +457,7 @@ export const AddressForm = ({
           <FormItem>
             <FormLabel className="text-primary/80 text-xs">City:</FormLabel>
             <FormControl>
-              <Input
-                placeholder="Enter city"
-                defaultValue={form.getValues(createFieldName("city"))}
-                {...field}
-                disabled={disabled}
-              />
+              <Input placeholder="Enter city" {...field} disabled={disabled} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -531,7 +474,6 @@ export const AddressForm = ({
             <FormControl>
               <Input
                 placeholder="Enter postal code"
-                defaultValue={form.getValues(createFieldName("postalCode"))}
                 {...field}
                 disabled={disabled}
               />
