@@ -1,5 +1,5 @@
 import { auth } from "@/src/auth";
-import { getUserById } from "../../account/queries";
+import { getUserById } from "../../../../account/queries";
 import { CreateInvoice } from "../_components/create-invoice";
 import { redirect } from "next/navigation";
 

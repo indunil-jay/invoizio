@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ReceiptText } from "lucide-react";
 import { Settings2 } from "lucide-react";
 
 import {
@@ -22,6 +22,18 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 
 const data = [
+  {
+    title: "Invoices",
+    url: "",
+    icon: ReceiptText,
+    isActive: false,
+    items: [
+      {
+        title: "Create Invoice",
+        url: "/dashboard/business/[businessId]/invoices/create",
+      },
+    ],
+  },
   {
     title: "Settings",
     url: "#",

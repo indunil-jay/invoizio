@@ -30,8 +30,8 @@ import { type User } from "@/app/(dashboard)/dashboard/account/types";
 import {
   createProductFormSchema,
   Product,
-} from "@/app/(dashboard)/dashboard/invoices/_components/add-product-form";
-import { ProductsList } from "@/app/(dashboard)/dashboard/invoices/_components/product-list";
+} from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/add-product-form";
+import { ProductsList } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/product-list";
 
 const addressSchema = z.object({
   addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
@@ -137,7 +137,9 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
         <BillDetailsFormSection />
 
         <Separator />
+
         <ProductsList products={products} onAddProduct={handleAddProduct} />
+
         <Separator />
         <div className="flex justify-end items-center gap-5">
           <Button size={"lg"} variant={"destructive"}>

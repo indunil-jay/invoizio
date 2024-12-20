@@ -154,9 +154,7 @@ export const ProductsList = ({
         </Popover>
       </div>
 
-      <div className="w-full">
-        <ProductTable products={products} />
-      </div>
+      {products.length > 0 && <ProductTable products={products} />}
     </>
   );
 };
