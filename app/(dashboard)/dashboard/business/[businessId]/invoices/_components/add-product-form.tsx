@@ -12,14 +12,7 @@ import {
   FormMessage,
 } from "@/app/_components/ui/form";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/app/_components/ui/card";
+import { Card, CardContent, CardFooter } from "@/app/_components/ui/card";
 import { Input } from "@/app/_components/ui/input";
 import { Button } from "@/app/_components/ui/button";
 
@@ -49,6 +42,13 @@ export const createProductFormSchema = z.object({
     .refine((val) => val >= 0 && val <= 100, {
       message: "Tax rate must be a value between 0% and 100%.",
     }),
+  discountRate: z.coerce
+    .number()
+    .optional()
+    .default(0)
+    .refine((val) => val >= 0 && val <= 100, {
+      message: "discount must be a value between 0% and 100%.",
+    }),
 });
 
 export type Product = z.infer<typeof createProductFormSchema>;
@@ -67,6 +67,7 @@ export const AddProductForm = ({
       productName: "",
       quantity: 1,
       taxRate: 0,
+      discountRate: 0,
     },
   });
 
@@ -76,10 +77,6 @@ export const AddProductForm = ({
   return (
     <Form {...form}>
       <Card className="p-0 border-none shadow-none">
-        <CardHeader className="p-0">
-          <CardTitle>Add new Product</CardTitle>
-          <CardDescription>you can add new product to invoice</CardDescription>
-        </CardHeader>
         <form>
           <CardContent className="px-0">
             <FormField
@@ -87,7 +84,9 @@ export const AddProductForm = ({
               name="productName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product Name</FormLabel>
+                  <FormLabel className="text-primary/80 text-xs">
+                    Product Name
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="Product name" />
                   </FormControl>
@@ -135,7 +134,24 @@ export const AddProductForm = ({
                   <FormLabel className="text-primary/80 text-xs">
                     Tax Rate
                     <span className="block text-muted-foreground">
-                      (per each)
+                      (per each %)
+                    </span>
+                  </FormLabel>
+                  <FormControl className="col-span-2">
+                    <Input {...field} placeholder="ex: 0.40" />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="discountRate"
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-3 items-center gap-2">
+                  <FormLabel className="text-primary/80 text-xs">
+                    Discount Rate
+                    <span className="block text-muted-foreground">
+                      (per each %)
                     </span>
                   </FormLabel>
                   <FormControl className="col-span-2">

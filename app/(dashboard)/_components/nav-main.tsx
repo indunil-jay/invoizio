@@ -32,6 +32,10 @@ const data = [
         title: "Create Invoice",
         url: "/dashboard/business/[businessId]/invoices/create",
       },
+      {
+        title: "Activities",
+        url: "/dashboard/business/[businessId]/invoices/activities",
+      },
     ],
   },
   {
