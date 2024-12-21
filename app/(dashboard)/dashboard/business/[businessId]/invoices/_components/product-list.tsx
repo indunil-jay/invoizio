@@ -17,14 +17,15 @@ import {
 import { Button } from "@/app/_components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import {
+  calculateDiscount,
+  calculateTax,
+  calculateTotal,
+  formatCurrency,
+  formatPercentage,
+} from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_lib/utils";
 
 export const ProductTable = ({ products }: { products: Product[] }) => {
-  const calculateTax = (price: number, quantity: number, taxRate: number) =>
-    ((price * taxRate) / 100) * quantity;
-
-  const calculateTotal = (price: number, quantity: number, tax: number) =>
-    price * quantity + tax;
-
   const totalBasePrice = products.reduce(
     (sum, product) => sum + product.price * product.quantity,
     0
@@ -36,23 +37,33 @@ export const ProductTable = ({ products }: { products: Product[] }) => {
     0
   );
 
-  const grandTotal = totalBasePrice + totalTax;
+  const totalDiscount = products.reduce(
+    (sum, product) =>
+      sum +
+      calculateDiscount(product.price, product.quantity, product.discountRate),
+    0
+  );
+
+  const grandTotal = totalBasePrice + totalTax - totalDiscount;
 
   return (
     <div className="overflow-x-auto w-full relative">
-      <Table className="">
+      <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className=" text-center">ID</TableHead>
-            <TableHead className=" text-left">Product Name</TableHead>
-            <TableHead className=" text-right">Qty</TableHead>
-            <TableHead className=" text-center">
+            <TableHead className="text-center">ID</TableHead>
+            <TableHead className="text-left">Product Name</TableHead>
+            <TableHead className="text-right">Qty</TableHead>
+            <TableHead className="text-center">
               Price <span className="block text-xs">(per each)</span>
             </TableHead>
-            <TableHead className=" text-center">
+            <TableHead className="text-center">
               Tax% <span className="block text-xs">(per each)</span>
             </TableHead>
-            <TableHead className=" text-right">Total</TableHead>
+            <TableHead className="text-center">
+              Discount% <span className="block text-xs">(per each)</span>
+            </TableHead>
+            <TableHead className="text-right">Total</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -62,31 +73,51 @@ export const ProductTable = ({ products }: { products: Product[] }) => {
               product.quantity,
               product.taxRate
             );
-            const total = calculateTotal(product.price, product.quantity, tax);
+            const discount = calculateDiscount(
+              product.price,
+              product.quantity,
+              product.discountRate
+            );
+            const total = calculateTotal(
+              product.price,
+              product.quantity,
+              tax,
+              discount
+            );
 
             return (
               <TableRow key={index + 1}>
                 <TableCell className="text-center">{`#${index + 1}`}</TableCell>
                 <TableCell>{product.productName}</TableCell>
                 <TableCell className="text-right">{product.quantity}</TableCell>
-                <TableCell className="text-right">{`$${product.price.toFixed(
-                  2
-                )}`}</TableCell>
-                <TableCell className="text-right">{`${product.taxRate.toFixed(
-                  2
-                )}%`}</TableCell>
+                <TableCell className="text-right">
+                  {formatCurrency(product.price)}
+                </TableCell>
+                <TableCell className="text-right">
+                  {product.taxRate === 0
+                    ? "-"
+                    : formatPercentage(product.taxRate)}
+                </TableCell>
+                <TableCell className="text-right">
+                  {product.discountRate === 0
+                    ? "-"
+                    : formatPercentage(product.discountRate)}
+                </TableCell>
                 <TableCell className="text-right">
                   <div className="flex flex-col items-end">
-                    <p className="text-xs text-muted-foreground">{`Base: $${(
+                    <p className="text-xs text-muted-foreground">{`Base: ${formatCurrency(
                       product.price * product.quantity
-                    ).toFixed(2)}`}</p>
-                    <p className="text-xs text-muted-foreground">{`+ Tax: $${tax.toFixed(
-                      2
+                    )}`}</p>
+                    <p className="text-xs text-muted-foreground">{`+ Tax: ${formatCurrency(
+                      tax
+                    )}`}</p>
+                    <p className="text-xs text-muted-foreground">{`- Discount: ${formatCurrency(
+                      discount
                     )}`}</p>
                     <Separator className="my-1 w-1/2" />
-                    <p className="text-sm font-medium">{`$${total.toFixed(
-                      2
-                    )}`}</p>
+                    <p className="text-sm font-medium">
+                      {formatCurrency(total)}
+                    </p>
                   </div>
                 </TableCell>
               </TableRow>
@@ -95,19 +126,22 @@ export const ProductTable = ({ products }: { products: Product[] }) => {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={5}>Total</TableCell>
+            <TableCell colSpan={6}>Total</TableCell>
             <TableCell className="text-right">
               <div className="flex flex-col items-end">
-                <p className="text-xs text-muted-foreground">{`Base: $${totalBasePrice.toFixed(
-                  2
+                <p className="text-xs text-muted-foreground">{`Base: ${formatCurrency(
+                  totalBasePrice
                 )}`}</p>
-                <p className="text-xs text-muted-foreground">{`+ Tax: $${totalTax.toFixed(
-                  2
+                <p className="text-xs text-muted-foreground">{`+ Tax: ${formatCurrency(
+                  totalTax
+                )}`}</p>
+                <p className="text-xs text-muted-foreground">{`- Discount: ${formatCurrency(
+                  totalDiscount
                 )}`}</p>
                 <Separator className="my-1 w-1/2" />
-                <p className="text-sm font-medium">{`$${grandTotal.toFixed(
-                  2
-                )}`}</p>
+                <p className="text-sm font-medium">
+                  {formatCurrency(grandTotal)}
+                </p>
               </div>
             </TableCell>
           </TableRow>

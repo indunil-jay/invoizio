@@ -37,8 +37,8 @@ const addressSchema = z.object({
   addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
   addressLine2: z.string().optional(),
   city: z.string().min(1, { message: "City is required." }),
-  postalCode: z.coerce
-    .number()
+  postalCode: z
+    .string()
     .optional()
     .refine((val) => (val ? /^\d{5,6}$/.test(val.toString()) : true), {
       message: "Postal code must be a valid 5-6 digit number.",
@@ -91,7 +91,7 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
           addressLine1: "test-address-1",
           addressLine2: "test-address-2",
           city: "test-city",
-          postalCode: 2019,
+          postalCode: "219678",
         },
         id: "278yio2",
         name: "wood nr",
@@ -99,16 +99,15 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
       invoice: {
         description: "",
         issueDate: new Date(),
-        dueDate: undefined,
       },
       client: {
         name: "",
         email: "",
         address: {
           addressLine1: "",
-          addressLine2: undefined,
+          addressLine2: "",
           city: "",
-          postalCode: undefined,
+          postalCode: "",
         },
       },
       products: products,
@@ -116,15 +115,15 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
   });
 
   const handleAddProduct = (product: Product) => {
-    setProducts((prevProducts) => [...prevProducts, { ...product }]);
+    setProducts((prevProducts) => {
+      const updatedProducts = [...prevProducts, product];
+      form.setValue("products", updatedProducts);
+      return updatedProducts;
+    });
   };
 
   const onSubmit = (data: z.infer<typeof createInvoiceSchema>) => {
-    const invoiceData = {
-      ...data,
-      products,
-    };
-    console.log("Invoice Data: ", invoiceData);
+    console.log("Invoice Data: ", data);
   };
   return (
     <FormProvider {...form}>
