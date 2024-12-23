@@ -3,6 +3,7 @@ import { users } from "@/drizzle/schemas";
 import { InferSelectModel, relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { invoices } from "./invoices";
 
 export const businesses = pgTable("business", {
   id: text("id")
@@ -19,12 +20,13 @@ export const businesses = pgTable("business", {
 });
 
 //define relations
-export const defineBusinessRelations = relations(businesses, ({ one }) => ({
+export const defineBusinessRelations = relations(businesses, ({ one,many }) => ({
   //one business belong to one user
   users: one(users, {
     fields: [businesses.userId],
     references: [users.id],
   }),
+  invoices: many(invoices),
 }));
 
 export const businessSchema = createInsertSchema(businesses, {
