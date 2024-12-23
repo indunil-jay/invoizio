@@ -15,7 +15,15 @@ export {
   defineBusinessRelations,
 } from "@/drizzle/schemas/business";
 
-export { addresses, defineAddressesRelations } from "@/drizzle/schemas/address";
+export {
+  clientAddresses,
+  defineClientAddressesRelations,
+} from "@/drizzle/schemas/client-address";
+
+export {
+  businessAddresses,
+  defineBusinessAddressesRelations,
+} from "@/drizzle/schemas/business-address";
 
 export { clients, defineClientRelations } from "@/drizzle/schemas/client";
 

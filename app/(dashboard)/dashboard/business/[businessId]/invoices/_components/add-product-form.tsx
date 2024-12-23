@@ -74,6 +74,7 @@ export const AddProductForm = ({
   const handleOnSubmit = (values: z.infer<typeof createProductFormSchema>) => {
     onAddProduct(values);
     form.reset();
+    handleClose();
   };
   return (
     <Form {...form}>

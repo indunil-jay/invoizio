@@ -24,27 +24,11 @@ import {
   formatCurrency,
   formatPercentage,
 } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_lib/utils";
+import { useProducts } from "../_contexts/product.context";
 
-export const ProductTable = ({ products }: { products: Product[] }) => {
-  const totalBasePrice = products.reduce(
-    (sum, product) => sum + product.price * product.quantity,
-    0
-  );
-
-  const totalTax = products.reduce(
-    (sum, product) =>
-      sum + calculateTax(product.price, product.quantity, product.taxRate),
-    0
-  );
-
-  const totalDiscount = products.reduce(
-    (sum, product) =>
-      sum +
-      calculateDiscount(product.price, product.quantity, product.discountRate),
-    0
-  );
-
-  const grandTotal = totalBasePrice + totalTax - totalDiscount;
+export const ProductTable = () => {
+  const { grandTotal, products, totalBasePrice, totalDiscount, totalTax } =
+    useProducts();
 
   return (
     <div className="overflow-x-auto w-full relative">
@@ -188,7 +172,7 @@ export const ProductsList = ({
         </Popover>
       </div>
 
-      {products.length > 0 && <ProductTable products={products} />}
+      {products.length > 0 && <ProductTable />}
     </>
   );
 };

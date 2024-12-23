@@ -1,11 +1,8 @@
 import { integer, pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { clients } from "./client";
-import { businesses } from "./business";
 import { InferSelectModel, relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { invoiceItems } from "./invoice-items";
-import { statuses } from "./status";
+import { statuses, invoiceItems, businesses, clients } from "@/drizzle/schemas";
 
 export const statusEnum = pgEnum("status", ["pending", "paid", "expired"]);
 

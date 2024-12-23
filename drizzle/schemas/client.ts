@@ -1,9 +1,8 @@
 import { InferSelectModel, relations } from "drizzle-orm";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { addresses } from "./address";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { invoices } from "./invoices";
+import { clientAddresses, invoices } from "@/drizzle/schemas";
 
 export const clients = pgTable("client", {
   id: text("id")
@@ -18,7 +17,7 @@ export const clients = pgTable("client", {
 
 //define relations
 export const defineClientRelations = relations(clients, ({ many }) => ({
-  addresses: many(addresses),
+  addresses: many(clientAddresses),
   invoices: many(invoices),
 }));
 

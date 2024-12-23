@@ -1,6 +1,6 @@
 import { InferSelectModel, relations } from "drizzle-orm";
 import { pgTable, text, serial } from "drizzle-orm/pg-core";
-import { invoices } from "./invoices";
+import { invoices } from "@/drizzle/schemas";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 

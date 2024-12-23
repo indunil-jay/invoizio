@@ -1,7 +1,6 @@
 "use client";
 import { format } from "date-fns";
 import { z } from "zod";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
@@ -32,6 +31,7 @@ import {
   Product,
 } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/add-product-form";
 import { ProductsList } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/product-list";
+import { useProducts } from "../_contexts/product.context";
 
 const addressSchema = z.object({
   addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
@@ -67,7 +67,7 @@ export const createInvoiceSchema = z.object({
     dueDate: z.date({ message: "Due date is required." }),
     description: z.string().min(1, { message: "Description is required." }),
   }),
-  products: z
+  invoiceItems: z
     .array(createProductFormSchema)
     .min(1, { message: "At least one product is required." }),
 });
@@ -77,8 +77,14 @@ interface CreateInvoiceFormProps {
 }
 
 export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
-  const [products, setProducts] = useState<Product[]>([]);
-
+  const {
+    setProducts,
+    products,
+    grandTotal,
+    totalBasePrice,
+    totalDiscount,
+    totalTax,
+  } = useProducts();
   const form = useForm<z.infer<typeof createInvoiceSchema>>({
     resolver: zodResolver(createInvoiceSchema),
     defaultValues: {
@@ -96,10 +102,7 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
         id: "278yio2",
         name: "wood nr",
       },
-      invoice: {
-        description: "",
-        issueDate: new Date(),
-      },
+
       client: {
         name: "",
         email: "",
@@ -110,20 +113,40 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
           postalCode: "",
         },
       },
-      products: products,
+      invoice: {
+        description: "",
+        issueDate: new Date(),
+      },
+      invoiceItems: products,
     },
   });
 
   const handleAddProduct = (product: Product) => {
     setProducts((prevProducts) => {
       const updatedProducts = [...prevProducts, product];
-      form.setValue("products", updatedProducts);
+      form.setValue("invoiceItems", updatedProducts);
       return updatedProducts;
     });
   };
 
   const onSubmit = (data: z.infer<typeof createInvoiceSchema>) => {
-    console.log("Invoice Data: ", data);
+    const obj = {
+      ...data,
+      user: data.user,
+      client: data.client,
+      business: data.business,
+      invoice: {
+        grandTotal,
+        totalBasePrice,
+        totalDiscount,
+        totalTax,
+        description: data.invoice.description,
+        issueDate: data.invoice.issueDate,
+        dueDate: data.invoice.dueDate,
+      },
+      invoiceItems: data.invoiceItems,
+    };
+    console.log(obj);
   };
   return (
     <FormProvider {...form}>
