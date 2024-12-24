@@ -8,8 +8,8 @@ import {
 import { UpdateBusinessForm } from "../../../_components/update-business.from";
 import { Separator } from "@/app/_components/ui/separator";
 import { DeleteBusiness } from "../../../_components/delete-business";
-import { getBusinessById } from "../../../queries";
 import { redirect } from "next/navigation";
+import { getBusinessById } from "../../queries";
 
 export default async function Page({
   params,

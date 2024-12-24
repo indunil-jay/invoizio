@@ -4,7 +4,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { clients } from "@/drizzle/schemas";
 import { z } from "zod";
 
-export const clientAddresses = pgTable("address", {
+export const clientAddresses = pgTable("clientAddress", {
   id: text("id")
     .notNull()
     .primaryKey()

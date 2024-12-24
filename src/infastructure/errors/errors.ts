@@ -60,9 +60,11 @@ export class UnauthorizedError extends Error {
 export class DataBaseError extends Error {
   public readonly options?: IOption;
   constructor(options: IOption = { statusCode: 401 }) {
-    const message =
-      "Something went wrong. Our team has been notified and is working to resolve the issue. Please try again later.";
-    super(message);
+    // const message =
+    //   "Something went wrong. Our team has been notified and is working to resolve the issue. Please try again later.";
+    super(
+      "Something went wrong. Our team has been notified and is working to resolve the issue. Please try again later."
+    );
     this.name = "DataBaseError";
     this.options = options;
 

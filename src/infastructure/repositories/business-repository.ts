@@ -1,4 +1,4 @@
-import { db } from "@/drizzle";
+import { db, Transaction } from "@/drizzle";
 import {
   BusinessCollectionDocument,
   businesses,
@@ -71,13 +71,13 @@ export class BusinessRepository implements IBusinessRepository {
     }
   }
   public async create(
-    data: InsertBusinessSchema
+    data: InsertBusinessSchema,
+    tx?: Transaction
   ): Promise<BusinessCollectionDocument> {
+    const invoker = tx ?? db;
     try {
-      const [insertedBusiness] = await db
-        .insert(businesses)
-        .values(data)
-        .returning();
+      const query = invoker.insert(businesses).values(data).returning();
+      const [insertedBusiness] = await query.execute();
 
       if (!insertedBusiness) {
         throw new Error("Business creation failed, no data returned.");

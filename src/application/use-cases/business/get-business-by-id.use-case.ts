@@ -1,5 +1,5 @@
 import { getInjection } from "@/di/container";
-import { checkValidSessionUseCase } from "../check-valid-session";
+import { checkValidSessionUseCase } from "@/src/application/use-cases/authentication/check-valid-session";
 import { NotFoundError } from "@/src/domain/errors/errors";
 import { UnauthorizedError } from "@/src/infastructure/errors/errors";
 

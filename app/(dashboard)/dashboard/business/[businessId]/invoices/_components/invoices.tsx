@@ -16,8 +16,14 @@ import {
 import { CreateInvoice } from "./create-invoice";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import { User } from "@/app/(dashboard)/dashboard/account/types";
+import { Business } from "../../../type";
 
-export const Invoices = ({ user }: { user: User }) => {
+interface InvoiceProps {
+  user: User;
+  business: Business;
+}
+
+export const Invoices = ({ user, business }: InvoiceProps) => {
   return (
     <Card>
       <CardHeader className="p-6">
@@ -38,7 +44,7 @@ export const Invoices = ({ user }: { user: User }) => {
             </DialogTrigger>
             <DialogContent className="max-w-2xl h-[90vh] p-0 overflow-clip">
               <ScrollArea>
-                <CreateInvoice user={user} />
+                <CreateInvoice user={user} business={business} />
               </ScrollArea>
             </DialogContent>
           </Dialog>

@@ -27,6 +27,7 @@ export async function executeAction<T extends DefaultResponse>({
 }: Options<T>): Promise<Response & Partial<T>> {
   try {
     const response = await actionFn();
+
     return {
       title,
       description: response.message,

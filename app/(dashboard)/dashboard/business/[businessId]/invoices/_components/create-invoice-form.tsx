@@ -33,6 +33,7 @@ import {
 import { ProductsList } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/product-list";
 import { useProducts } from "../_contexts/product.context";
 import { createNewInvoice } from "../create/actions";
+import { Business } from "../../../type";
 
 const addressSchema = z.object({
   addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
@@ -75,9 +76,13 @@ export const createInvoiceSchema = z.object({
 
 interface CreateInvoiceFormProps {
   user: User;
+  business: Business;
 }
 
-export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
+export const CreateInvoiceForm = ({
+  user,
+  business,
+}: CreateInvoiceFormProps) => {
   const {
     setProducts,
     products,
@@ -96,13 +101,13 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
       },
       business: {
         address: {
-          addressLine1: "test-address-1",
+          addressLine1: "",
           addressLine2: "test-address-2",
           city: "test-city",
           postalCode: "219678",
         },
-        id: "278yio2",
-        name: "wood nr",
+        id: business.id,
+        name: business.name,
       },
 
       client: {

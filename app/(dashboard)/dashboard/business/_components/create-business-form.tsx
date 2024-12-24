@@ -2,7 +2,6 @@
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Button } from "@/app/_components/ui/button";
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -14,26 +13,53 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useRef } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { createNewBusiness } from "../create/actions";
 import { toast } from "@/app/_hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Business } from "../type";
+import { AddressForm } from "./address-form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/app/_components/ui/popover";
+import { Label } from "@/app/_components/ui/label";
+import { cn } from "@/app/_lib/tailwind-css/utils";
 
 export const createBusinessFormSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(1, "Required")
-    .min(3, "Must be 3 or more characters"),
+    .min(1, { message: "Business name is required." })
+    .min(3, { message: "Business name must be at least 3 characters long." }),
   image: z.union([
-    z.instanceof(File),
+    z.instanceof(File, {
+      message: "Uploaded file must be a valid image file.",
+    }),
     z
       .string()
       .transform((value) => (value === "" ? undefined : value))
-      .optional(),
+      .optional()
+      .refine((value) => value === undefined || value.startsWith("http"), {
+        message: "Image URL must be valid or empty.",
+      }),
   ]),
+  address: z.object({
+    addressLine1: z.string().min(1, { message: "Address Line 1 is required." }),
+    addressLine2: z.string().optional(),
+    city: z
+      .string()
+      .min(1, { message: "City is required." })
+      .max(100, { message: "City must be 100 characters or less." }),
+    postalCode: z
+      .string()
+      .min(1, { message: "postalCode is required." })
+      .refine((val) => (val ? /^\d{5,6}$/.test(val.toString()) : true), {
+        message: "Postal code must be a valid 5-6 digit number.",
+      }),
+  }),
 });
 
 interface CreateBusinessFormProps {
@@ -49,7 +75,13 @@ export const CreateBusinessForm = ({
     resolver: zodResolver(createBusinessFormSchema),
     defaultValues: {
       name: "",
-      image: undefined,
+      image: "",
+      address: {
+        addressLine1: "",
+        addressLine2: "",
+        city: "",
+        postalCode: "",
+      },
     },
   });
 
@@ -70,6 +102,7 @@ export const CreateBusinessForm = ({
       image: values.image instanceof File ? values.image : undefined,
     };
     const response = await createNewBusiness(formData);
+    console.log({ response });
     toast(response);
 
     if (response.success === true && response.newBusinessDocument) {
@@ -82,8 +115,16 @@ export const CreateBusinessForm = ({
     }
   };
 
+  const businessAddress =
+    form.getValues("address.addressLine1") &&
+    form.getValues("address.city") &&
+    form.getValues("address.postalCode")
+      ? `${form.getValues("address.addressLine1")}, ${form.getValues(
+          "address.city"
+        )}, ${form.getValues("address.postalCode")}`
+      : "";
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col space-y-4">
           <FormField
@@ -100,6 +141,41 @@ export const CreateBusinessForm = ({
               </FormItem>
             )}
           />
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <FormItem>
+                <Label
+                  className={cn(
+                    "text-sm",
+                    form.formState.errors.address
+                      ? "text-red-500"
+                      : "text-primary "
+                  )}
+                >
+                  Business Address
+                </Label>
+
+                <div
+                  className={cn(
+                    "flex items-center h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+                    businessAddress ? "text-primary" : "text-muted-foreground"
+                  )}
+                >
+                  {businessAddress || "Enter business address"}
+                </div>
+                {form.formState.errors.address && (
+                  <p className="text-xs font-medium text-red-500">
+                    Missing business address field
+                  </p>
+                )}
+              </FormItem>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-80 ">
+              <AddressForm fieldPrefix="address" disabled={false} />
+            </PopoverContent>
+          </Popover>
+
           <FormField
             control={form.control}
             name="image"
@@ -191,6 +267,6 @@ export const CreateBusinessForm = ({
           </Button>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 };

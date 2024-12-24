@@ -10,6 +10,8 @@ import { EmailModule } from "@/di/modules/email.module";
 import { PasswordResetTokenModule } from "@/di/modules/password-reset-token.module";
 import { AccountModule } from "@/di/modules/account.module";
 import { BusinessModule } from "@/di/modules/business.module";
+import { BusinessAddressModule } from "@/di/modules/business-address.module";
+import { TransactionManagerModule } from "@/di/modules/transaction-manager.module";
 
 const ApplicationContainer = new Container({
   defaultScope: "Singleton",
@@ -25,6 +27,8 @@ export const initializeContainer = () => {
   ApplicationContainer.load(PasswordResetTokenModule);
   ApplicationContainer.load(AccountModule);
   ApplicationContainer.load(BusinessModule);
+  ApplicationContainer.load(BusinessAddressModule);
+  ApplicationContainer.load(TransactionManagerModule);
 };
 
 export const destroyContainer = () => {
@@ -37,6 +41,8 @@ export const destroyContainer = () => {
   ApplicationContainer.unload(PasswordResetTokenModule);
   ApplicationContainer.unload(AccountModule);
   ApplicationContainer.unload(BusinessModule);
+  ApplicationContainer.unload(BusinessAddressModule);
+  ApplicationContainer.unload(TransactionManagerModule);
 };
 
 if (process.env.NODE_ENV !== "test") {
