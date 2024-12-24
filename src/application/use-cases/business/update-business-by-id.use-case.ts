@@ -8,7 +8,12 @@ export const updateBusinessByIdUseCase = {
   async execute(id: string, data: UpdateBusinessDTO) {
     // Dependency injection
     const businessRepository = getInjection("IBusinessRepository");
-
+    const businessAddressRepository = getInjection(
+      "IBusinessAddressRepository"
+    );
+    const transactionManagerService = getInjection(
+      "ITransactionManagerService"
+    );
     // Check valid session
     const existingUser = await checkValidSessionUseCase.execute();
 
@@ -31,16 +36,56 @@ export const updateBusinessByIdUseCase = {
     // TODO: Upload image URL
     const imageUrl = "";
 
-    // Update business document
-    const updatedBusinessDocument = await businessRepository.update(id, {
-      name: data.name,
-      image: imageUrl,
-    });
+    try {
+      const result = await transactionManagerService.startTransaction(
+        async (tx) => {
+          try {
+            // Update business document
+            const updatedBusinessDocument = await businessRepository.update(
+              id,
+              {
+                name: data.name,
+                image: imageUrl,
+              },
+              tx
+            );
 
-    return {
-      success: true,
-      message: "The business details have been successfully updated.",
-      updatedBusinessDocument,
-    };
+            const updatedBusinessAddressDocument =
+              await businessAddressRepository.update(
+                id,
+                {
+                  addressLine1: data.address?.addressLine1,
+                  addressLine2: data.address?.addressLine2,
+                  city: data.address?.city,
+                  postalCode: data.address?.postalCode,
+                },
+                tx
+              );
+
+            return {
+              updatedBusinessDocument,
+              updatedBusinessAddressDocument,
+            };
+          } catch (error) {
+            tx.rollback();
+            throw error;
+          }
+        }
+      );
+      return {
+        success: true,
+        message: "The business details have been successfully updated.",
+        updatedBusinessDocument: {
+          ...result.updatedBusinessDocument,
+          address: result.updatedBusinessAddressDocument,
+        },
+      };
+    } catch (error) {
+      console.error(`updateBusinessUseCase::${error}`);
+      return {
+        success: false,
+        message: `Something went wrong. Database Transaction failed, Our team has been notified and is working to resolve the issue. Please try again later.`,
+      };
+    }
   },
 };

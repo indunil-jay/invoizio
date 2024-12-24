@@ -59,5 +59,5 @@ export type BusinessAddressesCollectionDocument = InferSelectModel<
 >;
 
 export type PartialUpdateBusinessAddressesCollectionDocument = Partial<
-  Omit<BusinessAddressesCollectionDocument, "">
+  Omit<BusinessAddressesCollectionDocument, "createdAt" | "updatedAt">
 >;

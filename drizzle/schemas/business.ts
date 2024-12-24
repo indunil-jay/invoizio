@@ -49,3 +49,8 @@ export type InsertBusinessSchema = z.infer<typeof businessSchema>;
 export type UpdateBusinessSchema = Partial<z.infer<typeof businessSchema>>;
 
 export type BusinessCollectionDocument = InferSelectModel<typeof businesses>;
+
+export type BusinessCollectionWithAddressDocument =
+  BusinessCollectionDocument & {
+    address: InferSelectModel<typeof businessAddresses>;
+  };

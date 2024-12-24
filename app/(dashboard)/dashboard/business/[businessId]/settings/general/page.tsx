@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -5,11 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/_components/ui/card";
-import { UpdateBusinessForm } from "../../../_components/update-business.from";
+import { UpdateBusinessForm } from "@/app/(dashboard)/dashboard/business/_components/update-business.from";
 import { Separator } from "@/app/_components/ui/separator";
-import { DeleteBusiness } from "../../../_components/delete-business";
-import { redirect } from "next/navigation";
-import { getBusinessById } from "../../queries";
+import { DeleteBusiness } from "@/app/(dashboard)/dashboard/business/_components/delete-business";
+import { getBusinessById } from "@/app/(dashboard)/dashboard/business/[businessId]/queries";
 
 export default async function Page({
   params,

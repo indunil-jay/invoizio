@@ -1,6 +1,7 @@
 import { db, Transaction } from "@/drizzle";
 import {
   BusinessCollectionDocument,
+  BusinessCollectionWithAddressDocument,
   businesses,
   InsertBusinessSchema,
   UpdateBusinessSchema,
@@ -12,28 +13,6 @@ import { desc, eq } from "drizzle-orm";
 
 @injectable()
 export class BusinessRepository implements IBusinessRepository {
-  public async update(
-    id: string,
-    data: UpdateBusinessSchema
-  ): Promise<BusinessCollectionDocument> {
-    try {
-      const [updatedBusiness] = await db
-        .update(businesses)
-        .set({
-          image: data.image,
-          name: data.name,
-        })
-        .where(eq(businesses.id, id));
-      if (updatedBusiness) {
-        throw new Error("Business updated failed, no data returned.");
-      }
-      return updatedBusiness;
-    } catch (error) {
-      console.error(`DATABASE_ERROR::BusinessRepository::update: ${error}`);
-      throw new DataBaseError();
-    }
-  }
-
   public async deleteById(id: string): Promise<void> {
     try {
       await db.delete(businesses).where(eq(businesses.id, id));
@@ -60,10 +39,13 @@ export class BusinessRepository implements IBusinessRepository {
   }
   public async getById(
     id: string
-  ): Promise<BusinessCollectionDocument | undefined> {
+  ): Promise<BusinessCollectionWithAddressDocument | undefined> {
     try {
       return await db.query.businesses.findFirst({
         where: eq(businesses.id, id),
+        with: {
+          address: true,
+        },
       });
     } catch (error) {
       console.error(`DATABASE_ERROR::BusinessRepository::getById: ${error}`);
@@ -85,6 +67,31 @@ export class BusinessRepository implements IBusinessRepository {
       return insertedBusiness;
     } catch (error) {
       console.error(`DATABASE_ERROR::BusinessRepository::create: ${error}`);
+      throw new DataBaseError();
+    }
+  }
+
+  public async update(
+    id: string,
+    data: UpdateBusinessSchema,
+    tx?: Transaction
+  ): Promise<BusinessCollectionDocument> {
+    const invoker = tx ?? db;
+    try {
+      const query = invoker
+        .update(businesses)
+        .set(data)
+        .where(eq(businesses.id, id))
+        .returning();
+
+      const [updatedBusiness] = await query.execute();
+
+      if (!updatedBusiness) {
+        throw new Error("Business updated failed, no data returned.");
+      }
+      return updatedBusiness;
+    } catch (error) {
+      console.error(`DATABASE_ERROR::BusinessRepository::update: ${error}`);
       throw new DataBaseError();
     }
   }

@@ -20,21 +20,41 @@ import { toast } from "@/app/_hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { Business } from "../type";
 import { updateBusinessById } from "../[businessId]/settings/actions";
+import { AddressForm } from "./address-form";
 
 export const updateBusinessFormSchema = z
   .object({
     name: z
       .string()
       .trim()
-      .min(1, "Required")
-      .min(3, "Must be 3 or more characters"),
+      .min(1, "Business name is required.")
+      .min(3, "Business name must be at least 3 characters long."),
     image: z.union([
-      z.instanceof(File),
+      z.instanceof(File, {
+        message: "Please upload a valid file for the image.",
+      }),
       z
         .string()
         .transform((value) => (value === "" ? undefined : value))
         .optional(),
     ]),
+    address: z.object({
+      addressLine1: z
+        .string()
+        .trim()
+        .min(1, "Address Line 1 is required. Please provide a valid address."),
+      addressLine2: z.string().trim().optional(),
+      city: z
+        .string()
+        .trim()
+        .min(1, "City is required. Please provide the city name."),
+      postalCode: z
+        .string()
+        .min(1, { message: "postalCode is required." })
+        .refine((val) => (val ? /^\d{5,6}$/.test(val.toString()) : true), {
+          message: "Postal code must be a valid 5-6 digit number.",
+        }),
+    }),
   })
   .partial();
 
@@ -48,6 +68,12 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
     defaultValues: {
       name: business.name,
       image: business.image ? business.image : undefined,
+      address: {
+        addressLine1: business.address.addressLine1,
+        addressLine2: business.address.addressLine2 ?? "",
+        city: business.address.city,
+        postalCode: business.address.postalCode,
+      },
     },
   });
 
@@ -84,7 +110,9 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Business Name</FormLabel>
+                <FormLabel className="text-primary/80 text-xs">
+                  Business Name
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Enter business name" {...field} />
                 </FormControl>
@@ -93,6 +121,9 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
               </FormItem>
             )}
           />
+
+          <AddressForm fieldPrefix="address" />
+
           <FormField
             control={form.control}
             name="image"
