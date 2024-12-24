@@ -1,13 +1,13 @@
 import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
 import {
-  UpdatePasswordRequestDTO,
+  UpdatePasswordDTO,
   updatePasswordSchema,
 } from "@/src/application/dtos/user.dto";
 import { BadRequestError } from "@/src/application/errors/errors";
 import { updatePasswordUseCase } from "@/src/application/use-cases/user/update-password.use-case";
 
 export const updatePasswordController = async (
-  input: UpdatePasswordRequestDTO
+  input: UpdatePasswordDTO
 ): Promise<ClientResponseDTO> => {
   const { data, error: inputParseError } =
     updatePasswordSchema.safeParse(input);

@@ -1,13 +1,13 @@
 import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
 import {
-  PasswordResetRequestDTO,
+  PasswordResetDTO,
   passwordResetSchema,
 } from "@/src/application/dtos/user.dto";
 import { BadRequestError } from "@/src/application/errors/errors";
 import { forgotPasswordUseCase } from "@/src/application/use-cases/authentication/forgot-password.use-case";
 
 export const forgotPasswordController = async (
-  values: PasswordResetRequestDTO
+  values: PasswordResetDTO
 ): Promise<ClientResponseDTO> => {
   const { data, error: inputParseError } =
     passwordResetSchema.safeParse(values);

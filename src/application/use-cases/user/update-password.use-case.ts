@@ -1,10 +1,10 @@
 import { getInjection } from "@/di/container";
-import { UpdatePasswordRequestDTO } from "@/src/application/dtos/user.dto";
+import { UpdatePasswordDTO } from "@/src/application/dtos/user.dto";
 import { ConflictError, NotFoundError } from "@/src/domain/errors/errors";
 import { UnauthorizedError } from "@/src/infastructure/errors/errors";
 
 export const updatePasswordUseCase = {
-  async execute(data: UpdatePasswordRequestDTO) {
+  async execute(data: UpdatePasswordDTO) {
     // Dependency Injection (DI)
     const authenticationService = getInjection("IAuthenticationService");
     const userRepository = getInjection("IUserRepository");

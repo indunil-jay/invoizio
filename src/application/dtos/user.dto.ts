@@ -6,20 +6,20 @@ export const createUserSchema = z.object({
   name: z.string().min(1),
 });
 
-export type CreateUserRequestDTO = z.infer<typeof createUserSchema>;
+export type CreateUserDTO = z.infer<typeof createUserSchema>;
 
 export const signInUserSchema = z.object({
   email: z.string().email().min(1),
   password: z.string().min(1).min(8),
 });
 
-export type SignInUserRequestDTO = z.infer<typeof signInUserSchema>;
+export type SignInUserDTO = z.infer<typeof signInUserSchema>;
 
 export const passwordResetSchema = z.object({
   email: z.string().email(),
 });
 
-export type PasswordResetRequestDTO = z.infer<typeof passwordResetSchema>;
+export type PasswordResetDTO = z.infer<typeof passwordResetSchema>;
 
 export const newPasswordSchema = z
   .object({
@@ -32,7 +32,7 @@ export const newPasswordSchema = z
     message: "passwords does not match.",
   });
 
-export type CreateNewPasswordRequestDTO = z.infer<typeof newPasswordSchema>;
+export type CreateNewPasswordDTO = z.infer<typeof newPasswordSchema>;
 
 export const updatePasswordSchema = z.object({
   currentPassword: z.string().min(1).min(8, {
@@ -43,7 +43,7 @@ export const updatePasswordSchema = z.object({
   }),
 });
 
-export type UpdatePasswordRequestDTO = z.infer<typeof updatePasswordSchema>;
+export type UpdatePasswordDTO = z.infer<typeof updatePasswordSchema>;
 
 export const updateUserProfileSchema = z
   .object({
@@ -52,6 +52,4 @@ export const updateUserProfileSchema = z
   })
   .partial();
 
-export type UpdateUserProfileRequestDTO = z.infer<
-  typeof updateUserProfileSchema
->;
+export type UpdateUserProfileDTO = z.infer<typeof updateUserProfileSchema>;

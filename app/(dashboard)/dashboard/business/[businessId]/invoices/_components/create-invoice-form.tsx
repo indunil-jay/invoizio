@@ -32,6 +32,7 @@ import {
 } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/add-product-form";
 import { ProductsList } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/product-list";
 import { useProducts } from "../_contexts/product.context";
+import { createNewInvoice } from "../create/actions";
 
 const addressSchema = z.object({
   addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
@@ -85,6 +86,7 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
     totalDiscount,
     totalTax,
   } = useProducts();
+
   const form = useForm<z.infer<typeof createInvoiceSchema>>({
     resolver: zodResolver(createInvoiceSchema),
     defaultValues: {
@@ -129,9 +131,8 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
     });
   };
 
-  const onSubmit = (data: z.infer<typeof createInvoiceSchema>) => {
+  const onSubmit = async (data: z.infer<typeof createInvoiceSchema>) => {
     const obj = {
-      ...data,
       user: data.user,
       client: data.client,
       business: data.business,
@@ -146,7 +147,7 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
       },
       invoiceItems: data.invoiceItems,
     };
-    console.log(obj);
+    await createNewInvoice(obj);
   };
   return (
     <FormProvider {...form}>
@@ -167,7 +168,11 @@ export const CreateInvoiceForm = ({ user }: CreateInvoiceFormProps) => {
           <Button size={"lg"} variant={"destructive"}>
             Cancle
           </Button>
-          <Button type="submit" size={"lg"}>
+          <Button
+            disabled={form.formState.isSubmitting}
+            type="submit"
+            size={"lg"}
+          >
             Create an Invoice
           </Button>
         </div>

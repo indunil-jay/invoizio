@@ -1,12 +1,12 @@
 import { getInjection } from "@/di/container";
-import { UpdateUserProfileRequestDTO } from "@/src/application/dtos/user.dto";
+import { UpdateUserProfileDTO } from "@/src/application/dtos/user.dto";
 import { ConflictError, NotFoundError } from "@/src/domain/errors/errors";
 import { UnauthorizedError } from "@/src/infastructure/errors/errors";
 import { generateVerificationTokenAndSendEmailUseCase } from "../authentication/generate-verification-token-send-email.use-case";
 import { ClientResponseDTO } from "../../dtos/response.dto";
 
 export const updateUserProfileUseCase = {
-  async execute(data: UpdateUserProfileRequestDTO): Promise<ClientResponseDTO> {
+  async execute(data: UpdateUserProfileDTO): Promise<ClientResponseDTO> {
     // DI
     const authenticationService = getInjection("IAuthenticationService");
     const userRepository = getInjection("IUserRepository");

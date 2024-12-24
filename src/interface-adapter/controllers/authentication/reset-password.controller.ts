@@ -1,6 +1,6 @@
 import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
 import {
-  CreateNewPasswordRequestDTO,
+  CreateNewPasswordDTO,
   newPasswordSchema,
 } from "@/src/application/dtos/user.dto";
 import { BadRequestError } from "@/src/application/errors/errors";
@@ -8,7 +8,7 @@ import { resetPasswordUseCase } from "@/src/application/use-cases/authentication
 import { UnauthenticatedError } from "@/src/infastructure/errors/errors";
 
 export const resetPasswordController = async (
-  input: CreateNewPasswordRequestDTO,
+  input: CreateNewPasswordDTO,
   token: string | undefined
 ): Promise<ClientResponseDTO> => {
   if (!token) {

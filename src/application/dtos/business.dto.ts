@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { createAddressSchema } from "./address.dto";
 
 export const createBusinessSchema = z.object({
   name: z
@@ -13,10 +14,11 @@ export const createBusinessSchema = z.object({
       .transform((value) => (value === "" ? undefined : value))
       .optional(),
   ]),
+  address: createAddressSchema,
 });
 
-export type CreateBusinessRequestDTO = z.infer<typeof createBusinessSchema>;
+export type CreateBusinessDTO = z.infer<typeof createBusinessSchema>;
 
 export const updateBusinessSchema = createBusinessSchema.partial();
 
-export type UpdateBusinessRequestDTO = z.infer<typeof updateBusinessSchema>;
+export type UpdateBusinessDTO = z.infer<typeof updateBusinessSchema>;

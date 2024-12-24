@@ -1,11 +1,11 @@
 import { getInjection } from "@/di/container";
-import { UpdateBusinessRequestDTO } from "../../dtos/business.dto";
+import { UpdateBusinessDTO } from "../../dtos/business.dto";
 import { checkValidSessionUseCase } from "../check-valid-session";
 import { NotFoundError } from "@/src/domain/errors/errors";
 import { UnauthorizedError } from "@/src/infastructure/errors/errors";
 
 export const updateBusinessByIdUseCase = {
-  async execute(id: string, data: UpdateBusinessRequestDTO) {
+  async execute(id: string, data: UpdateBusinessDTO) {
     // Dependency injection
     const businessRepository = getInjection("IBusinessRepository");
 

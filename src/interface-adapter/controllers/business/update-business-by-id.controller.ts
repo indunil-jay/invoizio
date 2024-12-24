@@ -1,5 +1,5 @@
 import {
-  UpdateBusinessRequestDTO,
+  UpdateBusinessDTO,
   updateBusinessSchema,
 } from "@/src/application/dtos/business.dto";
 import { BadRequestError } from "@/src/application/errors/errors";
@@ -7,7 +7,7 @@ import { updateBusinessByIdUseCase } from "@/src/application/use-cases/business/
 
 export const updateBusinessByIdController = async (
   id: string,
-  input: UpdateBusinessRequestDTO
+  input: UpdateBusinessDTO
 ) => {
   const { data, error: inputParseError } =
     updateBusinessSchema.safeParse(input);

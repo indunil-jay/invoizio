@@ -1,10 +1,10 @@
 import { getInjection } from "@/di/container";
-import { CreateBusinessRequestDTO } from "@/src/application/dtos/business.dto";
+import { CreateBusinessDTO } from "@/src/application/dtos/business.dto";
 import { NotFoundError } from "@/src/domain/errors/errors";
 import { UnauthorizedError } from "@/src/infastructure/errors/errors";
 
 export const createNewBusinessUseCase = {
-  async execute(data: CreateBusinessRequestDTO) {
+  async execute(data: CreateBusinessDTO) {
     //di
     const authenticationService = getInjection("IAuthenticationService");
     const businessRepository = getInjection("IBusinessRepository");

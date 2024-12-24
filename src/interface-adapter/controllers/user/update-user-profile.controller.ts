@@ -1,12 +1,12 @@
 import {
-  UpdateUserProfileRequestDTO,
+  UpdateUserProfileDTO,
   updateUserProfileSchema,
 } from "@/src/application/dtos/user.dto";
 import { BadRequestError } from "@/src/application/errors/errors";
 import { updateUserProfileUseCase } from "@/src/application/use-cases/user/update-user-profile.use-case";
 
 export const updateUserProfileController = async (
-  input: UpdateUserProfileRequestDTO
+  input: UpdateUserProfileDTO
 ) => {
   const { data, error: inputParseError } =
     updateUserProfileSchema.safeParse(input);

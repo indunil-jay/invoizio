@@ -1,13 +1,13 @@
 import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
 import {
-  CreateUserRequestDTO,
+  CreateUserDTO,
   createUserSchema,
 } from "@/src/application/dtos/user.dto";
 import { BadRequestError } from "@/src/application/errors/errors";
 import { signUpUseCase } from "@/src/application/use-cases/authentication/sign-up.usecase";
 
 export const signUpController = async (
-  input: CreateUserRequestDTO
+  input: CreateUserDTO
 ): Promise<ClientResponseDTO> => {
   const { error: inputParseError, data } = createUserSchema.safeParse(input);
 
