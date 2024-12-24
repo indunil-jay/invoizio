@@ -12,6 +12,10 @@ import { AccountModule } from "@/di/modules/account.module";
 import { BusinessModule } from "@/di/modules/business.module";
 import { BusinessAddressModule } from "@/di/modules/business-address.module";
 import { TransactionManagerModule } from "@/di/modules/transaction-manager.module";
+import { ClientModule } from "@/di/modules/client.module";
+import { ClientAddressModule } from "@/di/modules/client-address.module";
+import { InvoiceModule } from "@/di/modules/invoice.module";
+import { InvoiceItemsModule } from "@/di/modules/invoice-items.module";
 
 const ApplicationContainer = new Container({
   defaultScope: "Singleton",
@@ -29,6 +33,10 @@ export const initializeContainer = () => {
   ApplicationContainer.load(BusinessModule);
   ApplicationContainer.load(BusinessAddressModule);
   ApplicationContainer.load(TransactionManagerModule);
+  ApplicationContainer.load(ClientModule);
+  ApplicationContainer.load(ClientAddressModule);
+  ApplicationContainer.load(InvoiceModule);
+  ApplicationContainer.load(InvoiceItemsModule);
 };
 
 export const destroyContainer = () => {
@@ -43,6 +51,10 @@ export const destroyContainer = () => {
   ApplicationContainer.unload(BusinessModule);
   ApplicationContainer.unload(BusinessAddressModule);
   ApplicationContainer.unload(TransactionManagerModule);
+  ApplicationContainer.unload(ClientModule);
+  ApplicationContainer.unload(ClientAddressModule);
+  ApplicationContainer.load(InvoiceModule);
+  ApplicationContainer.load(InvoiceItemsModule);
 };
 
 if (process.env.NODE_ENV !== "test") {

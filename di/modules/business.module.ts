@@ -1,5 +1,5 @@
 import { IBusinessRepository } from "@/src/application/repositories/business-repository.interface";
-import { BusinessRepository } from "@/src/infastructure/repositories/business-repository";
+import { BusinessRepository } from "@/src/infastructure/repositories/business.repository";
 import { ContainerModule, interfaces } from "inversify";
 import { DI_SYMBOLS } from "@/di/types";
 

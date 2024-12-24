@@ -1,6 +1,10 @@
 import { IAccountRepository } from "@/src/application/repositories/account-repository.interface";
 import { IBusinessAddressRepository } from "@/src/application/repositories/business-address-repository.interface";
 import { IBusinessRepository } from "@/src/application/repositories/business-repository.interface";
+import { IClientAddressRepository } from "@/src/application/repositories/client-address-repository.interface";
+import { IClientRepository } from "@/src/application/repositories/client-repository.interface";
+import { IInvoiceItemsRepository } from "@/src/application/repositories/invoice-item-repository.interface";
+import { IInvoiceRepository } from "@/src/application/repositories/invoice-repository.interface";
 import { IPasswordResetTokenRepository } from "@/src/application/repositories/password-reset-token-repository.interface";
 import { IUserRepository } from "@/src/application/repositories/user-repository.interface";
 import { IVerificationTokenRepository } from "@/src/application/repositories/verification-token-repository.interface";
@@ -24,6 +28,10 @@ export const DI_SYMBOLS = {
   IAccountRepository: Symbol.for("IAccountRepository"),
   IBusinessRepository: Symbol.for("IBusinessRepository"),
   IBusinessAddressRepository: Symbol.for("IBusinessAddressRepository"),
+  IClientRepository: Symbol.for("IClientRepository"),
+  IClientAddressRepository: Symbol.for("IClientAddressRepository"),
+  IInvoiceRepository: Symbol.for("IInvoiceRepository"),
+  IInvoiceItemsRepository: Symbol.for("IInvoiceItemsRepository"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -41,4 +49,8 @@ export interface DI_RETURN_TYPES {
   IAccountRepository: IAccountRepository;
   IBusinessRepository: IBusinessRepository;
   IBusinessAddressRepository: IBusinessAddressRepository;
+  IClientRepository: IClientRepository;
+  IClientAddressRepository: IClientAddressRepository;
+  IInvoiceRepository: IInvoiceRepository;
+  IInvoiceItemsRepository: IInvoiceItemsRepository;
 }

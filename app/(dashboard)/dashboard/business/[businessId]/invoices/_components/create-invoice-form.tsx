@@ -34,6 +34,7 @@ import { ProductsList } from "@/app/(dashboard)/dashboard/business/[businessId]/
 import { useProducts } from "../_contexts/product.context";
 import { createNewInvoice } from "../create/actions";
 import { Business } from "../../../type";
+import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
 
 const addressSchema = z.object({
   addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
@@ -41,7 +42,7 @@ const addressSchema = z.object({
   city: z.string().min(1, { message: "City is required." }),
   postalCode: z
     .string()
-    .optional()
+    .min(1, { message: "Postal Code is required" })
     .refine((val) => (val ? /^\d{5,6}$/.test(val.toString()) : true), {
       message: "Postal code must be a valid 5-6 digit number.",
     }),
@@ -77,11 +78,13 @@ export const createInvoiceSchema = z.object({
 interface CreateInvoiceFormProps {
   user: User;
   business: Business;
+  invoiceId: string;
 }
 
 export const CreateInvoiceForm = ({
   user,
   business,
+  invoiceId,
 }: CreateInvoiceFormProps) => {
   const {
     setProducts,
@@ -101,10 +104,10 @@ export const CreateInvoiceForm = ({
       },
       business: {
         address: {
-          addressLine1: "",
-          addressLine2: "test-address-2",
-          city: "test-city",
-          postalCode: "219678",
+          addressLine1: business.address.addressLine1,
+          addressLine2: business.address.addressLine2 ?? "",
+          city: business.address.city,
+          postalCode: business.address.postalCode,
         },
         id: business.id,
         name: business.name,
@@ -128,6 +131,8 @@ export const CreateInvoiceForm = ({
     },
   });
 
+  const toast = useShowToast();
+
   const handleAddProduct = (product: Product) => {
     setProducts((prevProducts) => {
       const updatedProducts = [...prevProducts, product];
@@ -142,6 +147,7 @@ export const CreateInvoiceForm = ({
       client: data.client,
       business: data.business,
       invoice: {
+        id: invoiceId,
         grandTotal,
         totalBasePrice,
         totalDiscount,
@@ -152,7 +158,8 @@ export const CreateInvoiceForm = ({
       },
       invoiceItems: data.invoiceItems,
     };
-    await createNewInvoice(obj);
+    const response = await createNewInvoice(obj);
+    toast(response);
   };
   return (
     <FormProvider {...form}>
@@ -178,7 +185,9 @@ export const CreateInvoiceForm = ({
             type="submit"
             size={"lg"}
           >
-            Create an Invoice
+            {form.formState.isSubmitting
+              ? "Creating an Invoice"
+              : "Create an Invoice"}
           </Button>
         </div>
       </form>

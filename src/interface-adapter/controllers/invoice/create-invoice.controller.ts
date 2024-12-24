@@ -7,8 +7,9 @@ export const createInvoiceController = async (input: unknown) => {
   const { data, error: inputParseError } = createInvoiceSchema.safeParse(input);
 
   if (inputParseError) {
+    console.log(inputParseError);
     throw new BadRequestError(`validation-error ${inputParseError.errors}`);
   }
 
-  await createInvoiceUseCase(data);
+  return await createInvoiceUseCase(data);
 };

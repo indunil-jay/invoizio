@@ -17,8 +17,6 @@ export default async function Page({
 
   const business = await getBusinessById(params.businessId);
 
-  console.log({ business });
-
   if (!user) return null;
 
   if (!business) redirect("/dashboard/business/create");

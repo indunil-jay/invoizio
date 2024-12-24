@@ -1,4 +1,10 @@
-import { integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  decimal,
+  integer,
+  pgTable,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 import { invoices } from "@/drizzle/schemas";
 import { InferSelectModel, relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
@@ -14,9 +20,9 @@ export const invoiceItems = pgTable("invoice_items", {
     .references(() => invoices.id),
   productName: text("name").notNull(),
   quantity: integer("quantity").notNull(),
-  price: integer("price").notNull(),
-  taxRate: integer("taxRate"),
-  discountRate: integer("discountRate"),
+  price: decimal("price").notNull(),
+  taxRate: decimal("taxRate"),
+  discountRate: decimal("discountRate"),
   createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
 });
@@ -34,10 +40,18 @@ export const defineInvoiceItemsRelations = relations(
 );
 
 export const invoiceItemsSchema = createInsertSchema(invoiceItems, {
-  invoiceId: (schema) => schema.min(1),
-  productName: (schema) => schema.min(1),
-  quantity: (schema) => schema.min(1),
-  price: (schema) => schema.min(1),
+  invoiceId: (schema) =>
+    schema.min(1, "Invoice ID is required and must be a positive integer."),
+  productName: (schema) =>
+    schema.min(1, "Product name is required and cannot be empty."),
+  quantity: (schema) => schema.min(1, "Quantity must be at least 1."),
+  price: (schema) =>
+    schema.refine((value) => +value > 0, {
+      message: "Price must be a positive number greater than 0.",
+    }),
+  taxRate: (schema) => schema.min(0, "Tax rate must be a non-negative number."),
+  discountRate: (schema) =>
+    schema.min(0, "Discount rate must be a non-negative number."),
 }).pick({
   invoiceId: true,
   productName: true,
