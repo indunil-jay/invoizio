@@ -23,7 +23,13 @@ export default async function DashboardLayout({
   }
 
   const businesses = await getAllBusiness();
+
   const user = await getUserById(session.user.id);
+
+  if (!businesses || businesses.length === 0) {
+    redirect("/dashboard/business/create");
+  }
+
   if (!user) return null;
   return (
     <SidebarProvider>

@@ -33,7 +33,7 @@ import {
 import { ProductsList } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/product-list";
 import { useProducts } from "../_contexts/product.context";
 import { createNewInvoice } from "../create/actions";
-import { Business } from "../../../type";
+import { BusinessWithAddress } from "../../../type";
 import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
 
 const addressSchema = z.object({
@@ -77,7 +77,7 @@ export const createInvoiceSchema = z.object({
 
 interface CreateInvoiceFormProps {
   user: User;
-  business: Business;
+  business: BusinessWithAddress;
   invoiceId: string;
 }
 

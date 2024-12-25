@@ -5,10 +5,13 @@ export type Business = {
   createdAt: string;
   updatedAt: string;
   userId: string;
+};
+
+export type BusinessWithAddress = {
   address: {
     addressLine1: string;
     addressLine2?: string | null;
     city: string;
     postalCode: string;
   };
-};
+} & Business;

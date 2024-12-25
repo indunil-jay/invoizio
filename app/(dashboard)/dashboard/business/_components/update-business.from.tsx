@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "@/app/_hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { Business } from "../type";
+import { BusinessWithAddress } from "../type";
 import { updateBusinessById } from "../[businessId]/settings/actions";
 import { AddressForm } from "./address-form";
 
@@ -59,7 +59,7 @@ export const updateBusinessFormSchema = z
   .partial();
 
 interface UpdateBusinessFormProps {
-  business: Business;
+  business: BusinessWithAddress;
 }
 
 export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {

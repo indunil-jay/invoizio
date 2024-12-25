@@ -19,7 +19,7 @@ export function AppSidebar({
   businesses,
   ...props
 }: React.ComponentProps<typeof Sidebar> & {
-  businesses: Business[] | null;
+  businesses: Business[];
   user: User;
 }) {
   if (!businesses || !businesses.length) {

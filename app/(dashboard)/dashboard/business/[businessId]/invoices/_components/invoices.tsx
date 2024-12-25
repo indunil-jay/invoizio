@@ -16,11 +16,11 @@ import {
 import { CreateInvoice } from "./create-invoice";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import { User } from "@/app/(dashboard)/dashboard/account/types";
-import { Business } from "../../../type";
+import { BusinessWithAddress } from "../../../type";
 
 interface InvoiceProps {
   user: User;
-  business: Business;
+  business: BusinessWithAddress;
 }
 
 export const Invoices = ({ user, business }: InvoiceProps) => {

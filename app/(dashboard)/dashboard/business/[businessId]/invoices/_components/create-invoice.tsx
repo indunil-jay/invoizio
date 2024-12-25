@@ -9,12 +9,12 @@ import {
 import { CreateInvoiceForm } from "./create-invoice-form";
 import { type User } from "@/app/(dashboard)/dashboard/account/types";
 import { ProductProvider } from "../_contexts/product.context";
-import { Business } from "../../../type";
+import { BusinessWithAddress } from "../../../type";
 import { nanoid } from "nanoid";
 
 interface CreateInvoiceProps {
   user: User;
-  business: Business;
+  business: BusinessWithAddress;
 }
 
 export const CreateInvoice = ({ user, business }: CreateInvoiceProps) => {

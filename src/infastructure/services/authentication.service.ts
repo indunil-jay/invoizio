@@ -1,5 +1,5 @@
 import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
-import { SignInUserRequestDTO } from "@/src/application/dtos/user.dto";
+import { SignInUserDTO } from "@/src/application/dtos/user.dto";
 import { IAuthenticationService } from "@/src/application/services/authentication-service.interface";
 import { auth, signIn, signOut } from "@/src/auth";
 import { injectable } from "inversify";
@@ -53,9 +53,7 @@ export class AuthenticationService implements IAuthenticationService {
       throw error;
     }
   }
-  public async signInWithCredentials(
-    data: SignInUserRequestDTO
-  ): Promise<void> {
+  public async signInWithCredentials(data: SignInUserDTO): Promise<void> {
     try {
       await signIn("credentials", {
         email: data.email,
