@@ -43,7 +43,7 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
   // Update active business and navigate when selecting a business
   const setActiveBusinessHandler = (business: Business) => {
     setActiveBusiness(business);
-    router.push(`/dashboard/business/${business.id}`);
+    router.push(`/dashboard/business/${business.id}/invoices`);
   };
 
   // Handle business creation

@@ -105,6 +105,12 @@ export type CreateInvoicesInput = z.infer<typeof invoicesSchema>;
 
 export type InvoicesCollectionDocument = InferSelectModel<typeof invoices>;
 
+export type DetailInvoicesCollectionDocument = InvoicesCollectionDocument & {
+  client: InferSelectModel<typeof clients>;
+  status: InferSelectModel<typeof statuses>;
+  invoiceItems: InferSelectModel<typeof invoiceItems>[];
+};
+
 export type PartialUpdateInvoicesCollectionDocument = Partial<
   Omit<InvoicesCollectionDocument, "">
 >;

@@ -3,6 +3,7 @@ import { Invoices } from "./_components/invoices";
 import { redirect } from "next/navigation";
 import { getUserById } from "../../../account/queries";
 import { getBusinessById } from "../queries";
+import { getAllInvoicesByBusinessId } from "./queries";
 
 export default async function Page({
   params,
@@ -17,12 +18,15 @@ export default async function Page({
 
   const business = await getBusinessById(params.businessId);
 
+  const invoices = await getAllInvoicesByBusinessId(params.businessId);
+
   if (!user) return null;
 
   if (!business) redirect("/dashboard/business/create");
+
   return (
     <div>
-      <Invoices user={user} business={business} />
+      <Invoices user={user} business={business} invoices={invoices} />
     </div>
   );
 }

@@ -16,14 +16,15 @@ import {
 import { CreateInvoice } from "./create-invoice";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import { User } from "@/app/(dashboard)/dashboard/account/types";
-import { BusinessWithAddress } from "../../../type";
+import { BusinessWithAddress, InvoiceWithDetails } from "../../../type";
 
 interface InvoiceProps {
   user: User;
   business: BusinessWithAddress;
+  invoices: InvoiceWithDetails[] | null;
 }
 
-export const Invoices = ({ user, business }: InvoiceProps) => {
+export const Invoices = ({ user, business, invoices }: InvoiceProps) => {
   return (
     <Card>
       <CardHeader className="p-6">
@@ -51,7 +52,7 @@ export const Invoices = ({ user, business }: InvoiceProps) => {
         </div>
       </CardHeader>
       <CardContent>
-        <InvoiceTable />
+        <InvoiceTable invoices={invoices} />
       </CardContent>
     </Card>
   );

@@ -7,8 +7,14 @@ import {
   TableRow,
 } from "@/app/_components/ui/table";
 import { InvoiceActions } from "./invoice-actions";
+import { InvoiceWithDetails } from "../../../type";
 
-export const InvoiceTable = () => {
+interface InvoiceTableProps {
+  invoices: InvoiceWithDetails[] | null;
+}
+
+export const InvoiceTable = ({ invoices }: InvoiceTableProps) => {
+  console.log({ invoices });
   return (
     <Table>
       <TableHeader>
@@ -22,16 +28,26 @@ export const InvoiceTable = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
-          <TableCell>#764928719</TableCell>
-          <TableCell>max vax</TableCell>
-          <TableCell>$550.0</TableCell>
-          <TableCell>paid</TableCell>
-          <TableCell>2023/12/12</TableCell>
-          <TableCell className="text-right">
-            <InvoiceActions />
-          </TableCell>
-        </TableRow>
+        {!invoices ? (
+          <TableRow>
+            <TableCell colSpan={6} className="text-center">
+              No Invoice data. Start creating the first one.
+            </TableCell>
+          </TableRow>
+        ) : (
+          invoices.map((invoice) => (
+            <TableRow key={invoice.id}>
+              <TableCell>{invoice.id}</TableCell>
+              <TableCell>{invoice.client.name}</TableCell>
+              <TableCell>{invoice.totalPrice}</TableCell>
+              <TableCell>{invoice.status.status}</TableCell>
+              <TableCell>{invoice.dueDate.toString()}</TableCell>
+              <TableCell className="text-right">
+                <InvoiceActions />
+              </TableCell>
+            </TableRow>
+          ))
+        )}
       </TableBody>
     </Table>
   );
