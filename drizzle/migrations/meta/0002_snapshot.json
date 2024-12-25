@@ -1,6 +1,6 @@
 {
-  "id": "0bb5645e-dbe3-4393-9cc1-4989ca307280",
-  "prevId": "6cbbeb02-86be-4b51-91dc-c739548a967a",
+  "id": "01fcf041-81b2-4c91-9629-803f9ffa5e34",
+  "prevId": "c1910e5e-639c-46e3-bc4c-d451eea883f2",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -541,7 +541,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -661,7 +661,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "invoice_statusId_status_id_fk": {

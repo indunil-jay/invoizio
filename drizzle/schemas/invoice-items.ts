@@ -17,7 +17,7 @@ export const invoiceItems = pgTable("invoice_items", {
     .$defaultFn(() => crypto.randomUUID()),
   invoiceId: text("invoiceId")
     .notNull()
-    .references(() => invoices.id),
+    .references(() => invoices.id, { onDelete: "cascade" }),
   productName: text("name").notNull(),
   quantity: integer("quantity").notNull(),
   price: decimal("price").notNull(),

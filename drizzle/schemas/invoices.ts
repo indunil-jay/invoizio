@@ -20,7 +20,7 @@ export const invoices = pgTable("invoice", {
     .references(() => clients.id),
   businessId: text("businessId")
     .notNull()
-    .references(() => businesses.id),
+    .references(() => businesses.id, { onDelete: "cascade" }),
   issueDate: timestamp("issueDate", { mode: "date" }).notNull(),
   dueDate: timestamp("dueDate", { mode: "date" }).notNull(),
   description: text("description").notNull(),

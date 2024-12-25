@@ -71,9 +71,9 @@ CREATE TABLE "invoice_items" (
 	"invoiceId" text NOT NULL,
 	"name" text NOT NULL,
 	"quantity" integer NOT NULL,
-	"price" integer NOT NULL,
-	"taxRate" integer,
-	"discountRate" integer,
+	"price" numeric NOT NULL,
+	"taxRate" numeric,
+	"discountRate" numeric,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
@@ -86,9 +86,10 @@ CREATE TABLE "invoice" (
 	"dueDate" timestamp NOT NULL,
 	"description" text NOT NULL,
 	"statusId" integer NOT NULL,
-	"totalPrice" integer NOT NULL,
-	"totalTax" integer,
-	"totalDiscount" integer,
+	"totalPrice" numeric NOT NULL,
+	"totalBasePrice" numeric NOT NULL,
+	"totalTax" numeric,
+	"totalDiscount" numeric,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );

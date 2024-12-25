@@ -1,1 +1,0 @@
-ALTER TABLE "invoice" ADD COLUMN "totalBasePrice" integer NOT NULL;

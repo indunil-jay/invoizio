@@ -1,5 +1,5 @@
 {
-  "id": "13e8b8ca-201a-409f-9e14-67767615c237",
+  "id": "5df482e1-b685-4d12-9945-8ab73a6e9e55",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -498,19 +498,19 @@
         },
         "price": {
           "name": "price",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": true
         },
         "taxRate": {
           "name": "taxRate",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
         "discountRate": {
           "name": "discountRate",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
@@ -599,19 +599,25 @@
         },
         "totalPrice": {
           "name": "totalPrice",
-          "type": "integer",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "totalBasePrice": {
+          "name": "totalBasePrice",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": true
         },
         "totalTax": {
           "name": "totalTax",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
         "totalDiscount": {
           "name": "totalDiscount",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
