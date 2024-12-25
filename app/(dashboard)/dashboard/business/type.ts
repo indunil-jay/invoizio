@@ -64,3 +64,10 @@ export type InvoiceWithDetails = {
   invoiceItems: InvoiceItem[];
   status: InvoiceStatus;
 } & Invoice;
+
+export enum INVOICE_STATUS {
+  "PENDING" = 1,
+  "PAID",
+  "CANCELLED",
+  "EXPIRED",
+}

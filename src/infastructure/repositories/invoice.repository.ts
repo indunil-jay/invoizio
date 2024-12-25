@@ -4,6 +4,7 @@ import {
   DetailInvoicesCollectionDocument,
   invoices,
   InvoicesCollectionDocument,
+  PartialUpdateInvoicesCollectionDocument,
 } from "@/drizzle/schemas/invoices";
 import { IInvoiceRepository } from "@/src/application/repositories/invoice-repository.interface";
 import { injectable } from "inversify";
@@ -12,6 +13,27 @@ import { eq } from "drizzle-orm";
 
 @injectable()
 export class InvoiceRepository implements IInvoiceRepository {
+  public async update(
+    data: PartialUpdateInvoicesCollectionDocument,
+    id: string
+  ): Promise<InvoicesCollectionDocument> {
+    try {
+      const [updatedDocument] = await db
+        .update(invoices)
+        .set(data)
+        .where(eq(invoices.id, id))
+        .returning();
+
+      if (!updatedDocument) {
+        throw new Error("Invoice updated failed, no data returned.");
+      }
+      return updatedDocument;
+    } catch (error) {
+      console.error(`DATABASE_ERROR::InvoiceRepository::update: ${error}`);
+      throw new DataBaseError();
+    }
+  }
+
   public async deleteById(invoiceId: string): Promise<void> {
     try {
       const res = await db.delete(invoices).where(eq(invoices.id, invoiceId));

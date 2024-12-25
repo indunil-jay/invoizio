@@ -3,6 +3,7 @@ import {
   CreateInvoicesInput,
   DetailInvoicesCollectionDocument,
   InvoicesCollectionDocument,
+  PartialUpdateInvoicesCollectionDocument,
 } from "@/drizzle/schemas/invoices";
 
 export interface IInvoiceRepository {
@@ -17,4 +18,8 @@ export interface IInvoiceRepository {
 
   getById(invoiceId: string): Promise<InvoicesCollectionDocument | undefined>;
   deleteById(invoiceId: string): Promise<void>;
+  update(
+    data: PartialUpdateInvoicesCollectionDocument,
+    id: string
+  ): Promise<InvoicesCollectionDocument>;
 }

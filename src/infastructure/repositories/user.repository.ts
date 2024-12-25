@@ -27,7 +27,7 @@ export class UserRepository implements IUserRepository {
           email: data.email,
         })
         .where(eq(users.id, id));
-      if (updatedUser) {
+      if (!updatedUser) {
         throw new Error("User updated failed, no data returned.");
       }
       return updatedUser;

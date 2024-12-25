@@ -4,16 +4,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
-import {
-  CircleCheck,
-  DownloadCloudIcon,
-  Mail,
-  MoreVertical,
-  Pencil,
-} from "lucide-react";
+import { DownloadCloudIcon, Mail, MoreVertical, Pencil } from "lucide-react";
 import Link from "next/link";
 import { InvoiceWithDetails } from "../../../type";
 import { DeleteInvoice } from "./delete-invoice";
+import { TogglePaymentStatus } from "./toggle-payment-status";
 
 interface InvoiceActionsProps {
   invoice: InvoiceWithDetails;
@@ -48,11 +43,8 @@ export const InvoiceActions = ({ invoice }: InvoiceActionsProps) => {
           <DeleteInvoice invoiceId={invoice.id} />
         </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
-          <Link href={`#`}>
-            <CircleCheck className="size-4 mr-2 shrink-0" />
-            Mark as Paid
-          </Link>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          <TogglePaymentStatus invoice={invoice} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
