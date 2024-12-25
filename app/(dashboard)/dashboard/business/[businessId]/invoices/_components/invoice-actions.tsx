@@ -10,11 +10,16 @@ import {
   Mail,
   MoreVertical,
   Pencil,
-  Trash,
 } from "lucide-react";
 import Link from "next/link";
+import { InvoiceWithDetails } from "../../../type";
+import { DeleteInvoice } from "./delete-invoice";
 
-export const InvoiceActions = () => {
+interface InvoiceActionsProps {
+  invoice: InvoiceWithDetails;
+}
+
+export const InvoiceActions = ({ invoice }: InvoiceActionsProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -39,12 +44,10 @@ export const InvoiceActions = () => {
             Send Reminder
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href={`#`}>
-            <Trash className="size-4 mr-2 shrink-0" />
-            Delete Invoice
-          </Link>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          <DeleteInvoice invoiceId={invoice.id} />
         </DropdownMenuItem>
+
         <DropdownMenuItem asChild>
           <Link href={`#`}>
             <CircleCheck className="size-4 mr-2 shrink-0" />

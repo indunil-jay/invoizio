@@ -12,6 +12,31 @@ import { eq } from "drizzle-orm";
 
 @injectable()
 export class InvoiceRepository implements IInvoiceRepository {
+  public async deleteById(invoiceId: string): Promise<void> {
+    try {
+      const res = await db.delete(invoices).where(eq(invoices.id, invoiceId));
+      console.log({ deleteResponse: res });
+    } catch (error) {
+      console.error(`DATABASE_ERROR::InvoiceRepository::deleteById: ${error}`);
+      throw new DataBaseError();
+    }
+  }
+
+  public async getById(
+    invoiceId: string
+  ): Promise<InvoicesCollectionDocument | undefined> {
+    try {
+      return await db.query.invoices.findFirst({
+        where: eq(invoices.id, invoiceId),
+      });
+    } catch (error) {
+      console.error(
+        `DATABASE_ERROR::InvoiceRepository::getAllByBusinessId: ${error}`
+      );
+      throw new DataBaseError();
+    }
+  }
+
   public async getAllByBusinessId(
     businessId: string
   ): Promise<DetailInvoicesCollectionDocument[]> {

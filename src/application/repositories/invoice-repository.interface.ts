@@ -14,4 +14,7 @@ export interface IInvoiceRepository {
   getAllByBusinessId(
     businessId: string
   ): Promise<DetailInvoicesCollectionDocument[]>;
+
+  getById(invoiceId: string): Promise<InvoicesCollectionDocument | undefined>;
+  deleteById(invoiceId: string): Promise<void>;
 }

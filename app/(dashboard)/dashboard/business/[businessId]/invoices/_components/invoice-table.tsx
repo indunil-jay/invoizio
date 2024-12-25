@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -8,13 +9,13 @@ import {
 } from "@/app/_components/ui/table";
 import { InvoiceActions } from "./invoice-actions";
 import { InvoiceWithDetails } from "../../../type";
+import { AlertDialog } from "@/app/_components/ui/alert-dialog";
 
 interface InvoiceTableProps {
   invoices: InvoiceWithDetails[] | null;
 }
 
 export const InvoiceTable = ({ invoices }: InvoiceTableProps) => {
-  console.log({ invoices });
   return (
     <Table>
       <TableHeader>
@@ -43,7 +44,9 @@ export const InvoiceTable = ({ invoices }: InvoiceTableProps) => {
               <TableCell>{invoice.status.status}</TableCell>
               <TableCell>{invoice.dueDate.toString()}</TableCell>
               <TableCell className="text-right">
-                <InvoiceActions />
+                <AlertDialog>
+                  <InvoiceActions invoice={invoice} />
+                </AlertDialog>
               </TableCell>
             </TableRow>
           ))
