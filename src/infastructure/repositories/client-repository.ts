@@ -17,6 +17,7 @@ export class ClientRepository implements IClientRepository {
     try {
       return await db.query.clients.findFirst({
         where: eq(clients.id, clientId),
+        with: { clientAddresses: true },
       });
     } catch (error) {
       console.error(`DATABASE_ERROR::ClientRepository::getById: ${error}`);

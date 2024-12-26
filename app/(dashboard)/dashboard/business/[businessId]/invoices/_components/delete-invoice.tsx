@@ -28,13 +28,13 @@ export const DeleteInvoice = ({ invoiceId }: DeleteInvoiceProps) => {
   };
   return (
     <>
-      <AlertDialogTrigger key="confirm-delete" asChild>
+      <AlertDialogTrigger asChild>
         <div className="flex gap-2">
           <Trash className="size-4 mr-2 shrink-0" />
           Delete Invoice
         </div>
       </AlertDialogTrigger>
-      <AlertDialogContent key="confirm-delete">
+      <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>

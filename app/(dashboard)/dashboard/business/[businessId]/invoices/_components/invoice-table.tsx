@@ -8,13 +8,20 @@ import {
   TableRow,
 } from "@/app/_components/ui/table";
 import { InvoiceActions } from "./invoice-actions";
-import { InvoiceWithDetails } from "../../../type";
+import { BusinessWithAddress, InvoiceWithDetails } from "../../../type";
+import { User } from "@/app/(dashboard)/dashboard/account/types";
 
 interface InvoiceTableProps {
   invoices: InvoiceWithDetails[] | null;
+  user: User;
+  business: BusinessWithAddress;
 }
 
-export const InvoiceTable = ({ invoices }: InvoiceTableProps) => {
+export const InvoiceTable = ({
+  invoices,
+  user,
+  business,
+}: InvoiceTableProps) => {
   return (
     <Table>
       <TableHeader>
@@ -43,7 +50,11 @@ export const InvoiceTable = ({ invoices }: InvoiceTableProps) => {
               <TableCell>{invoice.status.status}</TableCell>
               <TableCell>{invoice.dueDate.toString()}</TableCell>
               <TableCell className="text-right">
-                <InvoiceActions invoice={invoice} />
+                <InvoiceActions
+                  invoice={invoice}
+                  user={user}
+                  business={business}
+                />
               </TableCell>
             </TableRow>
           ))

@@ -22,6 +22,13 @@
       "when": 1735107626918,
       "tag": "0002_complete_lilith",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1735207183251,
+      "tag": "0003_warm_tombstone",
+      "breakpoints": true
     }
   ]
 }

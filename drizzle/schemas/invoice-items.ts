@@ -18,7 +18,7 @@ export const invoiceItems = pgTable("invoice_items", {
   invoiceId: text("invoiceId")
     .notNull()
     .references(() => invoices.id, { onDelete: "cascade" }),
-  productName: text("name").notNull(),
+  name: text("name").notNull(),
   quantity: integer("quantity").notNull(),
   price: decimal("price").notNull(),
   taxRate: decimal("taxRate"),
@@ -42,7 +42,7 @@ export const defineInvoiceItemsRelations = relations(
 export const invoiceItemsSchema = createInsertSchema(invoiceItems, {
   invoiceId: (schema) =>
     schema.min(1, "Invoice ID is required and must be a positive integer."),
-  productName: (schema) =>
+  name: (schema) =>
     schema.min(1, "Product name is required and cannot be empty."),
   quantity: (schema) => schema.min(1, "Quantity must be at least 1."),
   price: (schema) =>
@@ -54,7 +54,7 @@ export const invoiceItemsSchema = createInsertSchema(invoiceItems, {
     schema.min(0, "Discount rate must be a non-negative number."),
 }).pick({
   invoiceId: true,
-  productName: true,
+  name: true,
   quantity: true,
   price: true,
   taxRate: true,

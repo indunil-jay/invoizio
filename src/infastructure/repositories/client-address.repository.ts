@@ -7,9 +7,25 @@ import {
 import { IClientAddressRepository } from "@/src/application/repositories/client-address-repository.interface";
 import { injectable } from "inversify";
 import { DataBaseError } from "../errors/errors";
+import { eq } from "drizzle-orm";
 
 @injectable()
 export class ClientAddressRepository implements IClientAddressRepository {
+  public async getById(
+    clientId: string
+  ): Promise<ClientAddressesCollectionDocument | undefined> {
+    try {
+      return await db.query.clientAddresses.findFirst({
+        where: eq(clientAddresses.clientId, clientId),
+      });
+    } catch (error) {
+      console.error(
+        `DATABASE_ERROR::ClientAddressRepository::getById: ${error}`
+      );
+      throw new DataBaseError();
+    }
+  }
+
   public async insert(
     data: CreateClientAddressInput,
     tx?: Transaction

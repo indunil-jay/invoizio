@@ -6,7 +6,6 @@ import { ConflictError } from "@/src/domain/errors/errors";
 import { INVOICE_STATUS } from "@/src/application/enums/invoice-status.enum";
 
 export const createInvoiceUseCase = async (data: CreateInvoiceDTO) => {
-  
   // Dependency injection
   const businessRepository = getInjection("IBusinessRepository");
   const transactionManagerService = getInjection("ITransactionManagerService");
@@ -88,7 +87,7 @@ export const createInvoiceUseCase = async (data: CreateInvoiceDTO) => {
                   {
                     invoiceId: newInvoiceDocument.id,
                     price: item.price.toPrecision(),
-                    productName: item.productName,
+                    name: item.name,
                     quantity: item.quantity,
                     taxRate: item.taxRate.toPrecision(),
                     discountRate: item.discountRate.toPrecision(),

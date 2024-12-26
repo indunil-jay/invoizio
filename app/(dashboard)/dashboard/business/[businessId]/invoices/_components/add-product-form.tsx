@@ -17,7 +17,7 @@ import { Input } from "@/app/_components/ui/input";
 import { Button } from "@/app/_components/ui/button";
 
 export const createProductFormSchema = z.object({
-  productName: z
+  name: z
     .string()
     .min(1, { message: "Product name is required and cannot be empty." }),
   quantity: z.coerce
@@ -64,7 +64,7 @@ export const AddProductForm = ({
     resolver: zodResolver(createProductFormSchema),
     defaultValues: {
       price: 0,
-      productName: "",
+      name: "",
       quantity: 1,
       taxRate: 0,
       discountRate: 0,
@@ -83,7 +83,7 @@ export const AddProductForm = ({
           <CardContent className="px-0">
             <FormField
               control={form.control}
-              name="productName"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-primary/80 text-xs">

@@ -33,12 +33,13 @@ import {
 import { ProductsList } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/product-list";
 import { useProducts } from "../_contexts/product.context";
 import { createNewInvoice } from "../create/actions";
-import { BusinessWithAddress } from "../../../type";
+import { BusinessWithAddress, InvoiceWithDetails } from "../../../type";
 import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
+import { useEffect } from "react";
 
 const addressSchema = z.object({
   addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
-  addressLine2: z.string().optional(),
+  addressLine2: z.string().optional().nullable(),
   city: z.string().min(1, { message: "City is required." }),
   postalCode: z
     .string()
@@ -75,17 +76,21 @@ export const createInvoiceSchema = z.object({
     .min(1, { message: "At least one product is required." }),
 });
 
-interface CreateInvoiceFormProps {
+interface InvoiceFormProps {
   user: User;
   business: BusinessWithAddress;
-  invoiceId: string;
+  invoiceId?: string;
+  mode: "create" | "update";
+  existingInvoice?: InvoiceWithDetails;
 }
 
-export const CreateInvoiceForm = ({
+export const InvoiceForm = ({
   user,
   business,
   invoiceId,
-}: CreateInvoiceFormProps) => {
+  mode,
+  existingInvoice,
+}: InvoiceFormProps) => {
   const {
     setProducts,
     products,
@@ -114,24 +119,43 @@ export const CreateInvoiceForm = ({
       },
 
       client: {
-        name: "",
-        email: "",
+        name: existingInvoice ? existingInvoice.client.name : "",
+        email: existingInvoice ? existingInvoice.client.email : "",
         address: {
-          addressLine1: "",
-          addressLine2: "",
-          city: "",
-          postalCode: "",
+          addressLine1: existingInvoice
+            ? existingInvoice.client.address.addressLine1
+            : "",
+          addressLine2: existingInvoice
+            ? existingInvoice.client.address.addressLine2
+            : "",
+          city: existingInvoice ? existingInvoice.client.address.city : "",
+          postalCode: existingInvoice
+            ? existingInvoice.client.address.postalCode
+            : "",
         },
       },
       invoice: {
-        description: "",
-        issueDate: new Date(),
+        description: existingInvoice ? existingInvoice.description : " ",
+        issueDate: existingInvoice
+          ? new Date(existingInvoice.issueDate)
+          : new Date(),
+        dueDate: existingInvoice
+          ? new Date(existingInvoice.dueDate)
+          : undefined,
       },
-      invoiceItems: products,
+      invoiceItems: existingInvoice
+        ? ([...existingInvoice.invoiceItems, ...products] as Product[])
+        : products,
     },
   });
 
   const toast = useShowToast();
+
+  useEffect(() => {
+    if (existingInvoice && mode === "update") {
+      setProducts([...existingInvoice.invoiceItems] as Product[]);
+    }
+  }, [existingInvoice, mode, setProducts]);
 
   const handleAddProduct = (product: Product) => {
     setProducts((prevProducts) => {
@@ -158,7 +182,11 @@ export const CreateInvoiceForm = ({
       },
       invoiceItems: data.invoiceItems,
     };
-    const response = await createNewInvoice(obj);
+    const response =
+      mode === "create"
+        ? await createNewInvoice(obj)
+        : await updateInvoice(invoiceId, obj);
+
     toast(response);
   };
   return (
@@ -166,14 +194,17 @@ export const CreateInvoiceForm = ({
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <BillFromFormSection />
-          <BillToFormSection />
+          <BillToFormSection mode={mode} />
         </div>
         <Separator />
         <BillDetailsFormSection />
 
         <Separator />
 
-        <ProductsList products={products} onAddProduct={handleAddProduct} />
+        <ProductsList
+          products={products || form.getValues("invoiceItems")}
+          onAddProduct={handleAddProduct}
+        />
 
         <Separator />
         <div className="flex justify-end items-center gap-5">
@@ -186,8 +217,12 @@ export const CreateInvoiceForm = ({
             size={"lg"}
           >
             {form.formState.isSubmitting
-              ? "Creating an Invoice"
-              : "Create an Invoice"}
+              ? mode === "create"
+                ? "Creating Invoice..."
+                : "Updating Invoice..."
+              : mode === "create"
+              ? "Create Invoice"
+              : "Update Invoice"}
           </Button>
         </div>
       </form>
@@ -239,7 +274,7 @@ export const BillFromFormSection = () => {
           </FormItem>
         )}
       />
-      <Popover>
+      <Popover modal={true}>
         <PopoverTrigger asChild>
           <FormItem>
             <FormLabel className="text-primary/80 text-xs">
@@ -263,7 +298,7 @@ export const BillFromFormSection = () => {
   );
 };
 
-export const BillToFormSection = () => {
+export const BillToFormSection = ({ mode }: { mode: "create" | "update" }) => {
   const form = useFormContext<z.infer<typeof createInvoiceSchema>>();
 
   const billToAddress =
@@ -285,7 +320,11 @@ export const BillToFormSection = () => {
               Bill To (Name):
             </FormLabel>
             <FormControl>
-              <Input placeholder="client's name" {...field} />
+              <Input
+                disabled={mode === "update"}
+                placeholder="client's name"
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -300,13 +339,17 @@ export const BillToFormSection = () => {
               Bill To (Email):
             </FormLabel>
             <FormControl>
-              <Input placeholder="client@example.com" {...field} />
+              <Input
+                disabled={mode === "update"}
+                placeholder="client@example.com"
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-      <Popover>
+      <Popover modal={true}>
         <PopoverTrigger asChild>
           <FormItem>
             <Label className="text-primary/80 text-xs">
@@ -344,7 +387,7 @@ export const BillDetailsFormSection = () => {
             <FormItem className="flex-col flex">
               <Label className="text-primary/80 text-xs">Issue Date:</Label>
               <FormControl>
-                <Popover>
+                <Popover modal={true}>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
@@ -383,7 +426,7 @@ export const BillDetailsFormSection = () => {
             <FormItem className="flex-col flex">
               <Label className="text-primary/80 text-xs">Due Date:</Label>
               <FormControl>
-                <Popover>
+                <Popover modal={true}>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}

@@ -17,7 +17,7 @@ export const clients = pgTable("client", {
 
 //define relations
 export const defineClientRelations = relations(clients, ({ many }) => ({
-  addresses: many(clientAddresses),
+  clientAddresses: many(clientAddresses),
   invoices: many(invoices),
 }));
 

@@ -9,9 +9,11 @@ export const clientAddresses = pgTable("clientAddress", {
     .notNull()
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  clientId: text("clientId").references(() => clients.id, {
-    onDelete: "cascade",
-  }),
+  clientId: text("clientId")
+    .references(() => clients.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
 
   addressLine1: text("addressLine1").notNull(),
   addressLine2: text("addressLine2"),

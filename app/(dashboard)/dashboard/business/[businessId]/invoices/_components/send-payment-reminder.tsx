@@ -25,14 +25,14 @@ export const SendPaymentReminder = ({ invoiceId }: { invoiceId: string }) => {
   };
   return (
     <>
-      <AlertDialogTrigger key={"send-reminder"} asChild>
+      <AlertDialogTrigger asChild>
         <div className="flex gap-2">
           <Mail className="size-4 mr-2 shrink-0" />
           Send Reminder
         </div>
       </AlertDialogTrigger>
 
-      <AlertDialogContent key={"send-reminder"}>
+      <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Confirm Sending Payment Reminder?</AlertDialogTitle>
           <AlertDialogDescription>

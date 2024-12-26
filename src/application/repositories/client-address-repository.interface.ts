@@ -9,4 +9,7 @@ export interface IClientAddressRepository {
     data: CreateClientAddressInput,
     tx?: Transaction
   ): Promise<ClientAddressesCollectionDocument>;
+  getById(
+    clientId: string
+  ): Promise<ClientAddressesCollectionDocument | undefined>;
 }

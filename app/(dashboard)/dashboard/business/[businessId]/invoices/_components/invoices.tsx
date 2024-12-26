@@ -52,7 +52,7 @@ export const Invoices = ({ user, business, invoices }: InvoiceProps) => {
         </div>
       </CardHeader>
       <CardContent>
-        <InvoiceTable invoices={invoices} />
+        <InvoiceTable invoices={invoices} user={user} business={business} />
       </CardContent>
     </Card>
   );

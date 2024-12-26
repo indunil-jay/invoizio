@@ -72,7 +72,7 @@ export const ProductTable = () => {
             return (
               <TableRow key={index + 1}>
                 <TableCell className="text-center">{`#${index + 1}`}</TableCell>
-                <TableCell>{product.productName}</TableCell>
+                <TableCell>{product.name}</TableCell>
                 <TableCell className="text-right">{product.quantity}</TableCell>
                 <TableCell className="text-right">
                   {formatCurrency(product.price)}
@@ -150,7 +150,11 @@ export const ProductsList = ({
         <p className="text-xs text-muted-foreground ">
           Add product details individually by clicking the button
         </p>
-        <Popover onOpenChange={setIsOpenProductForm} open={isOpenProductForm}>
+        <Popover
+          modal={true}
+          onOpenChange={setIsOpenProductForm}
+          open={isOpenProductForm}
+        >
           <PopoverTrigger asChild>
             <Button size={"sm"}>
               <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">

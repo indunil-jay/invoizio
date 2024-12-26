@@ -42,16 +42,29 @@ export type Client = {
   updatedAt: Date;
 };
 
+export type ClientWithAddress = {
+  address: {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    clientId: string;
+    addressLine1: string;
+    addressLine2: string | null;
+    city: string;
+    postalCode: string;
+  };
+} & Client;
+
 export type InvoiceItem = {
   id: string;
   createdAt: Date;
   updatedAt: Date;
   invoiceId: string;
-  productName: string;
+  name: string;
   quantity: number;
-  price: string;
-  taxRate: string | null;
-  discountRate: string | null;
+  price: number;
+  taxRate: number | null;
+  discountRate: number | null;
 };
 
 export type InvoiceStatus = {
@@ -60,7 +73,7 @@ export type InvoiceStatus = {
 };
 
 export type InvoiceWithDetails = {
-  client: Client;
+  client: ClientWithAddress;
   invoiceItems: InvoiceItem[];
   status: InvoiceStatus;
 } & Invoice;

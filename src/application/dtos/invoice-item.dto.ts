@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createInvoiceItemSchema = z.object({
-  productName: z.string().min(1),
+  name: z.string().min(1),
   quantity: z.number().int().positive().min(1),
   price: z.coerce.number().positive().min(1),
   taxRate: z.coerce.number(),
