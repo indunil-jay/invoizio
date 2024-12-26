@@ -36,6 +36,8 @@ import { createNewInvoice } from "../create/actions";
 import { BusinessWithAddress, InvoiceWithDetails } from "../../../type";
 import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
 import { useEffect } from "react";
+import { updateInvoice } from "../actions";
+import { useRouter } from "next/navigation";
 
 const addressSchema = z.object({
   addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
@@ -82,6 +84,7 @@ interface InvoiceFormProps {
   invoiceId?: string;
   mode: "create" | "update";
   existingInvoice?: InvoiceWithDetails;
+  onClose?: () => void;
 }
 
 export const InvoiceForm = ({
@@ -90,6 +93,7 @@ export const InvoiceForm = ({
   invoiceId,
   mode,
   existingInvoice,
+  onClose,
 }: InvoiceFormProps) => {
   const {
     setProducts,
@@ -150,7 +154,7 @@ export const InvoiceForm = ({
   });
 
   const toast = useShowToast();
-
+  const router = useRouter();
   useEffect(() => {
     if (existingInvoice && mode === "update") {
       setProducts([...existingInvoice.invoiceItems] as Product[]);
@@ -171,7 +175,7 @@ export const InvoiceForm = ({
       client: data.client,
       business: data.business,
       invoice: {
-        id: invoiceId,
+        id: mode === "create" ? invoiceId : existingInvoice!.id,
         grandTotal,
         totalBasePrice,
         totalDiscount,
@@ -185,9 +189,11 @@ export const InvoiceForm = ({
     const response =
       mode === "create"
         ? await createNewInvoice(obj)
-        : await updateInvoice(invoiceId, obj);
+        : await updateInvoice(obj);
 
     toast(response);
+    onClose?.();
+    router.refresh();
   };
   return (
     <FormProvider {...form}>
@@ -208,7 +214,14 @@ export const InvoiceForm = ({
 
         <Separator />
         <div className="flex justify-end items-center gap-5">
-          <Button size={"lg"} variant={"destructive"}>
+          <Button
+            size={"lg"}
+            variant={"secondary"}
+            onClick={(e) => {
+              e.preventDefault();
+              onClose?.();
+            }}
+          >
             Cancle
           </Button>
           <Button

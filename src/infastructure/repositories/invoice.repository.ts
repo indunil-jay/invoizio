@@ -15,14 +15,18 @@ import { eq } from "drizzle-orm";
 export class InvoiceRepository implements IInvoiceRepository {
   public async update(
     data: PartialUpdateInvoicesCollectionDocument,
-    id: string
+    id: string,
+    tx?: Transaction
   ): Promise<InvoicesCollectionDocument> {
+    const invoker = tx ?? db;
     try {
-      const [updatedDocument] = await db
+      const query = invoker
         .update(invoices)
         .set(data)
         .where(eq(invoices.id, id))
         .returning();
+
+      const [updatedDocument] = await query.execute();
 
       if (!updatedDocument) {
         throw new Error("Invoice updated failed, no data returned.");
@@ -36,8 +40,7 @@ export class InvoiceRepository implements IInvoiceRepository {
 
   public async deleteById(invoiceId: string): Promise<void> {
     try {
-      const res = await db.delete(invoices).where(eq(invoices.id, invoiceId));
-      console.log({ deleteResponse: res });
+      await db.delete(invoices).where(eq(invoices.id, invoiceId));
     } catch (error) {
       console.error(`DATABASE_ERROR::InvoiceRepository::deleteById: ${error}`);
       throw new DataBaseError();

@@ -18,8 +18,10 @@ export interface IInvoiceRepository {
 
   getById(invoiceId: string): Promise<InvoicesCollectionDocument | undefined>;
   deleteById(invoiceId: string): Promise<void>;
+
   update(
     data: PartialUpdateInvoicesCollectionDocument,
-    id: string
+    id: string,
+    tx?: Transaction
   ): Promise<InvoicesCollectionDocument>;
 }

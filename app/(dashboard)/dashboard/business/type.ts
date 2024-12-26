@@ -62,9 +62,9 @@ export type InvoiceItem = {
   invoiceId: string;
   name: string;
   quantity: number;
-  price: number;
-  taxRate: number | null;
-  discountRate: number | null;
+  price: number | string;
+  taxRate: number | string | null;
+  discountRate: number | string | null;
 };
 
 export type InvoiceStatus = {

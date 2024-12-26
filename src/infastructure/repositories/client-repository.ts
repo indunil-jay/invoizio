@@ -44,4 +44,30 @@ export class ClientRepository implements IClientRepository {
       throw new DataBaseError();
     }
   }
+
+  public async update(
+    data: CreateClientInput,
+    clientId: string,
+    tx?: Transaction
+  ): Promise<ClientsCollectionDocument> {
+    const invoker = tx ?? db;
+    try {
+      const query = invoker
+        .update(clients)
+        .set(data)
+        .where(eq(clients.id, clientId))
+        .returning();
+
+      const [updatedClient] = await query.execute();
+
+      if (!updatedClient) {
+        throw new Error("Client creation failed, no data returned.");
+      }
+
+      return updatedClient;
+    } catch (error) {
+      console.error(`DATABASE_ERROR::ClientRepository::update: ${error}`);
+      throw new DataBaseError();
+    }
+  }
 }

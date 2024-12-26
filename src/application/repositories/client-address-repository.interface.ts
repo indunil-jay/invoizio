@@ -9,6 +9,11 @@ export interface IClientAddressRepository {
     data: CreateClientAddressInput,
     tx?: Transaction
   ): Promise<ClientAddressesCollectionDocument>;
+  update(
+    data: CreateClientAddressInput,
+    clientId: string,
+    tx?: Transaction
+  ): Promise<ClientAddressesCollectionDocument>;
   getById(
     clientId: string
   ): Promise<ClientAddressesCollectionDocument | undefined>;

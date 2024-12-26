@@ -47,4 +47,31 @@ export class ClientAddressRepository implements IClientAddressRepository {
       throw new DataBaseError();
     }
   }
+
+  public async update(
+    data: CreateClientAddressInput,
+    clientId: string,
+    tx?: Transaction
+  ): Promise<ClientAddressesCollectionDocument> {
+    const invoker = tx ?? db;
+    try {
+      const query = invoker
+        .update(clientAddresses)
+        .set(data)
+        .where(eq(clientAddresses.clientId, clientId))
+        .returning();
+      const [updatedClientAddress] = await query.execute();
+
+      if (!updatedClientAddress) {
+        throw new Error("Client Address creation failed, no data returned.");
+      }
+
+      return updatedClientAddress;
+    } catch (error) {
+      console.error(
+        `DATABASE_ERROR::ClientAddressRepository::udpdate: ${error}`
+      );
+      throw new DataBaseError();
+    }
+  }
 }

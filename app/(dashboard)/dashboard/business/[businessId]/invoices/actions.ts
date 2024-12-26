@@ -4,6 +4,7 @@ import { deleteInvoiceByIdController } from "@/src/interface-adapter/controllers
 import { updateInvoiceStatusByIdController } from "@/src/interface-adapter/controllers/invoice/update-invoice-status-by-id.controller";
 import { INVOICE_STATUS } from "../../type";
 import { sendClientPaymentReminderController } from "@/src/interface-adapter/controllers/invoice/send-client-payment-reminder.controller";
+import { updateInvoiceController } from "@/src/interface-adapter/controllers/invoice/update-invoice.controller";
 
 export const deleteInvoiceById = (invoiceId: string) => {
   return executeAction({
@@ -27,5 +28,13 @@ export const sendPaymentReminderEmail = (invoiceId: string) => {
   return executeAction({
     actionFn: async () => await sendClientPaymentReminderController(invoiceId),
     title: "Payment Reminder Email",
+  });
+};
+
+export const updateInvoice = (data: unknown) => {
+  console.log("ACTION", data);
+  return executeAction({
+    actionFn: async () => await updateInvoiceController(data),
+    title: "Update Invoice ",
   });
 };

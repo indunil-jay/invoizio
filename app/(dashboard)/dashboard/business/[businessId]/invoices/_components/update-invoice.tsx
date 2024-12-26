@@ -15,12 +15,14 @@ interface UpdateInvoiceProps {
   user: User;
   business: BusinessWithAddress;
   invoice: InvoiceWithDetails;
+  onClose: () => void;
 }
 
 export const UpdateInvoice = ({
   user,
   business,
   invoice,
+  onClose,
 }: UpdateInvoiceProps) => {
   return (
     <Card>
@@ -35,6 +37,7 @@ export const UpdateInvoice = ({
             business={business}
             mode="update"
             existingInvoice={invoice}
+            onClose={onClose}
           />
         </ProductProvider>
       </CardContent>

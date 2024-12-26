@@ -9,7 +9,7 @@ interface BackButtonProps {
 
 export const BackButton = ({ btnName = "Back", src }: BackButtonProps) => {
   return (
-    <Button asChild variant={"secondary"} size={"xsm"} className="w-fit">
+    <Button asChild variant={"secondary"} size={"sm"} className="w-fit">
       <Link href={src}>
         <p className="flex gap-0.5 items-center">
           <MoveLeft className="shrink-0" />

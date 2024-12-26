@@ -9,4 +9,15 @@ export interface IInvoiceItemsRepository {
     data: CreateInvoiceItemsInput,
     tx?: Transaction
   ): Promise<InvoiceItemsCollectionDocument>;
+
+  update(
+    data: CreateInvoiceItemsInput,
+    itemId: string,
+    tx?: Transaction
+  ): Promise<InvoiceItemsCollectionDocument>;
+
+  getAll(
+    invoiceId: string,
+    tx?: Transaction
+  ): Promise<InvoiceItemsCollectionDocument[]>;
 }
