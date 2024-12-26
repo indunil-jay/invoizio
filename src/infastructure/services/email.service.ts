@@ -9,6 +9,15 @@ export class EmailService implements IEmailService {
     envValidationSchema.RESEND_API_KEY
   );
 
+  public async sendPaymentReminderEmail(email: string): Promise<void> {
+    EmailService.resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: email,
+      subject: "Payment Reminder",
+      html: `<p>This email for your  invoice reminder, please settle it before due date</p>`,
+    });
+  }
+
   public async sendVerificationEmail(
     email: string,
     token: string

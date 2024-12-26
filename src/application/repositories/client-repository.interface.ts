@@ -9,4 +9,6 @@ export interface IClientRepository {
     data: CreateClientInput,
     tx?: Transaction
   ): Promise<ClientsCollectionDocument>;
+
+  getById(clientId: string): Promise<ClientsCollectionDocument | undefined>;
 }

@@ -9,43 +9,41 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/app/_components/ui/alert-dialog";
-import { Trash } from "lucide-react";
-import { deleteInvoiceById } from "../actions";
 import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
 import { useRouter } from "next/navigation";
+import { sendPaymentReminderEmail } from "../actions";
+import { Mail } from "lucide-react";
 
-interface DeleteInvoiceProps {
-  invoiceId: string;
-}
-
-export const DeleteInvoice = ({ invoiceId }: DeleteInvoiceProps) => {
+export const SendPaymentReminder = ({ invoiceId }: { invoiceId: string }) => {
   const toast = useShowToast();
   const router = useRouter();
+
   const handleConfirm = async () => {
-    const response = await deleteInvoiceById(invoiceId);
+    const response = await sendPaymentReminderEmail(invoiceId);
     toast(response);
     router.refresh();
   };
   return (
     <>
-      <AlertDialogTrigger key="confirm-delete" asChild>
+      <AlertDialogTrigger key={"send-reminder"} asChild>
         <div className="flex gap-2">
-          <Trash className="size-4 mr-2 shrink-0" />
-          Delete Invoice
+          <Mail className="size-4 mr-2 shrink-0" />
+          Send Reminder
         </div>
       </AlertDialogTrigger>
-      <AlertDialogContent key="confirm-delete">
+
+      <AlertDialogContent key={"send-reminder"}>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Confirm Sending Payment Reminder?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            details and remove your data from our servers.
+            Sending this email will notify the client about the outstanding
+            payment. Please confirm to proceed.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={handleConfirm}>
-            Continue and Delete
+            Continue and Send
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

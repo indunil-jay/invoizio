@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import { db, Transaction } from "@/drizzle";
 import {
   CreateClientInput,
@@ -10,6 +11,19 @@ import { DataBaseError } from "../errors/errors";
 
 @injectable()
 export class ClientRepository implements IClientRepository {
+  public async getById(
+    clientId: string
+  ): Promise<ClientsCollectionDocument | undefined> {
+    try {
+      return await db.query.clients.findFirst({
+        where: eq(clients.id, clientId),
+      });
+    } catch (error) {
+      console.error(`DATABASE_ERROR::ClientRepository::getById: ${error}`);
+      throw new DataBaseError();
+    }
+  }
+
   public async insert(
     data: CreateClientInput,
     tx?: Transaction

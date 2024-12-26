@@ -39,7 +39,7 @@ export const TogglePaymentStatus = ({ invoice }: TogglePaymentStatusProps) => {
 
   return (
     <>
-      <AlertDialogTrigger asChild>
+      <AlertDialogTrigger key="toggle-status" asChild>
         <div className="flex gap-2 cursor-pointer">
           <CircleCheck className="size-4 mr-2 shrink-0" />
           {nextStatus === INVOICE_STATUS.PAID
@@ -48,7 +48,7 @@ export const TogglePaymentStatus = ({ invoice }: TogglePaymentStatusProps) => {
         </div>
       </AlertDialogTrigger>
 
-      <AlertDialogContent>
+      <AlertDialogContent key="toggle-status">
         <AlertDialogHeader>
           <AlertDialogTitle>Confirm Status Change</AlertDialogTitle>
           <AlertDialogDescription>
