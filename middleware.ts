@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import {
   apiAuthPrefix,
   authRoutes,
@@ -18,21 +19,23 @@ export default auth(async function middleware(req) {
   const isAuthRoute = authRoutes.includes(req.nextUrl.pathname);
 
   //always allows user to access these routes
-  if (isApiAuthRoute) return;
+  if (isApiAuthRoute) return NextResponse.next();
 
   //always allows these routes also,but if there is valid session redirect to the app
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl));
+      return NextResponse.redirect(
+        new URL(DEFAULT_LOGIN_REDIRECT, req.nextUrl)
+      );
     }
-    return;
+    return NextResponse.next();
   }
   //anything else, redirect to the sign in auth route
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL("/auth/sign-in", req.nextUrl));
+    return NextResponse.redirect(new URL("/auth/sign-in", req.nextUrl));
   }
 
-  return;
+  return NextResponse.next();
 });
 
 export const config = {
