@@ -8,5 +8,4 @@ const initializeModule = (bind: interfaces.Bind) => {
     BusinessRepository
   );
 };
-
 export const BusinessModule = new ContainerModule(initializeModule);
