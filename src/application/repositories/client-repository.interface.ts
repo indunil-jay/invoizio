@@ -1,6 +1,7 @@
 import { Transaction } from "@/drizzle";
 import {
     ClientsCollectionDocument,
+    ClientsCollectionWithAddressDocument,
     CreateClientInput,
 } from "@/drizzle/schemas/client";
 
@@ -15,7 +16,9 @@ export interface IClientRepository {
         tx?: Transaction
     ): Promise<ClientsCollectionDocument>;
 
-    getById(clientId: string): Promise<ClientsCollectionDocument | undefined>;
+    getById(
+        clientId: string
+    ): Promise<ClientsCollectionWithAddressDocument | undefined>;
 
     deleteById(clientId: string, tx?: Transaction): Promise<void>;
 }

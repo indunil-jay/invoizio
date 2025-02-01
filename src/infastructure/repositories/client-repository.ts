@@ -4,6 +4,7 @@ import {
     CreateClientInput,
     ClientsCollectionDocument,
     clients,
+    ClientsCollectionWithAddressDocument,
 } from "@/drizzle/schemas/client";
 import { IClientRepository } from "@/src/application/repositories/client-repository.interface";
 import { injectable } from "inversify";
@@ -28,7 +29,7 @@ export class ClientRepository implements IClientRepository {
 
     public async getById(
         clientId: string
-    ): Promise<ClientsCollectionDocument | undefined> {
+    ): Promise<ClientsCollectionWithAddressDocument | undefined> {
         try {
             return await db.query.clients.findFirst({
                 where: eq(clients.id, clientId),
