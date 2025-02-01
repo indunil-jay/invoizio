@@ -8,6 +8,13 @@
       "when": 1738390550746,
       "tag": "0000_thankful_shiva",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1738414300494,
+      "tag": "0001_faulty_venus",
+      "breakpoints": true
     }
   ]
 }

@@ -10,7 +10,7 @@ export const clients = pgTable("client", {
         .primaryKey()
         .$defaultFn(() => crypto.randomUUID()),
     name: text("name").notNull(),
-    email: text("email").unique().notNull(),
+    email: text("email").notNull(),
     createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
 });
