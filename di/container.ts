@@ -16,55 +16,58 @@ import { ClientModule } from "@/di/modules/client.module";
 import { ClientAddressModule } from "@/di/modules/client-address.module";
 import { InvoiceModule } from "@/di/modules/invoice.module";
 import { InvoiceItemsModule } from "@/di/modules/invoice-items.module";
+import { ActivityModule } from "./modules/activity.module";
 
 const ApplicationContainer = new Container({
-  defaultScope: "Singleton",
+    defaultScope: "Singleton",
 });
 
 export const initializeContainer = () => {
-  ApplicationContainer.load(UserModule);
-  ApplicationContainer.load(HashingModule);
-  ApplicationContainer.load(AuthenticationModule);
-  ApplicationContainer.load(VerificationTokenModule);
-  ApplicationContainer.load(TokenGeneratorModule);
-  ApplicationContainer.load(EmailModule);
-  ApplicationContainer.load(PasswordResetTokenModule);
-  ApplicationContainer.load(AccountModule);
-  ApplicationContainer.load(BusinessModule);
-  ApplicationContainer.load(BusinessAddressModule);
-  ApplicationContainer.load(TransactionManagerModule);
-  ApplicationContainer.load(ClientModule);
-  ApplicationContainer.load(ClientAddressModule);
-  ApplicationContainer.load(InvoiceModule);
-  ApplicationContainer.load(InvoiceItemsModule);
+    ApplicationContainer.load(UserModule);
+    ApplicationContainer.load(HashingModule);
+    ApplicationContainer.load(AuthenticationModule);
+    ApplicationContainer.load(VerificationTokenModule);
+    ApplicationContainer.load(TokenGeneratorModule);
+    ApplicationContainer.load(EmailModule);
+    ApplicationContainer.load(PasswordResetTokenModule);
+    ApplicationContainer.load(AccountModule);
+    ApplicationContainer.load(BusinessModule);
+    ApplicationContainer.load(BusinessAddressModule);
+    ApplicationContainer.load(TransactionManagerModule);
+    ApplicationContainer.load(ClientModule);
+    ApplicationContainer.load(ClientAddressModule);
+    ApplicationContainer.load(InvoiceModule);
+    ApplicationContainer.load(InvoiceItemsModule);
+    ApplicationContainer.load(ActivityModule);
 };
 
 export const destroyContainer = () => {
-  ApplicationContainer.unload(UserModule);
-  ApplicationContainer.unload(HashingModule);
-  ApplicationContainer.unload(AuthenticationModule);
-  ApplicationContainer.unload(VerificationTokenModule);
-  ApplicationContainer.unload(TokenGeneratorModule);
-  ApplicationContainer.unload(EmailModule);
-  ApplicationContainer.unload(PasswordResetTokenModule);
-  ApplicationContainer.unload(AccountModule);
-  ApplicationContainer.unload(BusinessModule);
-  ApplicationContainer.unload(BusinessAddressModule);
-  ApplicationContainer.unload(TransactionManagerModule);
-  ApplicationContainer.unload(ClientModule);
-  ApplicationContainer.unload(ClientAddressModule);
-  ApplicationContainer.load(InvoiceModule);
-  ApplicationContainer.load(InvoiceItemsModule);
+    ApplicationContainer.unload(UserModule);
+    ApplicationContainer.unload(HashingModule);
+    ApplicationContainer.unload(AuthenticationModule);
+    ApplicationContainer.unload(VerificationTokenModule);
+    ApplicationContainer.unload(TokenGeneratorModule);
+    ApplicationContainer.unload(EmailModule);
+    ApplicationContainer.unload(PasswordResetTokenModule);
+    ApplicationContainer.unload(AccountModule);
+    ApplicationContainer.unload(BusinessModule);
+    ApplicationContainer.unload(BusinessAddressModule);
+    ApplicationContainer.unload(TransactionManagerModule);
+    ApplicationContainer.unload(ClientModule);
+    ApplicationContainer.unload(ClientAddressModule);
+    ApplicationContainer.unload(InvoiceModule);
+    ApplicationContainer.unload(InvoiceItemsModule);
+    ApplicationContainer.unload(ActivityModule);
 };
 
 if (process.env.NODE_ENV !== "test") {
-  initializeContainer();
+    initializeContainer();
 }
 
 export function getInjection<K extends keyof typeof DI_SYMBOLS>(
-  symbol: K
+    symbol: K
 ): DI_RETURN_TYPES[K] {
-  return ApplicationContainer.get(DI_SYMBOLS[symbol]);
+    return ApplicationContainer.get(DI_SYMBOLS[symbol]);
 }
 
 export { ApplicationContainer };

@@ -16,6 +16,7 @@ export const createInvoiceUseCase = async (data: CreateInvoiceDTO) => {
     const invoiceRepository = getInjection("IInvoiceRepository");
     const invoiceItemsRepository = getInjection("IInvoiceItemsRepository");
     const emailService = getInjection("IEmailService");
+    const activityRepository = getInjection("IActivityRepository");
 
     // Validate session
     const currentUser = await checkValidSessionUseCase.execute();
@@ -104,6 +105,15 @@ export const createInvoiceUseCase = async (data: CreateInvoiceDTO) => {
                         )
                     );
 
+                    await activityRepository.create(
+                        {
+                            businessId: data.business.id,
+                            clientId: newClientDocument.id,
+                            invoiceId: newInvoiceDocument.id,
+                        },
+                        tx
+                    );
+
                     return {
                         newClientDocument,
                         newClientAddressDocument,
@@ -121,6 +131,7 @@ export const createInvoiceUseCase = async (data: CreateInvoiceDTO) => {
             results.newClientDocument.email,
             results.newInvoiceDocument.id
         );
+
         return {
             success: true,
             message: "Invoice has been successfully created.",

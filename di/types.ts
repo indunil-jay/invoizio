@@ -1,4 +1,5 @@
 import { IAccountRepository } from "@/src/application/repositories/account-repository.interface";
+import { IActivityRepository } from "@/src/application/repositories/activities-repository.interface";
 import { IBusinessAddressRepository } from "@/src/application/repositories/business-address-repository.interface";
 import { IBusinessRepository } from "@/src/application/repositories/business-repository.interface";
 import { IClientAddressRepository } from "@/src/application/repositories/client-address-repository.interface";
@@ -15,42 +16,44 @@ import { ITokenGeneratorService } from "@/src/application/services/token-generat
 import { ITransactionManagerService } from "@/src/application/services/transaction-service.interface";
 
 export const DI_SYMBOLS = {
-  // Services
-  IHashingService: Symbol.for("IHashingService"),
-  IAuthenticationService: Symbol.for("IAuthenticationService"),
-  ITokenGeneratorService: Symbol.for("ITokenGeneratorService"),
-  IEmailService: Symbol.for("IEmailService"),
-  ITransactionManagerService: Symbol.for("ITransactionManagerService"),
-  // Repositories
-  IUserRepository: Symbol.for("IUserRepository"),
-  IVerificationTokenRepository: Symbol.for("IVerificationTokenRepository"),
-  IPasswordResetTokenRepository: Symbol.for("IPasswordResetTokenRepository"),
-  IAccountRepository: Symbol.for("IAccountRepository"),
-  IBusinessRepository: Symbol.for("IBusinessRepository"),
-  IBusinessAddressRepository: Symbol.for("IBusinessAddressRepository"),
-  IClientRepository: Symbol.for("IClientRepository"),
-  IClientAddressRepository: Symbol.for("IClientAddressRepository"),
-  IInvoiceRepository: Symbol.for("IInvoiceRepository"),
-  IInvoiceItemsRepository: Symbol.for("IInvoiceItemsRepository"),
+    // Services
+    IHashingService: Symbol.for("IHashingService"),
+    IAuthenticationService: Symbol.for("IAuthenticationService"),
+    ITokenGeneratorService: Symbol.for("ITokenGeneratorService"),
+    IEmailService: Symbol.for("IEmailService"),
+    ITransactionManagerService: Symbol.for("ITransactionManagerService"),
+    // Repositories
+    IUserRepository: Symbol.for("IUserRepository"),
+    IVerificationTokenRepository: Symbol.for("IVerificationTokenRepository"),
+    IPasswordResetTokenRepository: Symbol.for("IPasswordResetTokenRepository"),
+    IAccountRepository: Symbol.for("IAccountRepository"),
+    IBusinessRepository: Symbol.for("IBusinessRepository"),
+    IBusinessAddressRepository: Symbol.for("IBusinessAddressRepository"),
+    IClientRepository: Symbol.for("IClientRepository"),
+    IClientAddressRepository: Symbol.for("IClientAddressRepository"),
+    IInvoiceRepository: Symbol.for("IInvoiceRepository"),
+    IInvoiceItemsRepository: Symbol.for("IInvoiceItemsRepository"),
+    IActivityRepository: Symbol.for("IActivityRepository"),
 };
 
 export interface DI_RETURN_TYPES {
-  // Services
-  IHashingService: IHashingService;
-  IAuthenticationService: IAuthenticationService;
-  ITokenGeneratorService: ITokenGeneratorService;
-  IEmailService: IEmailService;
-  ITransactionManagerService: ITransactionManagerService;
+    // Services
+    IHashingService: IHashingService;
+    IAuthenticationService: IAuthenticationService;
+    ITokenGeneratorService: ITokenGeneratorService;
+    IEmailService: IEmailService;
+    ITransactionManagerService: ITransactionManagerService;
 
-  // Repositories
-  IUserRepository: IUserRepository;
-  IVerificationTokenRepository: IVerificationTokenRepository;
-  IPasswordResetTokenRepository: IPasswordResetTokenRepository;
-  IAccountRepository: IAccountRepository;
-  IBusinessRepository: IBusinessRepository;
-  IBusinessAddressRepository: IBusinessAddressRepository;
-  IClientRepository: IClientRepository;
-  IClientAddressRepository: IClientAddressRepository;
-  IInvoiceRepository: IInvoiceRepository;
-  IInvoiceItemsRepository: IInvoiceItemsRepository;
+    // Repositories
+    IUserRepository: IUserRepository;
+    IVerificationTokenRepository: IVerificationTokenRepository;
+    IPasswordResetTokenRepository: IPasswordResetTokenRepository;
+    IAccountRepository: IAccountRepository;
+    IBusinessRepository: IBusinessRepository;
+    IBusinessAddressRepository: IBusinessAddressRepository;
+    IClientRepository: IClientRepository;
+    IClientAddressRepository: IClientAddressRepository;
+    IInvoiceRepository: IInvoiceRepository;
+    IInvoiceItemsRepository: IInvoiceItemsRepository;
+    IActivityRepository: IActivityRepository;
 }

@@ -15,6 +15,34 @@
       "when": 1738414300494,
       "tag": "0001_faulty_venus",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1738415916123,
+      "tag": "0002_workable_vampiro",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1738416902643,
+      "tag": "0003_curious_the_fury",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1738417053523,
+      "tag": "0004_huge_betty_ross",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1738419234438,
+      "tag": "0005_fuzzy_wrecking_crew",
+      "breakpoints": true
     }
   ]
 }
