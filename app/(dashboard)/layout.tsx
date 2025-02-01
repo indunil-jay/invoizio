@@ -9,7 +9,6 @@ import { DynamicBreadCumb } from "../_components/custom/dynamic-breadcumb";
 import { getAllBusiness } from "./dashboard/business/queries";
 import { getUserById } from "./dashboard/account/queries";
 import { auth } from "@/src/auth";
-import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({
     children,
@@ -18,15 +17,9 @@ export default async function DashboardLayout({
 }>) {
     const session = await auth();
 
-    if (!session || !session.user || !session.user.id) {
-        redirect("/auth/sign-in");
-    }
+    if (!session?.user?.id) return null;
 
     const businesses = await getAllBusiness();
-
-    if (!businesses) {
-        redirect("/dashboard/business/create");
-    }
 
     const user = await getUserById(session.user.id);
     if (!user) return null;

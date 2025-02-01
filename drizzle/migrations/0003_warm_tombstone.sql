@@ -1,1 +1,0 @@
-ALTER TABLE "clientAddress" ALTER COLUMN "clientId" SET NOT NULL;

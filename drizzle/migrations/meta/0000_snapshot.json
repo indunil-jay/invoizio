@@ -1,5 +1,5 @@
 {
-  "id": "5df482e1-b685-4d12-9945-8ab73a6e9e55",
+  "id": "18ffd2d3-9454-4801-a4fc-c139747619b9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -352,7 +352,7 @@
           "name": "clientId",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "addressLine1": {
           "name": "addressLine1",
@@ -541,7 +541,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -661,7 +661,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "invoice_statusId_status_id_fk": {

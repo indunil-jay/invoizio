@@ -48,7 +48,7 @@ CREATE TABLE "business" (
 --> statement-breakpoint
 CREATE TABLE "clientAddress" (
 	"id" text PRIMARY KEY NOT NULL,
-	"clientId" text,
+	"clientId" text NOT NULL,
 	"addressLine1" text NOT NULL,
 	"addressLine2" text,
 	"city" text NOT NULL,
@@ -133,7 +133,7 @@ ALTER TABLE "authenticator" ADD CONSTRAINT "authenticator_userId_user_id_fk" FOR
 ALTER TABLE "businessAddress" ADD CONSTRAINT "businessAddress_businessId_business_id_fk" FOREIGN KEY ("businessId") REFERENCES "public"."business"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "business" ADD CONSTRAINT "business_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "clientAddress" ADD CONSTRAINT "clientAddress_clientId_client_id_fk" FOREIGN KEY ("clientId") REFERENCES "public"."client"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "invoice_items" ADD CONSTRAINT "invoice_items_invoiceId_invoice_id_fk" FOREIGN KEY ("invoiceId") REFERENCES "public"."invoice"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "invoice_items" ADD CONSTRAINT "invoice_items_invoiceId_invoice_id_fk" FOREIGN KEY ("invoiceId") REFERENCES "public"."invoice"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "invoice" ADD CONSTRAINT "invoice_clientId_client_id_fk" FOREIGN KEY ("clientId") REFERENCES "public"."client"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "invoice" ADD CONSTRAINT "invoice_businessId_business_id_fk" FOREIGN KEY ("businessId") REFERENCES "public"."business"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "invoice" ADD CONSTRAINT "invoice_businessId_business_id_fk" FOREIGN KEY ("businessId") REFERENCES "public"."business"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "invoice" ADD CONSTRAINT "invoice_statusId_status_id_fk" FOREIGN KEY ("statusId") REFERENCES "public"."status"("id") ON DELETE no action ON UPDATE no action;
