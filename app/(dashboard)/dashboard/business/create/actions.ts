@@ -5,10 +5,11 @@ import { createBusinessFormSchema } from "../_components/create-business-form";
 import { z } from "zod";
 
 export const createNewBusiness = (
-  values: z.infer<typeof createBusinessFormSchema>
+    values: z.infer<typeof createBusinessFormSchema>
 ) => {
-  return executeAction({
-    actionFn: async () => await createNewBusinessController(values),
-    title: "Create New Business",
-  });
+    return executeAction({
+        actionFn: async () => await createNewBusinessController(values),
+        title: "Create New Business",
+        redirectUrl: "/",
+    });
 };
