@@ -9,13 +9,13 @@ import { IInvoiceRepository } from "@/src/application/repositories/invoice-repos
 import { IPasswordResetTokenRepository } from "@/src/application/repositories/password-reset-token-repository.interface";
 
 import { IVerificationTokenRepository } from "@/src/application/repositories/verification-token-repository.interface";
-import { IEmailService } from "@/src/application/services/email-service.interface";
 import { ITokenGeneratorService } from "@/src/application/services/token-generator-service.interface";
 import { ITransactionManagerService } from "@/src/application/services/transaction-service.interface";
 
 import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
 import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
 import { IHashingService } from "@/src/iam/application/services/hashing.service";
+import { IEmailService } from "@/src/resend/application/email.service.interface";
 
 export const DI_SYMBOLS = {
     // Services
