@@ -16,5 +16,6 @@ export class EmailService implements IEmailService {
             subject: "Email Verification",
             html: `<p>Click <a href="${confirmLink}">here to confirm</a>your email.</p>`,
         });
+        console.log("✅ Email sent successfully from resend");
     }
 }

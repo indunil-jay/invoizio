@@ -18,9 +18,11 @@ import { PasswordField } from "@/app/_components/custom/forms/password-input-fie
 import { signUpFormSchema } from "@/shared/validation-schemas/auth/sign-up-form.schema";
 import { signUp } from "../actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
+import { useRouter } from "next/navigation";
 
 export function SignUpForm() {
     const { toast } = useShowToast();
+    const router = useRouter();
     const form = useForm<z.infer<typeof signUpFormSchema>>({
         resolver: zodResolver(signUpFormSchema),
         defaultValues: {
@@ -35,6 +37,10 @@ export function SignUpForm() {
         const response = await signUp(values);
 
         toast(response);
+
+        if (response.status) {
+            router.push("/auth/sign-in");
+        }
     };
 
     return (

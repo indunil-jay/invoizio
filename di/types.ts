@@ -11,11 +11,13 @@ import { IPasswordResetTokenRepository } from "@/src/application/repositories/pa
 import { IVerificationTokenRepository } from "@/src/application/repositories/verification-token-repository.interface";
 import { ITokenGeneratorService } from "@/src/application/services/token-generator-service.interface";
 import { ITransactionManagerService } from "@/src/application/services/transaction-service.interface";
+import { IUserSignedUpHandler } from "@/src/iam/application/handlers/user-signed-up.handler";
 
 import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
 import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
 import { IHashingService } from "@/src/iam/application/services/hashing.service";
 import { IEmailService } from "@/src/resend/application/email.service.interface";
+import { IEventBus } from "@/src/shared/event-bus.interface";
 
 export const DI_SYMBOLS = {
     // Services
@@ -36,6 +38,12 @@ export const DI_SYMBOLS = {
     IInvoiceRepository: Symbol.for("IInvoiceRepository"),
     IInvoiceItemsRepository: Symbol.for("IInvoiceItemsRepository"),
     IActivityRepository: Symbol.for("IActivityRepository"),
+
+    //Handlers
+    IUserSignedUpHandler: Symbol.for("IUserSignedUpHandler"),
+
+    //Event Bus
+    IEventBus: Symbol.for("IEventBus"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -58,4 +66,10 @@ export interface DI_RETURN_TYPES {
     IInvoiceRepository: IInvoiceRepository;
     IInvoiceItemsRepository: IInvoiceItemsRepository;
     IActivityRepository: IActivityRepository;
+
+    //Handlers
+    IUserSignedUpHandler: IUserSignedUpHandler;
+
+    //event bus
+    IEventBus: IEventBus;
 }

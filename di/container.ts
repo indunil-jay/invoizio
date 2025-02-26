@@ -1,5 +1,4 @@
 import { Container } from "inversify";
-
 import { DI_RETURN_TYPES, DI_SYMBOLS } from "@/di/types";
 import { UserModule } from "@/di/modules/user.module";
 import { HashingModule } from "@/di/modules/hashing.module";
@@ -17,6 +16,8 @@ import { ClientAddressModule } from "@/di/modules/client-address.module";
 import { InvoiceModule } from "@/di/modules/invoice.module";
 import { InvoiceItemsModule } from "@/di/modules/invoice-items.module";
 import { ActivityModule } from "./modules/activity.module";
+import { UserSignedUpHandlerModule } from "./modules/handlers/user-signed-up-handler.module";
+import { eventBusModule } from "./modules/event-bus/event-bus.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -39,6 +40,14 @@ export const initializeContainer = () => {
     ApplicationContainer.load(InvoiceModule);
     ApplicationContainer.load(InvoiceItemsModule);
     ApplicationContainer.load(ActivityModule);
+
+    //event bus
+    ApplicationContainer.load(eventBusModule);
+
+    //handlers
+    ApplicationContainer.load(UserSignedUpHandlerModule);
+
+    require("@/src/shared/event-subscribers");
 };
 
 export const destroyContainer = () => {
@@ -58,11 +67,16 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(InvoiceModule);
     ApplicationContainer.unload(InvoiceItemsModule);
     ApplicationContainer.unload(ActivityModule);
-};
 
-if (process.env.NODE_ENV !== "test") {
-    initializeContainer();
-}
+    //event bus
+    ApplicationContainer.unload(eventBusModule);
+
+    //handlers
+    ApplicationContainer.unload(UserSignedUpHandlerModule);
+
+    // import "@/src/shared/event-subscribers";
+};
+initializeContainer();
 
 export function getInjection<K extends keyof typeof DI_SYMBOLS>(
     symbol: K
