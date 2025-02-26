@@ -3,31 +3,40 @@ import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { Button } from "@/app/_components/ui/button";
 import GoogleIcon from "@/app/_assets/svgs/google.svg";
-import { useForm } from "react-hook-form";
+import { toast } from "@/app/_hooks/use-toast";
 
 export const GoogleSign = () => {
-    const form = useForm({});
-
-    const onSubmit = async () => {
-        await signIn("google");
+    const handleGoogleSign = async () => {
+        try {
+            await signIn("google", { redirect: false });
+            // TODO: this should be changed later
+            toast({
+                title: "Sign-in Successful 🎉",
+                description: "You have successfully signed in with Google.",
+            });
+        } catch {
+            toast({
+                title: "Something Went Wrong ❌",
+                description:
+                    "We're experiencing issues. Please try again later.",
+            });
+        }
     };
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-            <Button
-                disabled={form.formState.isSubmitting}
-                variant={"secondary"}
-                size={"lg"}
-                type="submit"
-                className="w-full"
-            >
-                <Image
-                    src={GoogleIcon}
-                    width={24}
-                    height={24}
-                    alt="google-icon-svg"
-                />
-                Sign With Google
-            </Button>
-        </form>
+        <Button
+            onClick={handleGoogleSign}
+            variant={"secondary"}
+            size={"lg"}
+            type="submit"
+            className="w-full"
+        >
+            <Image
+                src={GoogleIcon}
+                width={24}
+                height={24}
+                alt="google-icon-svg"
+            />
+            Sign With Google
+        </Button>
     );
 };
