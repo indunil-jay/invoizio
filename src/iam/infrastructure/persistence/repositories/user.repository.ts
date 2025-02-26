@@ -2,13 +2,40 @@ import { injectable } from "inversify";
 import { eq } from "drizzle-orm";
 import { db } from "@/drizzle";
 import { users } from "@/drizzle/schemas";
+
 import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
-import { DataBaseException } from "../../exceptions/common.exceptions";
-import { User } from "../../../domain/user.entity";
-import { UserMapper } from "../mappers/user.mapper";
+import { DataBaseException } from "@/src/iam/infrastructure/exceptions/common.exceptions";
+import { User } from "@/src/iam/domain/user.entity";
+import { UserMapper } from "@/src/iam/infrastructure/persistence/mappers/user.mapper";
+import { DatabaseUserUpdateException } from "@/src/iam/infrastructure/exceptions/specific.exceptions";
 
 @injectable()
 export class UserRepository implements IUserRepository {
+    public async update(id: string, properties: Partial<User>): Promise<User> {
+        try {
+            const [updatedUser] = await db
+                .update(users)
+                .set({
+                    emailVerified: properties.emailVerified,
+                    image: properties.image,
+                    name: properties.name,
+                    password: properties.password,
+                    email: properties.email,
+                })
+                .where(eq(users.id, id))
+                .returning();
+
+            if (!updatedUser) {
+                throw new DatabaseUserUpdateException();
+            }
+            return UserMapper.toDomain(updatedUser);
+        } catch (error) {
+            //TODO:should remove
+            console.error(`DATABASE_ERROR::UserRepository::update: ${error}`);
+            throw new DataBaseException();
+        }
+    }
+
     public async insert(data: User): Promise<User> {
         try {
             const persistenceModel = UserMapper.toPersistence(data);

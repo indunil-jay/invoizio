@@ -16,17 +16,11 @@ export default async function Page({
     }
     const user = await getUserById(session.user.id);
 
-    const business = await getBusinessById(params.businessId);
-
-    const invoices = await getAllInvoicesByBusinessId(params.businessId);
-
     if (!user) return null;
-
-    if (!business) redirect("/dashboard/business/create");
 
     return (
         <div>
-            <Invoices user={user} business={business} invoices={invoices} />
+            {/* <Invoices user={user} business={business} invoices={invoices} /> */}
         </div>
     );
 }

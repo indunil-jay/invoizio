@@ -7,6 +7,7 @@ import authConfig from "./auth.config";
 import { strictSignInWithCredentialSchema } from "./drizzle/schemas/user";
 import envValidationSchema from "@/lib/env-validation-schema";
 import Google from "next-auth/providers/google";
+import { User } from "./src/iam/domain/user.entity";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
     trustHost: true,
@@ -48,6 +49,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     events: {
         async linkAccount({ user }) {
             //mark verified user as when login with google
+            console.log({ user });
             if (user && user.id) {
                 const userRepository = getInjection("IUserRepository");
                 await userRepository.update(user.id, {
@@ -74,7 +76,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             if (!credentials) return true;
 
             //check email is verified or not
-            let existingUser: UsersCollectionDocument | undefined = undefined;
+            let existingUser: User | undefined = undefined;
             if (user && user.email) {
                 const userRepository = getInjection("IUserRepository");
                 existingUser = await userRepository.getByEmail(user.email);
