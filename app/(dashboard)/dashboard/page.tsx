@@ -1,4 +1,4 @@
-import { auth } from "@/src/auth";
+import { auth } from "@/auth";
 import { getAllBusiness } from "./business/queries";
 import { redirect } from "next/navigation";
 

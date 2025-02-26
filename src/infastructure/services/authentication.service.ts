@@ -1,7 +1,7 @@
 import { ClientResponseDTO } from "@/src/application/dtos/response.dto";
 import { SignInUserDTO } from "@/src/application/dtos/user.dto";
 import { IAuthenticationService } from "@/src/application/services/authentication-service.interface";
-import { auth, signIn, signOut } from "@/src/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { injectable } from "inversify";
 import { AuthError, Session } from "next-auth";
 
