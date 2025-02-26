@@ -1,6 +1,5 @@
 import { getInjection } from "@/di/container";
 import { checkValidSessionUseCase } from "../authentication/check-valid-session";
-import { inspect } from "node:util";
 
 export const getAllActivitiesByBusinessIdUseCase = {
     async execute(businessId: string) {

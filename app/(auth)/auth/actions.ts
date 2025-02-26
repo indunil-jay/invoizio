@@ -1,19 +1,19 @@
 "use server";
 
 import { z } from "zod";
-import { signUpController } from "@/src/interface-adapter/controllers/authentication/sign-up.controller";
+import { signUpController } from "@/src/presenter/controllers/authentication/sign-up.controller";
 import { signUpFormSchema } from "./sign-up/sign-up-form";
 import { signInFormSchema } from "./sign-in/sign-in-form";
-import { signInWithCredentialsController } from "@/src/interface-adapter/controllers/authentication/sign-in-with-credentials.controller";
+import { signInWithCredentialsController } from "@/src/presenter/controllers/authentication/sign-in-with-credentials.controller";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { redirect } from "next/navigation";
-import { signOutController } from "@/src/interface-adapter/controllers/authentication/sign-out.controller";
-import { signInWithGoogleController } from "@/src/interface-adapter/controllers/authentication/sign-in-with-google.controller";
-import { emailVerificationController } from "@/src/interface-adapter/controllers/authentication/email-verification.controller";
-import { forgotPasswordController } from "@/src/interface-adapter/controllers/authentication/forgot-password.controller";
+import { signOutController } from "@/src/presenter/controllers/authentication/sign-out.controller";
+import { signInWithGoogleController } from "@/src/presenter/controllers/authentication/sign-in-with-google.controller";
+import { emailVerificationController } from "@/src/presenter/controllers/authentication/email-verification.controller";
+import { forgotPasswordController } from "@/src/presenter/controllers/authentication/forgot-password.controller";
 import { forgotPasswordFormSchema } from "./forgot-password/forgot-password-form";
 import { resetPasswordFormSchema } from "./reset-password/reset-password-form";
-import { resetPasswordController } from "@/src/interface-adapter/controllers/authentication/reset-password.controller";
+import { resetPasswordController } from "@/src/presenter/controllers/authentication/reset-password.controller";
 import { executeAction } from "@/app/_lib/execute.action";
 
 export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {

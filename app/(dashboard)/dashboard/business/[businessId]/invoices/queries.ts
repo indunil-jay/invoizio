@@ -1,10 +1,10 @@
 "use server";
 import { executeQuery } from "@/app/_lib/execute.queries";
-import { getClientByIdController } from "@/src/interface-adapter/controllers/clients/get-client-by-id.controller";
-import { getAllInvoiceItemsByInvoiceIdController } from "@/src/interface-adapter/controllers/invoice/get-all-invoice-items-by-invoice-id.controller";
-import { getAllInvoicesByBusinessIdController } from "@/src/interface-adapter/controllers/invoice/get-all-invoices-by-business-id.controller";
-import { getInvoiceByIdController } from "@/src/interface-adapter/controllers/invoice/get-invoice-by-id.controller";
-import { getUserByIdController } from "@/src/interface-adapter/controllers/user/get-user-by-id.controller";
+import { getClientByIdController } from "@/src/presenter/controllers/clients/get-client-by-id.controller";
+import { getAllInvoiceItemsByInvoiceIdController } from "@/src/presenter/controllers/invoice/get-all-invoice-items-by-invoice-id.controller";
+import { getAllInvoicesByBusinessIdController } from "@/src/presenter/controllers/invoice/get-all-invoices-by-business-id.controller";
+import { getInvoiceByIdController } from "@/src/presenter/controllers/invoice/get-invoice-by-id.controller";
+import { getUserByIdController } from "@/src/presenter/controllers/user/get-user-by-id.controller";
 
 export const getAllInvoicesByBusinessId = (businessId: string) => {
     return executeQuery({

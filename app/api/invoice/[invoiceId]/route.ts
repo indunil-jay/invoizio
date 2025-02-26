@@ -8,7 +8,6 @@ import {
     getInvoiceById,
 } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/queries";
 import { getUserById } from "@/app/(dashboard)/dashboard/account/queries";
-import { inspect } from "node:util";
 
 export async function GET(
     request: Request,
@@ -20,24 +19,48 @@ export async function GET(
 ) {
     const { invoiceId } = await params;
 
-    //get invoice
     const invoice = await getInvoiceById(invoiceId);
-    if (!invoice) return null;
+    if (!invoice) {
+        return NextResponse.json(
+            { error: "Invoice not found" },
+            { status: 404 }
+        );
+    }
 
     const invoiceItems = await getAllInvoiceItemsByInvoiceId(invoice.id);
-    if (!invoiceItems) return null;
-    //get client
-    //get client address
-    const client = await getClientById(invoice.clientId);
-    if (!client) return null;
-    console.log(inspect(client, { depth: null }));
+    if (!invoiceItems) {
+        return NextResponse.json(
+            { error: "Invoice items not found" },
+            { status: 404 }
+        );
+    }
 
-    //get business
-    const business = await getBusinessById(invoice!.businessId!);
-    if (!business) return null;
-    //get business owner
+    // Get client
+    const client = await getClientById(invoice.clientId);
+    if (!client) {
+        return NextResponse.json(
+            { error: "Client not found" },
+            { status: 404 }
+        );
+    }
+
+    // Get business
+    const business = await getBusinessById(invoice.businessId);
+    if (!business) {
+        return NextResponse.json(
+            { error: "Business not found" },
+            { status: 404 }
+        );
+    }
+
+    // Get business owner
     const owner = await getUserById(business.userId);
-    if (!owner) return null;
+    if (!owner) {
+        return NextResponse.json(
+            { error: "Business owner not found" },
+            { status: 404 }
+        );
+    }
 
     //build business details
     const businessName =
@@ -293,7 +316,7 @@ export async function GET(
                 5: { halign: "right" },
                 6: { halign: "right" },
             },
-            didDrawPage: (data) => {
+            didDrawPage: () => {
                 const footerY = pageHeight - footerMargin - footerHeight;
 
                 // Draw footer separator line at a fixed position (20mm from bottom)
