@@ -5,75 +5,63 @@ import { z } from "zod";
 import { accounts, authenticators, businesses } from "@/drizzle/schemas";
 
 export const users = pgTable("user", {
-  id: text("id")
-    .primaryKey()
-    .notNull()
-    .$defaultFn(() => crypto.randomUUID()),
-  name: text("name"),
-  email: text("email").unique().notNull(),
-  emailVerified: timestamp("emailVerified", { mode: "date" }),
-  image: text("image"),
+    id: text("id")
+        .primaryKey()
+        .notNull()
+        .$defaultFn(() => crypto.randomUUID()),
+    name: text("name").notNull(),
+    email: text("email").unique().notNull(),
+    emailVerified: timestamp("emailVerified", { mode: "date" }),
+    image: text("image"),
 
-  password: text("password"),
+    password: text("password"),
 
-  createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
+    createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
 });
 
 //define relation here
 export const defineUsersRelations = relations(users, ({ one, many }) => ({
-  //one user has one account
-  accounts: one(accounts),
-  authenticators: one(authenticators),
-  //one user has many business
-  businesses: many(businesses),
+    //one user has one account
+    accounts: one(accounts),
+    authenticators: one(authenticators),
+    //one user has many business
+    businesses: many(businesses),
 }));
 
 //schema validation
 export const signInWithCredentialSchema = createInsertSchema(users, {
-  email: (schema) => schema.email(),
-  password: (schema) => schema.min(1),
+    email: (schema) => schema.email(),
+    password: (schema) => schema.min(1),
 }).pick({
-  email: true,
-  password: true,
+    email: true,
+    password: true,
 });
 
 // Transform parsed output
 export const strictSignInWithCredentialSchema =
-  signInWithCredentialSchema.transform((data) => {
-    return {
-      ...data,
-      email: data.email || "",
-      password: data.password || "",
-    };
-  });
+    signInWithCredentialSchema.transform((data) => {
+        return {
+            ...data,
+            email: data.email || "",
+            password: data.password || "",
+        };
+    });
 
 export type SignInInput = z.infer<typeof strictSignInWithCredentialSchema>;
 
 export const signUpSchema = createInsertSchema(users, {
-  name: (schema) => schema.min(1).transform((value) => value.trim()),
-  email: (schema) => schema.email().transform((value) => value.toLowerCase()),
-  password: (schema) => schema.min(1),
+    name: (schema) => schema.min(1).transform((value) => value.trim()),
+    email: (schema) => schema.email().transform((value) => value.toLowerCase()),
+    password: (schema) => schema.min(1),
 }).pick({
-  email: true,
-  password: true,
-  name: true,
+    email: true,
+    password: true,
+    name: true,
 });
 
-// Transform parsed output
-export const strictSignUpSchema = signUpSchema.transform((data) => {
-  return {
-    ...data,
-    name: data.name || "",
-    email: data.email || "",
-    password: data.password || "",
-  };
-});
+// Inferred Input Type for SignUp
+export type CreateUser = z.infer<typeof signUpSchema>;
 
-export type SignUpInput = z.infer<typeof strictSignUpSchema>;
-
-export type UsersCollectionDocument = InferSelectModel<typeof users>;
-
-export type PartialUserUpdate = Partial<
-  Omit<UsersCollectionDocument, "createdAt" | "updatedAt" | "id">
->;
+// Select Model Type for User
+export type UserEntity = InferSelectModel<typeof users>;

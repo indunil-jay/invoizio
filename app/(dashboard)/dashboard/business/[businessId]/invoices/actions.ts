@@ -1,5 +1,5 @@
 "use server";
-import { executeAction } from "@/app/_lib/execute.action";
+import { executeAction } from "@/app/_utils/execute.action";
 import { deleteInvoiceByIdController } from "@/src/presenter/controllers/invoice/delete-invoice-by-id.controller";
 import { updateInvoiceStatusByIdController } from "@/src/presenter/controllers/invoice/update-invoice-status-by-id.controller";
 import { INVOICE_STATUS } from "../../type";

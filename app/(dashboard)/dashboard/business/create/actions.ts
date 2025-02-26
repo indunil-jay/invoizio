@@ -1,5 +1,5 @@
 "use server";
-import { executeAction } from "@/app/_lib/execute.action";
+import { executeAction } from "@/app/_utils/execute.action";
 import { createNewBusinessController } from "@/src/presenter/controllers/business/create-new-business.controller";
 import { createBusinessFormSchema } from "../_components/create-business-form";
 import { z } from "zod";

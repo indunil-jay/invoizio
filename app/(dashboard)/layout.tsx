@@ -7,8 +7,6 @@ import {
 } from "@/app/_components/ui/sidebar";
 import { AppSidebar } from "./_components/app-sidebar";
 import { DynamicBreadCumb } from "../_components/custom/dynamic-breadcumb";
-import { getAllBusiness } from "./dashboard/business/queries";
-import { getUserById } from "./dashboard/account/queries";
 import { auth } from "@/auth";
 import { signOut } from "next-auth/react";
 

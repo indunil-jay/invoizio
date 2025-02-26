@@ -15,25 +15,12 @@ import {
 import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
-import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
-
-export const signUpFormSchema = z
-    .object({
-        name: z.string().min(3, {
-            message: "User name must contain at least 3 characters",
-        }),
-        email: z.string().email({ message: "Invalid email address" }),
-        password: z.string().min(8, {
-            message: "Password must contain at least 8 characters.",
-        }),
-        passwordConfirm: z.string({ message: "Confirm password is required." }),
-    })
-    .refine((data) => data.password === data.passwordConfirm, {
-        path: ["passwordConfirm"],
-        message: "Passwords does not match.",
-    });
+import { signUpFormSchema } from "@/shared/validation-schemas/auth/sign-up-form.schema";
+import { signUp } from "../actions";
+import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 
 export function SignUpForm() {
+    const { toast } = useShowToast();
     const form = useForm<z.infer<typeof signUpFormSchema>>({
         resolver: zodResolver(signUpFormSchema),
         defaultValues: {
@@ -43,9 +30,10 @@ export function SignUpForm() {
             passwordConfirm: "",
         },
     });
-    const toast = useShowToast();
+
     const onSubmit = async (values: z.infer<typeof signUpFormSchema>) => {
         const response = await signUp(values);
+
         toast(response);
     };
 

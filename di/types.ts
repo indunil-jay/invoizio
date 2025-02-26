@@ -7,14 +7,15 @@ import { IClientRepository } from "@/src/application/repositories/client-reposit
 import { IInvoiceItemsRepository } from "@/src/application/repositories/invoice-item-repository.interface";
 import { IInvoiceRepository } from "@/src/application/repositories/invoice-repository.interface";
 import { IPasswordResetTokenRepository } from "@/src/application/repositories/password-reset-token-repository.interface";
-import { IUserRepository } from "@/src/application/repositories/user-repository.interface";
+
 import { IVerificationTokenRepository } from "@/src/application/repositories/verification-token-repository.interface";
 import { IEmailService } from "@/src/application/services/email-service.interface";
-import { IHashingService } from "@/src/application/services/hashing-service.interface";
 import { ITokenGeneratorService } from "@/src/application/services/token-generator-service.interface";
 import { ITransactionManagerService } from "@/src/application/services/transaction-service.interface";
 
+import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
 import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
+import { IHashingService } from "@/src/iam/application/services/hashing.service";
 
 export const DI_SYMBOLS = {
     // Services

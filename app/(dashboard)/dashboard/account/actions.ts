@@ -1,7 +1,7 @@
 "use server";
 import { z } from "zod";
 import { changePasswordFormSchema } from "@/app/(dashboard)/dashboard/account/_components/change-password-form";
-import { executeAction } from "@/app/_lib/execute.action";
+import { executeAction } from "@/app/_utils/execute.action";
 import { updatePasswordController } from "@/src/presenter/controllers/user/update-password.controller";
 import { changeUserDetailsFormSchema } from "@/app/(dashboard)/dashboard/account/_components/update-profile-form";
 import { updateUserProfileController } from "@/src/presenter/controllers/user/update-user-profile.controller";

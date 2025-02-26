@@ -1,4 +1,4 @@
-import { executeQuery } from "@/app/_lib/execute.queries";
+import { executeQuery } from "@/app/_utils/execute.queries";
 import { getUserByIdController } from "@/src/presenter/controllers/user/get-user-by-id.controller";
 
 export const getUserById = (id: string) => {

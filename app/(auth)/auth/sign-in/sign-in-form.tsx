@@ -16,9 +16,6 @@ import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { FogotPasswordLink } from "@/app/_components/custom/forms/forgot-password.-link";
-import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
-
-import { signInWithCredentials } from "@/app/(auth)/auth/actions";
 
 export const signInFormSchema = z.object({
     email: z.string().email().min(1, {
@@ -38,10 +35,10 @@ export function SignInForm() {
             password: "",
         },
     });
-    const toast = useShowToast();
+
     async function onSubmit(values: z.infer<typeof signInFormSchema>) {
-        const response = await signInWithCredentials(values);
-        toast(response);
+        // const response = await signInWithCredentials(values);
+        // toast(response);
     }
 
     return (

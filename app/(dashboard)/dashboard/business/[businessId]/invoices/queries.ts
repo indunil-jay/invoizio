@@ -1,5 +1,5 @@
 "use server";
-import { executeQuery } from "@/app/_lib/execute.queries";
+import { executeQuery } from "@/app/_utils/execute.queries";
 import { getClientByIdController } from "@/src/presenter/controllers/clients/get-client-by-id.controller";
 import { getAllInvoiceItemsByInvoiceIdController } from "@/src/presenter/controllers/invoice/get-all-invoice-items-by-invoice-id.controller";
 import { getAllInvoicesByBusinessIdController } from "@/src/presenter/controllers/invoice/get-all-invoices-by-business-id.controller";

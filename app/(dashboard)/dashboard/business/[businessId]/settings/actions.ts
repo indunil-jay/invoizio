@@ -1,5 +1,5 @@
 "use server";
-import { executeAction } from "@/app/_lib/execute.action";
+import { executeAction } from "@/app/_utils/execute.action";
 import { deleteBusinessByIdController } from "@/src/presenter/controllers/business/delete-business-by-id.controller";
 import { updateBusinessByIdController } from "@/src/presenter/controllers/business/update-business-by-id.controller";
 import { updateBusinessFormSchema } from "../../_components/update-business.from";

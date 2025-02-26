@@ -1,12 +1,15 @@
 "use server";
 
-// export const signUp = async (values: z.infer<typeof signUpFormSchema>) => {
-//     return executeAction({
-//         actionFn: async () => await signUpController(values),
-//         title: "Sign Up",
-//         redirectUrl: "/auth/sign-in",
-//     });
-// };
+import z from "zod";
+import { signUpFormSchema } from "@/shared/validation-schemas/auth/sign-up-form.schema";
+import { signUpController } from "@/src/iam/presenter/controllers/sign-up.controller";
+import { executeAction } from "@/app/_utils/execute.action";
+
+export const signUp = async (values: z.infer<typeof signUpFormSchema>) =>
+    executeAction({
+        actionFn: async () => await signUpController(values),
+        title: "Sign-in Successful 🎉",
+    });
 
 // export const signInWithCredentials = async (
 //     values: z.infer<typeof signInFormSchema>

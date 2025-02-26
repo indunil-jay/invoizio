@@ -4,10 +4,7 @@ import { db } from "@/drizzle";
 import Credentials from "next-auth/providers/credentials";
 import { getInjection } from "@/di/container";
 import authConfig from "./auth.config";
-import {
-    strictSignInWithCredentialSchema,
-    UsersCollectionDocument,
-} from "./drizzle/schemas/user";
+import { strictSignInWithCredentialSchema } from "./drizzle/schemas/user";
 import envValidationSchema from "@/lib/env-validation-schema";
 import Google from "next-auth/providers/google";
 

@@ -1,4 +1,4 @@
-import { executeQuery } from "@/app/_lib/execute.queries";
+import { executeQuery } from "@/app/_utils/execute.queries";
 import { getAllActivitiesByBusinessIdController } from "@/src/presenter/controllers/activities/get-all-activities-by-business-id.controller";
 
 export const getAllActivitiesByBusinessId = (businessId: string) => {
