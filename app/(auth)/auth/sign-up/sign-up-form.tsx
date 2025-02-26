@@ -17,21 +17,15 @@ import { Input } from "@/app/_components/ui/input";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
 
-import { signUp } from "@/app/(auth)/auth/actions";
-
 export const signUpFormSchema = z
     .object({
-        name: z
-            .string()
-            .min(3, {
-                message: "User name must contain at least 3 characters",
-            }),
+        name: z.string().min(3, {
+            message: "User name must contain at least 3 characters",
+        }),
         email: z.string().email({ message: "Invalid email address" }),
-        password: z
-            .string()
-            .min(8, {
-                message: "Password must contain at least 8 characters.",
-            }),
+        password: z.string().min(8, {
+            message: "Password must contain at least 8 characters.",
+        }),
         passwordConfirm: z.string({ message: "Confirm password is required." }),
     })
     .refine((data) => data.password === data.passwordConfirm, {

@@ -9,11 +9,12 @@ import { IInvoiceRepository } from "@/src/application/repositories/invoice-repos
 import { IPasswordResetTokenRepository } from "@/src/application/repositories/password-reset-token-repository.interface";
 import { IUserRepository } from "@/src/application/repositories/user-repository.interface";
 import { IVerificationTokenRepository } from "@/src/application/repositories/verification-token-repository.interface";
-import { IAuthenticationService } from "@/src/application/services/authentication-service.interface";
 import { IEmailService } from "@/src/application/services/email-service.interface";
 import { IHashingService } from "@/src/application/services/hashing-service.interface";
 import { ITokenGeneratorService } from "@/src/application/services/token-generator-service.interface";
 import { ITransactionManagerService } from "@/src/application/services/transaction-service.interface";
+
+import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
 
 export const DI_SYMBOLS = {
     // Services
