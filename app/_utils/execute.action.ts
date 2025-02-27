@@ -3,18 +3,20 @@ import { getErrorMessage } from "./get-error";
 
 type ExecuteActionOptions<T> = {
     actionFn: () => Promise<PresenterResponse<T>>;
-    title?: string;
+    successTitle?: string;
+    failureTitle?: string;
 };
 
 export async function executeAction<T>({
     actionFn,
-    title,
+    successTitle,
+    failureTitle,
 }: ExecuteActionOptions<T>) {
     try {
         const response: PresenterResponse<T> = await actionFn();
 
         return {
-            title,
+            title: successTitle,
             message: response.message,
             data: response.data,
             status: response.status,
@@ -22,7 +24,7 @@ export async function executeAction<T>({
     } catch (error) {
         const err = getErrorMessage(error);
         return {
-            title,
+            title: failureTitle,
             message: err.message,
             data: undefined,
             status: err.status,

@@ -8,7 +8,8 @@ import { executeAction } from "@/app/_utils/execute.action";
 export const signUp = async (values: z.infer<typeof signUpFormSchema>) =>
     executeAction({
         actionFn: async () => await signUpController(values),
-        title: "Sign-in Successful 🎉",
+        successTitle: "Sign-Up Successful 🎉",
+        failureTitle: "Sign-Up Failed 😥",
     });
 
 // export const signInWithCredentials = async (

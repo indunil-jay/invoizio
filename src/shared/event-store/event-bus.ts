@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { injectable } from "inversify";
-import { IEventBus } from "@/src/shared-infrastructure/event-store/event-bus.interface";
+import { IEventBus } from "@/src/shared/event-store/event-bus.interface";
 
 export type EventHandler<T> = (event: T) => Promise<void>;
 

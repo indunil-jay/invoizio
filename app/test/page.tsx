@@ -1,4 +1,4 @@
-import InvoizioVerifiyAccount from "@/src/shared-infrastructure/resend/templates/account-verifiy";
+import InvoizioVerifiyAccount from "@/src/shared/resend/presenter/templates/account-verifiy";
 
 const page = () => {
     return (

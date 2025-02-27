@@ -7,17 +7,18 @@ import { IClientRepository } from "@/src/application/repositories/client-reposit
 import { IInvoiceItemsRepository } from "@/src/application/repositories/invoice-item-repository.interface";
 import { IInvoiceRepository } from "@/src/application/repositories/invoice-repository.interface";
 import { IPasswordResetTokenRepository } from "@/src/application/repositories/password-reset-token-repository.interface";
-
-import { IVerificationTokenRepository } from "@/src/application/repositories/verification-token-repository.interface";
 import { ITransactionManagerService } from "@/src/application/services/transaction-service.interface";
 import { IUserSignedUpHandler } from "@/src/iam/application/handlers/user-signed-up.handler";
 
 import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
 import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
 import { IHashingService } from "@/src/iam/application/services/hashing.service";
-import { IEmailService } from "@/src/shared-infrastructure/resend/email.service.interface";
-import { IEventBus } from "@/src/shared-infrastructure/event-store/event-bus.interface";
+import { IEmailService } from "@/src/shared/resend/application/services/email.service.interface";
+import { IEventBus } from "@/src/shared/event-store/event-bus.interface";
 import { ITokenGenerateService } from "@/src/iam/application/services/token-generate.service";
+import { IVerificationTokenRepository } from "@/src/iam/application/repositories/verification-token.repository";
+import { IVerificationTokenFactory } from "@/src/iam/domain/factories/verification-token.factory";
+import { IUserFactory } from "@/src/iam/domain/factories/user.factory";
 
 export const DI_SYMBOLS = {
     // Services
@@ -29,6 +30,7 @@ export const DI_SYMBOLS = {
     // Repositories
     IUserRepository: Symbol.for("IUserRepository"),
     IVerificationTokenRepository: Symbol.for("IVerificationTokenRepository"),
+
     IPasswordResetTokenRepository: Symbol.for("IPasswordResetTokenRepository"),
     IAccountRepository: Symbol.for("IAccountRepository"),
     IBusinessRepository: Symbol.for("IBusinessRepository"),
@@ -44,6 +46,10 @@ export const DI_SYMBOLS = {
 
     //Event Bus
     IEventBus: Symbol.for("IEventBus"),
+
+    //factories
+    IVerificationTokenFactory: Symbol.for("IVerificationTokenFactory"),
+    IUserFactory: Symbol.for("IUserFactory"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -72,4 +78,8 @@ export interface DI_RETURN_TYPES {
 
     //event bus
     IEventBus: IEventBus;
+
+    //factories
+    IVerificationTokenFactory: IVerificationTokenFactory;
+    IUserFactory: IUserFactory;
 }

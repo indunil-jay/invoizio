@@ -18,6 +18,8 @@ import { InvoiceItemsModule } from "@/di/modules/invoice-items.module";
 import { ActivityModule } from "./modules/activity.module";
 import { UserSignedUpHandlerModule } from "./modules/handlers/user-signed-up-handler.module";
 import { eventBusModule } from "./modules/event-bus/event-bus.module";
+import { VerificationTokenFactoryModule } from "./modules/factrories/verification-token-factory.module";
+import { UserFactoryModule } from "./modules/factrories/user-factory.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -48,7 +50,11 @@ export const initializeContainer = () => {
     ApplicationContainer.load(UserSignedUpHandlerModule);
 
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require("@/src/shared-infrastructure/event-store/event-subscribers");
+    require("@/src/shared/event-store/event-subscribers");
+
+    //factories
+    ApplicationContainer.load(VerificationTokenFactoryModule);
+    ApplicationContainer.load(UserFactoryModule);
 };
 
 export const destroyContainer = () => {
@@ -75,7 +81,9 @@ export const destroyContainer = () => {
     //handlers
     ApplicationContainer.unload(UserSignedUpHandlerModule);
 
-    // import "@/src/shared/event-subscribers";
+    //factories
+    ApplicationContainer.unload(VerificationTokenFactoryModule);
+    ApplicationContainer.unload(UserFactoryModule);
 };
 initializeContainer();
 

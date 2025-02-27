@@ -5,10 +5,7 @@ import { z } from "zod";
 import { accounts, authenticators, businesses } from "@/drizzle/schemas";
 
 export const users = pgTable("user", {
-    id: text("id")
-        .primaryKey()
-        .notNull()
-        .$defaultFn(() => crypto.randomUUID()),
+    id: text("id").primaryKey().notNull(),
     name: text("name").notNull(),
     email: text("email").unique().notNull(),
     emailVerified: timestamp("emailVerified", { mode: "date" }),
@@ -51,10 +48,12 @@ export const strictSignInWithCredentialSchema =
 export type SignInInput = z.infer<typeof strictSignInWithCredentialSchema>;
 
 export const signUpSchema = createInsertSchema(users, {
+    id: (schema) => schema.min(1),
     name: (schema) => schema.min(1).transform((value) => value.trim()),
     email: (schema) => schema.email().transform((value) => value.toLowerCase()),
     password: (schema) => schema.min(1),
 }).pick({
+    id: true,
     email: true,
     password: true,
     name: true,

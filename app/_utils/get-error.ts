@@ -4,7 +4,7 @@ import { AuthError } from "next-auth";
 export const getErrorMessage = (error: unknown) => {
     let message: string;
     let status: boolean = false;
-
+    console.log({ error });
     if (error instanceof AppError) {
         message = error.message;
         status = error.status;

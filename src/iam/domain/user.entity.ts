@@ -1,14 +1,16 @@
 export class User {
     constructor(
-        public name: string,
-        public email: string,
-        public password?: string | null,
-        public emailVerified?: Date | null,
-        public image?: string | null
+        public readonly id: string,
+        public readonly name: string,
+        public readonly email: string,
+        public readonly password?: string | null,
+        public readonly emailVerified?: Date | null,
+        public readonly image?: string | null
     ) {}
 
     public toJSON() {
         return {
+            id: this.id,
             name: this.name,
             email: this.email,
             emailVerified: this.emailVerified,
