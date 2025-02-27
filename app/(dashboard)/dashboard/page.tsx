@@ -7,4 +7,6 @@ export default async function DashboardPage() {
     if (!session?.user?.id) {
         redirect("/auth/sign-in");
     }
+
+    return <>Dashboard page</>;
 }

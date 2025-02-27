@@ -149,7 +149,11 @@ export function SignUpForm() {
                         Already have an Account ?{" "}
                         <Link
                             href="/auth/sign-in"
-                            className="underline text-blue-500 underline-offset-2"
+                            className={cn(
+                                "underline text-blue-500 underline-offset-2",
+                                form.formState.isSubmitting &&
+                                    "pointer-events-none opacity-50"
+                            )}
                         >
                             Sign In
                         </Link>

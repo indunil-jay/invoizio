@@ -4,10 +4,11 @@ import { db } from "@/drizzle";
 import Credentials from "next-auth/providers/credentials";
 import { getInjection } from "@/di/container";
 import authConfig from "./auth.config";
-import { strictSignInWithCredentialSchema } from "./drizzle/schemas/user";
+
 import envValidationSchema from "@/lib/env-validation-schema";
 import Google from "next-auth/providers/google";
 import { User } from "./src/iam/domain/user.entity";
+import { signInFormSchema } from "./shared/validation-schemas/auth/sign-in-form.schema";
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
     trustHost: true,
@@ -22,8 +23,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         }),
         Credentials({
             async authorize(credentials) {
-                const validatedFields =
-                    strictSignInWithCredentialSchema.safeParse(credentials);
+                const validatedFields = signInFormSchema.safeParse(credentials);
 
                 //validate input
                 if (!validatedFields.success) return null;
@@ -49,7 +49,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     events: {
         async linkAccount({ user }) {
             //mark verified user as when login with google
-            console.log({ user });
+
             if (user && user.id) {
                 const userRepository = getInjection("IUserRepository");
                 await userRepository.update(user.id, {

@@ -23,9 +23,13 @@ import { signInFormSchema } from "@/shared/validation-schemas/auth/sign-in-form.
 import { CardFooter } from "@/app/_components/ui/card";
 import { signInWithCredentials } from "@/app/(auth)/auth/actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
+import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
+import { cn } from "@/app/_lib/tailwind-css/utils";
+import { useRouter } from "next/navigation";
 
 export function SignInForm() {
     const { toast } = useShowToast();
+    const router = useRouter();
     const form = useForm<z.infer<typeof signInFormSchema>>({
         resolver: zodResolver(signInFormSchema),
         defaultValues: {
@@ -38,9 +42,9 @@ export function SignInForm() {
         const response = await signInWithCredentials(values);
         toast(response);
 
-        // if (response.status) {
-        //     router.push("/auth/sign-in");
-        // }
+        if (response.status) {
+            router.refresh();
+        }
     }
 
     return (
@@ -60,6 +64,7 @@ export function SignInForm() {
                                     <Input
                                         placeholder="youremail@gmail.com"
                                         {...field}
+                                        disabled={form.formState.isSubmitting}
                                     />
                                 </FormControl>
 
@@ -74,21 +79,28 @@ export function SignInForm() {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <PasswordField {...field} />
+                                    <PasswordField
+                                        {...field}
+                                        disabled={form.formState.isSubmitting}
+                                    />
                                 </FormControl>
 
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    <FogotPasswordLink />
+                    <FogotPasswordLink disabled={form.formState.isSubmitting} />
                     <Button
                         type="submit"
                         className="w-full"
                         size={"lg"}
                         disabled={form.formState.isSubmitting}
                     >
-                        Sign in
+                        {form.formState.isSubmitting ? (
+                            <SpinnerBtnLoading />
+                        ) : (
+                            <span> Sign in</span>
+                        )}
                     </Button>
                 </form>
             </Form>
@@ -101,7 +113,11 @@ export function SignInForm() {
                         Don&apos;t have an Account ?{" "}
                         <Link
                             href="/auth/sign-up"
-                            className="underline text-blue-500 underline-offset-2"
+                            className={cn(
+                                "underline text-blue-500 underline-offset-2",
+                                form.formState.isSubmitting &&
+                                    "pointer-events-none opacity-50"
+                            )}
                         >
                             Sign Up
                         </Link>

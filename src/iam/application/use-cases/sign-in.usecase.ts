@@ -14,8 +14,6 @@ export const signInUseCase = {
         const authenticationService = getInjection("IAuthenticationService");
         const eventBus = getInjection("IEventBus");
 
-        console.log({ email, password });
-
         // Check if user exists
         const existingUser = await userRepository.getByEmail(email);
 

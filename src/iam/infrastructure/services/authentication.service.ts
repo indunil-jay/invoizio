@@ -6,15 +6,21 @@ import { signInDto } from "@/src/iam/application/dto/user.dto";
 
 @injectable()
 export class AuthenticationService implements IAuthenticationService {
-    public async signInWithCredentials(data: signInDto): Promise<void> {
+    public async signInWithCredentials({
+        email,
+        password,
+    }: signInDto): Promise<void> {
         try {
             await signIn("credentials", {
-                email: data.email,
-                password: data.password,
+                email,
+                password,
                 redirect: false,
             });
         } catch (error) {
-            console.error("Error sign in user:", error);
+            console.error(
+                "##################NEXT_AUTH_ERROR#################",
+                error
+            );
             if (error instanceof AuthError) {
                 switch (error.type) {
                     case "CredentialsSignin":
