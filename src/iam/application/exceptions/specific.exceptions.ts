@@ -8,6 +8,7 @@ export class EmailAlreadyExistsException extends AppError {
         this.name = this.constructor.name;
     }
 }
+
 export class UserNotFoundException extends AppError {
     constructor(email: string) {
         super(
@@ -33,11 +34,58 @@ export class VerificationTokenExpiresException extends AppError {
         this.name = this.constructor.name;
     }
 }
+
 export class EmailVerificationProcessException extends AppError {
     constructor() {
         super(
             "There was an issue verifying your email. Please try again later. If the problem persists, contact support for assistance."
         );
+        this.name = this.constructor.name;
+    }
+}
+export class EmailVerificationAlreadySentException extends AppError {
+    constructor() {
+        super(
+            "Your email is not verified. A verification link has been already sent to your inbox. Please check your email."
+        );
+        this.name = this.constructor.name;
+    }
+}
+
+export class VerificationEmailExpiredException extends AppError {
+    constructor() {
+        super(
+            "Your previous verification link expired. A new one has been sent to your inbox."
+        );
+        this.name = this.constructor.name;
+    }
+}
+
+class AuthenticationException extends AppError {
+    constructor(message: string) {
+        super(message);
+    }
+}
+
+export class InvalidCredentialException extends AuthenticationException {
+    constructor() {
+        super(
+            "Invalid credentials. Please check your email and password and try again."
+        );
+        this.name = this.constructor.name;
+    }
+}
+export class InvalidPasswordException extends AuthenticationException {
+    constructor() {
+        super(
+            "Incorrect password. Please ensure it's the correct password and try again."
+        );
+        this.name = this.constructor.name;
+    }
+}
+export class NotSignedUpException extends AuthenticationException {
+    constructor() {
+        super("You are not signed up. Please sign up first");
         this.name = this.constructor.name;
     }
 }

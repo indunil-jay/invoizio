@@ -20,6 +20,7 @@ import { IVerificationTokenRepository } from "@/src/iam/application/repositories
 import { IVerificationTokenFactory } from "@/src/iam/domain/factories/verification-token.factory";
 import { IUserFactory } from "@/src/iam/domain/factories/user.factory";
 import { ITransactionManagerService } from "@/src/shared/database-transaction/transaction-manager.service.interface";
+import { IResendVerifyEmailHandler } from "@/src/iam/application/handlers/resend-verify-email.handler";
 
 export const DI_SYMBOLS = {
     // Services
@@ -44,6 +45,7 @@ export const DI_SYMBOLS = {
 
     //Handlers
     IUserSignedUpHandler: Symbol.for("IUserSignedUpHandler"),
+    IResendVerifyEmailHandler: Symbol.for("IResendVerifyEmailHandler"),
 
     //Event Bus
     IEventBus: Symbol.for("IEventBus"),
@@ -76,6 +78,7 @@ export interface DI_RETURN_TYPES {
 
     //Handlers
     IUserSignedUpHandler: IUserSignedUpHandler;
+    IResendVerifyEmailHandler: IResendVerifyEmailHandler;
 
     //event bus
     IEventBus: IEventBus;

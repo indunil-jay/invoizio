@@ -24,6 +24,7 @@ import { ClientAddressRepositoryModule } from "@/di/modules/repositories/client-
 import { InvoiceRepositoryModule } from "@/di/modules/repositories/invoice-repository.module";
 import { InvoiceItemsRepositoryModule } from "@/di/modules/repositories/invoice-items-repository.module";
 import { ActivityRepositoryModule } from "@/di/modules/repositories/activity-repository.module";
+import { ResendVerifyEmailHandlerModule } from "@/di/modules/handlers/resend-verify-email-handler.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -39,8 +40,7 @@ export const initializeContainer = () => {
 
     //handlers
     ApplicationContainer.load(UserSignedUpHandlerModule);
-
-    //repositories
+    ApplicationContainer.load(ResendVerifyEmailHandlerModule);
 
     //services
     ApplicationContainer.load(AuthenticationServiceModule);
@@ -49,6 +49,7 @@ export const initializeContainer = () => {
     ApplicationContainer.load(TokenGeneratorServiceModule);
     ApplicationContainer.load(TransactionManagerServiceModule);
 
+    //repositories
     ApplicationContainer.load(UserRepositoryModule);
     ApplicationContainer.load(VerificationTokenRepositoryModule);
     ApplicationContainer.load(PasswordResetTokenRepositoryModule);
@@ -75,8 +76,7 @@ export const destroyContainer = () => {
 
     //handlers
     ApplicationContainer.unload(UserSignedUpHandlerModule);
-
-    //repositories
+    ApplicationContainer.unload(ResendVerifyEmailHandlerModule);
 
     //services
     ApplicationContainer.unload(AuthenticationServiceModule);
@@ -85,6 +85,7 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(TokenGeneratorServiceModule);
     ApplicationContainer.unload(TransactionManagerServiceModule);
 
+    //repositories
     ApplicationContainer.unload(UserRepositoryModule);
     ApplicationContainer.unload(VerificationTokenRepositoryModule);
     ApplicationContainer.unload(PasswordResetTokenRepositoryModule);

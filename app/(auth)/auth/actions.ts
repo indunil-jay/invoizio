@@ -5,38 +5,31 @@ import { signUpFormSchema } from "@/shared/validation-schemas/auth/sign-up-form.
 import { signUpController } from "@/src/iam/presenter/controllers/sign-up.controller";
 import { executeAction } from "@/app/_utils/execute.action";
 import { emailVerifyController } from "@/src/iam/presenter/controllers/verify-email.controller";
+import { signInFormSchema } from "@/shared/validation-schemas/auth/sign-in-form.schema";
+import { signInController } from "@/src/iam/presenter/controllers/sign-in.controller";
 
 export const signUp = async (values: z.infer<typeof signUpFormSchema>) =>
     executeAction({
         actionFn: async () => await signUpController(values),
         successTitle: "Sign-Up Successful 🎉",
-        failureTitle: "Sign-Up Failed 😥",
+        failureTitle: "Sign-Up Failed ❌",
     });
 
 export const verifyEmail = async (token: string) =>
     executeAction({
         actionFn: async () => await emailVerifyController(token),
-        successTitle: "Email Verified Successfully ",
+        successTitle: "Email Verified Successfully 🎉 ",
         failureTitle: "Email Verification Failed ❌",
     });
 
-// export const signInWithCredentials = async (
-//     values: z.infer<typeof signInFormSchema>
-// ) => {
-//     return executeAction({
-//         actionFn: async () => await signInWithCredentialsController(values),
-//         title: "Sign In",
-//         redirectUrl: DEFAULT_LOGIN_REDIRECT,
-//     });
-// };
-
-// export const emailVerification = async (token: string) => {
-//     return executeAction({
-//         actionFn: async () => await emailVerificationController(token),
-//         title: "Email Verification",
-//         redirectUrl: "/auth/sign-in",
-//     });
-// };
+export const signInWithCredentials = async (
+    values: z.infer<typeof signInFormSchema>
+) =>
+    executeAction({
+        actionFn: async () => await signInController(values),
+        successTitle: "Sign-In Successful 🎉",
+        failureTitle: "Sign-In Failed ❌",
+    });
 
 // export const forgotPassword = async (
 //     values: z.infer<typeof forgotPasswordFormSchema>

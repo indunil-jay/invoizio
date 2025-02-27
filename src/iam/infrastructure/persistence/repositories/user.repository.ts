@@ -64,6 +64,7 @@ export class UserRepository implements IUserRepository {
             const user = await db.query.users.findFirst({
                 where: eq(users.email, email),
             });
+            console.log({ user });
             if (!user) return;
 
             return UserMapper.toDomain(user);

@@ -41,12 +41,16 @@ export const emailVerifyUseCase = {
 
         // Update the user document to mark email as verified and remove the token
 
-        transactionManagerService.startTransaction(async (tx) => {
+        await transactionManagerService.startTransaction(async (tx) => {
             try {
-                await userRepository.update(associateUser.id, {
-                    emailVerified: new Date(),
-                });
-                await verificationTokenRepository.remove(associateUser.id);
+                await userRepository.update(
+                    associateUser.id,
+                    {
+                        emailVerified: new Date(),
+                    },
+                    tx
+                );
+                await verificationTokenRepository.remove(associateUser.id, tx);
             } catch {
                 tx.rollback();
                 throw new EmailVerificationProcessException();

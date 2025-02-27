@@ -12,15 +12,21 @@ import { DataBaseException } from "@/src/iam/infrastructure/exceptions/common.ex
 export class VerificationTokenRepository
     implements IVerificationTokenRepository
 {
-    public async insert(data: VerificationToken): Promise<VerificationToken> {
+    public async insert(
+        data: VerificationToken,
+        tx?: Transaction
+    ): Promise<VerificationToken> {
+        const invoker = tx ?? db;
         try {
             const persistenceModel =
                 VeirificationTokenMapper.toPersistence(data);
 
-            const [insertedVerificationToken] = await db
+            const query = invoker
                 .insert(verificationTokens)
                 .values(persistenceModel)
                 .returning();
+
+            const [insertedVerificationToken] = await query.execute();
 
             return VeirificationTokenMapper.toDomain(insertedVerificationToken);
         } catch (error) {

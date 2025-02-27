@@ -28,24 +28,14 @@ export const defineUsersRelations = relations(users, ({ one, many }) => ({
 
 //schema validation
 export const signInWithCredentialSchema = createInsertSchema(users, {
-    email: (schema) => schema.email(),
-    password: (schema) => schema.min(1),
+    email: (schema) => schema.email().trim(),
+    password: (schema) => schema.min(1).trim(),
 }).pick({
     email: true,
     password: true,
 });
 
-// Transform parsed output
-export const strictSignInWithCredentialSchema =
-    signInWithCredentialSchema.transform((data) => {
-        return {
-            ...data,
-            email: data.email || "",
-            password: data.password || "",
-        };
-    });
-
-export type SignInInput = z.infer<typeof strictSignInWithCredentialSchema>;
+// export type SignInInput = z.infer<typeof signInWithCredentialSchema>;
 
 export const signUpSchema = createInsertSchema(users, {
     id: (schema) => schema.min(1),
@@ -60,7 +50,7 @@ export const signUpSchema = createInsertSchema(users, {
 });
 
 // Inferred Input Type for SignUp
-export type CreateUser = z.infer<typeof signUpSchema>;
+// export type CreateUser = z.infer<typeof signUpSchema>;
 
 // Select Model Type for User
 export type UserEntity = InferSelectModel<typeof users>;
