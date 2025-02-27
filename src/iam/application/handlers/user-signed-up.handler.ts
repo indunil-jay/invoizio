@@ -10,6 +10,6 @@ export interface IUserSignedUpHandler {
 export class UserSignedUpHandler {
     async handle(event: UserSignedUpEvent) {
         const emailService = getInjection("IEmailService");
-        await emailService.verifyAccount(event.email, event.verificationToken);
+        await emailService.verifyAccount(event.user, event.verificationToken);
     }
 }

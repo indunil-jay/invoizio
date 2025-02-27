@@ -47,6 +47,7 @@ export const initializeContainer = () => {
     //handlers
     ApplicationContainer.load(UserSignedUpHandlerModule);
 
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("@/src/shared-infrastructure/event-store/event-subscribers");
 };
 

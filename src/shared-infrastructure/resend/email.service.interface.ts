@@ -1,3 +1,5 @@
+import { User } from "@/src/iam/domain/user.entity";
+
 export interface IEmailService {
-    verifyAccount(email: string, token: string): Promise<void>;
+    verifyAccount(user: User, token: string): Promise<void>;
 }

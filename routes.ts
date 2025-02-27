@@ -2,8 +2,9 @@
  * An array of routes that are accessible to the public
  */
 export const publicRoutes: string[] = [
-  "/auth/new-verification",
-  "/api/invoice",
+    "/auth/new-verification",
+    "/api/invoice",
+    "/test",
 ];
 
 /**
@@ -11,11 +12,11 @@ export const publicRoutes: string[] = [
  * These routes will redirects logged in user to application
  */
 export const authRoutes: string[] = [
-  "/auth/sign-in",
-  "/auth/sign-up",
-  "/auth/error",
-  "/auth/forgot-password",
-  "/auth/reset-password",
+    "/auth/sign-in",
+    "/auth/sign-up",
+    "/auth/error",
+    "/auth/forgot-password",
+    "/auth/reset-password",
 ];
 
 /**
