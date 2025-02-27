@@ -9,7 +9,6 @@ import { IInvoiceRepository } from "@/src/application/repositories/invoice-repos
 import { IPasswordResetTokenRepository } from "@/src/application/repositories/password-reset-token-repository.interface";
 
 import { IVerificationTokenRepository } from "@/src/application/repositories/verification-token-repository.interface";
-import { ITokenGeneratorService } from "@/src/application/services/token-generator-service.interface";
 import { ITransactionManagerService } from "@/src/application/services/transaction-service.interface";
 import { IUserSignedUpHandler } from "@/src/iam/application/handlers/user-signed-up.handler";
 
@@ -18,12 +17,13 @@ import { IAuthenticationService } from "@/src/iam/application/services/authentic
 import { IHashingService } from "@/src/iam/application/services/hashing.service";
 import { IEmailService } from "@/src/shared-infrastructure/resend/email.service.interface";
 import { IEventBus } from "@/src/shared-infrastructure/event-store/event-bus.interface";
+import { ITokenGenerateService } from "@/src/iam/application/services/token-generate.service";
 
 export const DI_SYMBOLS = {
     // Services
     IHashingService: Symbol.for("IHashingService"),
     IAuthenticationService: Symbol.for("IAuthenticationService"),
-    ITokenGeneratorService: Symbol.for("ITokenGeneratorService"),
+    ITokenGenerateService: Symbol.for("ITokenGenerateService"),
     IEmailService: Symbol.for("IEmailService"),
     ITransactionManagerService: Symbol.for("ITransactionManagerService"),
     // Repositories
@@ -50,7 +50,7 @@ export interface DI_RETURN_TYPES {
     // Services
     IHashingService: IHashingService;
     IAuthenticationService: IAuthenticationService;
-    ITokenGeneratorService: ITokenGeneratorService;
+    ITokenGenerateService: ITokenGenerateService;
     IEmailService: IEmailService;
     ITransactionManagerService: ITransactionManagerService;
 

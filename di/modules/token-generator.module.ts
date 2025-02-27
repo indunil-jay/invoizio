@@ -1,12 +1,12 @@
-import { ITokenGeneratorService } from "@/src/application/services/token-generator-service.interface";
 import { ContainerModule, interfaces } from "inversify";
 import { DI_SYMBOLS } from "@/di/types";
-import { TokenGeneratorService } from "@/src/infastructure/services/token-generator.service";
+import { TokenGenerateService } from "@/src/iam/infrastructure/services/token-generate.service";
+import { ITokenGenerateService } from "@/src/iam/application/services/token-generate.service";
 
 const initializeModule = (bind: interfaces.Bind) => {
-  bind<ITokenGeneratorService>(DI_SYMBOLS.ITokenGeneratorService).to(
-    TokenGeneratorService
-  );
+    bind<ITokenGenerateService>(DI_SYMBOLS.ITokenGenerateService).to(
+        TokenGenerateService
+    );
 };
 
 export const TokenGeneratorModule = new ContainerModule(initializeModule);

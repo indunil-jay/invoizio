@@ -26,7 +26,7 @@ export const signUpUseCase = {
 
         // send account verify email
 
-        await eventBus.publish(new UserSignedUpEvent(newUser, "123456"));
+        await eventBus.publish(new UserSignedUpEvent(newUser));
 
         return newUser;
     },
