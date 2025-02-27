@@ -16,8 +16,8 @@ import { IUserSignedUpHandler } from "@/src/iam/application/handlers/user-signed
 import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
 import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
 import { IHashingService } from "@/src/iam/application/services/hashing.service";
-import { IEmailService } from "@/src/resend/application/email.service.interface";
-import { IEventBus } from "@/src/shared/event-bus.interface";
+import { IEmailService } from "@/src/shared-infrastructure/resend/email.service.interface";
+import { IEventBus } from "@/src/shared-infrastructure/event-store/event-bus.interface";
 
 export const DI_SYMBOLS = {
     // Services

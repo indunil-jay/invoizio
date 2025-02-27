@@ -1,4 +1,5 @@
-import { EventHandler } from "./event-bus";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { EventHandler } from "@/src/shared-infrastructure/event-store/event-bus";
 
 export interface IEventBus {
     subscribe<T>(

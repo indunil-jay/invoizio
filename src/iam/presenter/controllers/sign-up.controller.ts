@@ -9,7 +9,7 @@ const presenter = (data: User) => {
         data: data.toJSON(),
         status: true,
         message:
-            "You have successfully signed in. Please log in with your credentials.",
+            "Your account has been successfully created. A verification email has been sent. Please verify your email before signing in.",
     };
 };
 

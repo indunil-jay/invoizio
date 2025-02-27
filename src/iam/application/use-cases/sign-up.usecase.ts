@@ -2,7 +2,7 @@ import { getInjection } from "@/di/container";
 import { signUpDto } from "@/src/iam/application/dto/user.dto";
 import { EmailAlreadyExistsException } from "@/src/iam/application/exceptions/specific.exceptions";
 import { User } from "@/src/iam/domain/user.entity";
-import { UserSignedUpEvent } from "../../domain/events/user-signed-up.event";
+import { UserSignedUpEvent } from "@/src/iam/domain/events/user-signed-up.event";
 
 export const signUpUseCase = {
     async execute({ email, name, password }: signUpDto) {
@@ -25,9 +25,9 @@ export const signUpUseCase = {
         const newUser = await userRepository.insert(user);
 
         // send account verify email
-        console.log("🔹 Publishing UserSignedUpEvent...");
+
         await eventBus.publish(new UserSignedUpEvent(email, "123456"));
-        console.log("✅ UserSignedUpEvent published successfully.");
+
         return newUser;
     },
 };
