@@ -7,4 +7,4 @@ const initializeModule = (bind: interfaces.Bind) => {
     bind<IHashingService>(DI_SYMBOLS.IHashingService).to(HashingService);
 };
 
-export const HashingModule = new ContainerModule(initializeModule);
+export const HashingServiceModule = new ContainerModule(initializeModule);

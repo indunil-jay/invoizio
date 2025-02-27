@@ -9,4 +9,6 @@ const initializeModule = (bind: interfaces.Bind) => {
     );
 };
 
-export const TokenGeneratorModule = new ContainerModule(initializeModule);
+export const TokenGeneratorServiceModule = new ContainerModule(
+    initializeModule
+);

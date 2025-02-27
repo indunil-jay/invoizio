@@ -7,4 +7,4 @@ const initializeModule = (bind: interfaces.Bind) => {
   bind<IInvoiceRepository>(DI_SYMBOLS.IInvoiceRepository).to(InvoiceRepository);
 };
 
-export const InvoiceModule = new ContainerModule(initializeModule);
+export const InvoiceRepositoryModule = new ContainerModule(initializeModule);

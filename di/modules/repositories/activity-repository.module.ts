@@ -9,4 +9,4 @@ const initializeModule = (bind: interfaces.Bind) => {
     );
 };
 
-export const ActivityModule = new ContainerModule(initializeModule);
+export const ActivityRepositoryModule = new ContainerModule(initializeModule);

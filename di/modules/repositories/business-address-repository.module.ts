@@ -4,9 +4,11 @@ import { DI_SYMBOLS } from "@/di/types";
 import { BusinessAddressRepository } from "@/src/infastructure/repositories/business-address.repository";
 
 const initializeModule = (bind: interfaces.Bind) => {
-  bind<IBusinessAddressRepository>(DI_SYMBOLS.IBusinessAddressRepository).to(
-    BusinessAddressRepository
-  );
+    bind<IBusinessAddressRepository>(DI_SYMBOLS.IBusinessAddressRepository).to(
+        BusinessAddressRepository
+    );
 };
 
-export const BusinessAddressModule = new ContainerModule(initializeModule);
+export const BusinessAddressRepositoryModule = new ContainerModule(
+    initializeModule
+);

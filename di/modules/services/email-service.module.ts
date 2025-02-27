@@ -7,4 +7,4 @@ const initializeModule = (bind: interfaces.Bind) => {
     bind<IEmailService>(DI_SYMBOLS.IEmailService).to(EmailService);
 };
 
-export const EmailModule = new ContainerModule(initializeModule);
+export const EmailServiceModule = new ContainerModule(initializeModule);

@@ -1,89 +1,101 @@
 import { Container } from "inversify";
+
 import { DI_RETURN_TYPES, DI_SYMBOLS } from "@/di/types";
-import { UserModule } from "@/di/modules/user.module";
-import { HashingModule } from "@/di/modules/hashing.module";
-import { AuthenticationModule } from "@/di/modules/authentication.module";
-import { VerificationTokenModule } from "@/di/modules/verification-token.module";
-import { TokenGeneratorModule } from "@/di/modules/token-generator.module";
-import { EmailModule } from "@/di/modules/email.module";
-import { PasswordResetTokenModule } from "@/di/modules/password-reset-token.module";
-import { AccountModule } from "@/di/modules/account.module";
-import { BusinessModule } from "@/di/modules/business.module";
-import { BusinessAddressModule } from "@/di/modules/business-address.module";
-import { TransactionManagerModule } from "@/di/modules/transaction-manager.module";
-import { ClientModule } from "@/di/modules/client.module";
-import { ClientAddressModule } from "@/di/modules/client-address.module";
-import { InvoiceModule } from "@/di/modules/invoice.module";
-import { InvoiceItemsModule } from "@/di/modules/invoice-items.module";
-import { ActivityModule } from "./modules/activity.module";
-import { UserSignedUpHandlerModule } from "./modules/handlers/user-signed-up-handler.module";
-import { eventBusModule } from "./modules/event-bus/event-bus.module";
-import { VerificationTokenFactoryModule } from "./modules/factrories/verification-token-factory.module";
-import { UserFactoryModule } from "./modules/factrories/user-factory.module";
+import { eventBusModule } from "@/di/modules/event-bus/event-bus.module";
+
+import { HashingServiceModule } from "@/di/modules/services/hashing-service.module";
+import { AuthenticationServiceModule } from "@/di/modules/services/authentication-service.module";
+import { TokenGeneratorServiceModule } from "@/di/modules/services/token-generator-service.module";
+import { EmailServiceModule } from "@/di/modules/services/email-service.module";
+import { TransactionManagerServiceModule } from "@/di/modules/services/transaction-manager-service.module";
+
+import { VerificationTokenFactoryModule } from "@/di/modules/factrories/verification-token-factory.module";
+import { UserFactoryModule } from "@/di/modules/factrories/user-factory.module";
+
+import { UserSignedUpHandlerModule } from "@/di/modules/handlers/user-signed-up-handler.module";
+import { UserRepositoryModule } from "@/di/modules/repositories/user-repository.module";
+import { VerificationTokenRepositoryModule } from "@/di/modules/repositories/verification-token-repository.module";
+import { PasswordResetTokenRepositoryModule } from "@/di/modules/repositories/password-reset-token-repository.module";
+import { AccountRepositoryModule } from "@/di/modules/repositories/account-repository.module";
+import { BusinessRepositoryModule } from "@/di/modules/repositories/business-repository.module";
+import { BusinessAddressRepositoryModule } from "@/di/modules/repositories/business-address-repository.module";
+import { ClientRepositoryModule } from "@/di/modules/repositories/client-repository.module";
+import { ClientAddressRepositoryModule } from "@/di/modules/repositories/client-address-repository.module";
+import { InvoiceRepositoryModule } from "@/di/modules/repositories/invoice-repository.module";
+import { InvoiceItemsRepositoryModule } from "@/di/modules/repositories/invoice-items-repository.module";
+import { ActivityRepositoryModule } from "@/di/modules/repositories/activity-repository.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
 });
 
 export const initializeContainer = () => {
-    ApplicationContainer.load(UserModule);
-    ApplicationContainer.load(HashingModule);
-    ApplicationContainer.load(AuthenticationModule);
-    ApplicationContainer.load(VerificationTokenModule);
-    ApplicationContainer.load(TokenGeneratorModule);
-    ApplicationContainer.load(EmailModule);
-    ApplicationContainer.load(PasswordResetTokenModule);
-    ApplicationContainer.load(AccountModule);
-    ApplicationContainer.load(BusinessModule);
-    ApplicationContainer.load(BusinessAddressModule);
-    ApplicationContainer.load(TransactionManagerModule);
-    ApplicationContainer.load(ClientModule);
-    ApplicationContainer.load(ClientAddressModule);
-    ApplicationContainer.load(InvoiceModule);
-    ApplicationContainer.load(InvoiceItemsModule);
-    ApplicationContainer.load(ActivityModule);
-
     //event bus
     ApplicationContainer.load(eventBusModule);
-
-    //handlers
-    ApplicationContainer.load(UserSignedUpHandlerModule);
-
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    require("@/src/shared/event-store/event-subscribers");
 
     //factories
     ApplicationContainer.load(VerificationTokenFactoryModule);
     ApplicationContainer.load(UserFactoryModule);
+
+    //handlers
+    ApplicationContainer.load(UserSignedUpHandlerModule);
+
+    //repositories
+
+    //services
+    ApplicationContainer.load(AuthenticationServiceModule);
+    ApplicationContainer.load(EmailServiceModule);
+    ApplicationContainer.load(HashingServiceModule);
+    ApplicationContainer.load(TokenGeneratorServiceModule);
+    ApplicationContainer.load(TransactionManagerServiceModule);
+
+    ApplicationContainer.load(UserRepositoryModule);
+    ApplicationContainer.load(VerificationTokenRepositoryModule);
+    ApplicationContainer.load(PasswordResetTokenRepositoryModule);
+    ApplicationContainer.load(AccountRepositoryModule);
+    ApplicationContainer.load(BusinessRepositoryModule);
+    ApplicationContainer.load(BusinessAddressRepositoryModule);
+    ApplicationContainer.load(ClientRepositoryModule);
+    ApplicationContainer.load(ClientAddressRepositoryModule);
+    ApplicationContainer.load(InvoiceRepositoryModule);
+    ApplicationContainer.load(InvoiceItemsRepositoryModule);
+    ApplicationContainer.load(ActivityRepositoryModule);
+
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    require("@/src/shared/event-store/event-subscribers");
 };
 
 export const destroyContainer = () => {
-    ApplicationContainer.unload(UserModule);
-    ApplicationContainer.unload(HashingModule);
-    ApplicationContainer.unload(AuthenticationModule);
-    ApplicationContainer.unload(VerificationTokenModule);
-    ApplicationContainer.unload(TokenGeneratorModule);
-    ApplicationContainer.unload(EmailModule);
-    ApplicationContainer.unload(PasswordResetTokenModule);
-    ApplicationContainer.unload(AccountModule);
-    ApplicationContainer.unload(BusinessModule);
-    ApplicationContainer.unload(BusinessAddressModule);
-    ApplicationContainer.unload(TransactionManagerModule);
-    ApplicationContainer.unload(ClientModule);
-    ApplicationContainer.unload(ClientAddressModule);
-    ApplicationContainer.unload(InvoiceModule);
-    ApplicationContainer.unload(InvoiceItemsModule);
-    ApplicationContainer.unload(ActivityModule);
-
     //event bus
     ApplicationContainer.unload(eventBusModule);
-
-    //handlers
-    ApplicationContainer.unload(UserSignedUpHandlerModule);
 
     //factories
     ApplicationContainer.unload(VerificationTokenFactoryModule);
     ApplicationContainer.unload(UserFactoryModule);
+
+    //handlers
+    ApplicationContainer.unload(UserSignedUpHandlerModule);
+
+    //repositories
+
+    //services
+    ApplicationContainer.unload(AuthenticationServiceModule);
+    ApplicationContainer.unload(EmailServiceModule);
+    ApplicationContainer.unload(HashingServiceModule);
+    ApplicationContainer.unload(TokenGeneratorServiceModule);
+    ApplicationContainer.unload(TransactionManagerServiceModule);
+
+    ApplicationContainer.unload(UserRepositoryModule);
+    ApplicationContainer.unload(VerificationTokenRepositoryModule);
+    ApplicationContainer.unload(PasswordResetTokenRepositoryModule);
+    ApplicationContainer.unload(AccountRepositoryModule);
+    ApplicationContainer.unload(BusinessRepositoryModule);
+    ApplicationContainer.unload(BusinessAddressRepositoryModule);
+    ApplicationContainer.unload(ClientRepositoryModule);
+    ApplicationContainer.unload(ClientAddressRepositoryModule);
+    ApplicationContainer.unload(InvoiceRepositoryModule);
+    ApplicationContainer.unload(InvoiceItemsRepositoryModule);
+    ApplicationContainer.unload(ActivityRepositoryModule);
 };
 initializeContainer();
 

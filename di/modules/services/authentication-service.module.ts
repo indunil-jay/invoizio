@@ -9,4 +9,6 @@ const initializeModule = (bind: interfaces.Bind) => {
     );
 };
 
-export const AuthenticationModule = new ContainerModule(initializeModule);
+export const AuthenticationServiceModule = new ContainerModule(
+    initializeModule
+);

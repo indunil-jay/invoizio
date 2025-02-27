@@ -9,4 +9,4 @@ const initializeModule = (bind: interfaces.Bind) => {
     ).to(VerificationTokenRepository);
 };
 
-export const VerificationTokenModule = new ContainerModule(initializeModule);
+export const VerificationTokenRepositoryModule = new ContainerModule(initializeModule);

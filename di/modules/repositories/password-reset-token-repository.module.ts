@@ -9,4 +9,4 @@ const initializeModule = (bind: interfaces.Bind) => {
   ).to(PasswordResetTokenRepository);
 };
 
-export const PasswordResetTokenModule = new ContainerModule(initializeModule);
+export const PasswordResetTokenRepositoryModule = new ContainerModule(initializeModule);

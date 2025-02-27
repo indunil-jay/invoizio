@@ -9,4 +9,4 @@ const initializeModule = (bind: interfaces.Bind) => {
   );
 };
 
-export const InvoiceItemsModule = new ContainerModule(initializeModule);
+export const InvoiceItemsRepositoryModule = new ContainerModule(initializeModule);
