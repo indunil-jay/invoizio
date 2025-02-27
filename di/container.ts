@@ -47,7 +47,7 @@ export const initializeContainer = () => {
     //handlers
     ApplicationContainer.load(UserSignedUpHandlerModule);
 
-    require("@/src/shared/event-subscribers");
+    require("@/src/shared-infrastructure/event-store/event-subscribers");
 };
 
 export const destroyContainer = () => {
