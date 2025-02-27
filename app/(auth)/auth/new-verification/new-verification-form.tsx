@@ -1,12 +1,12 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/app/_components/ui/button";
 import { verifyEmail } from "@/app/(auth)/auth/actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
-import { useRouter } from "next/navigation";
+import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
 
 interface NewVerificationFormProps {
     token: string | undefined;
@@ -35,7 +35,7 @@ export const NewVerificationForm = ({ token }: NewVerificationFormProps) => {
                 className="w-full"
             >
                 {form.formState.isSubmitting ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <SpinnerBtnLoading />
                 ) : (
                     "Verify Email"
                 )}

@@ -5,7 +5,7 @@ import { Button } from "@/app/_components/ui/button";
 import GoogleIcon from "@/app/_assets/svgs/google.svg";
 import { toast } from "@/app/_hooks/use-toast";
 
-export const GoogleSign = () => {
+export const GoogleSign = ({ disabled }: { disabled: boolean }) => {
     const handleGoogleSign = async () => {
         try {
             await signIn("google", { redirect: false });
@@ -29,6 +29,7 @@ export const GoogleSign = () => {
             size={"lg"}
             type="submit"
             className="w-full"
+            disabled={disabled}
         >
             <Image
                 src={GoogleIcon}

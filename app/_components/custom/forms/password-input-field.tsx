@@ -7,6 +7,7 @@ import { useState, forwardRef } from "react";
 type PasswordFieldProps = React.ComponentProps<typeof Input> & {
     label?: string;
     placeholder?: string;
+    disabled?: boolean;
 };
 
 // Use forwardRef to allow refs to be passed to the Input component
@@ -19,6 +20,7 @@ export const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
             <div>
                 <div className="flex items-center border shadow-sm rounded-md  focus-within:ring-1 focus-within:ring-ring focus-within:border-transparent transition-colors focus-within:outline-none">
                     <Input
+                        disabled={props.disabled}
                         ref={ref} // Forward the ref to the Input component
                         type={isPasswordVisible ? "text" : "password"}
                         placeholder={placeholder}
