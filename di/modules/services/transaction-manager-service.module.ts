@@ -1,7 +1,7 @@
 import { ContainerModule, interfaces } from "inversify";
-import { ITransactionManagerService } from "@/src/application/services/transaction-service.interface";
-import { TransactionManagerService } from "@/src/infastructure/services/transaction-manager.service";
 import { DI_SYMBOLS } from "@/di/types";
+import { ITransactionManagerService } from "@/src/shared/database-transaction/transaction-manager.service.interface";
+import { TransactionManagerService } from "@/src/shared/database-transaction/transaction-manager.service";
 
 const initializeModule = (bind: interfaces.Bind) => {
     bind<ITransactionManagerService>(DI_SYMBOLS.ITransactionManagerService).to(
@@ -9,4 +9,6 @@ const initializeModule = (bind: interfaces.Bind) => {
     );
 };
 
-export const TransactionManagerServiceModule = new ContainerModule(initializeModule);
+export const TransactionManagerServiceModule = new ContainerModule(
+    initializeModule
+);

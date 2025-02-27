@@ -1,3 +1,4 @@
+import { Transaction } from "@/drizzle";
 import { User } from "@/src/iam/domain/user.entity";
 
 export interface IUserRepository {
@@ -5,5 +6,9 @@ export interface IUserRepository {
 
     insert(data: User): Promise<User>;
 
-    update(id: string, properties: Partial<User>): Promise<User>;
+    update(
+        id: string,
+        properties: Partial<User>,
+        tx?: Transaction
+    ): Promise<User>;
 }

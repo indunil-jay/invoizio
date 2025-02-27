@@ -5,7 +5,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/app/_components/ui/card";
-import { NewVerificationForm } from "./new-verification-form";
+import { NewVerificationForm } from "@/app/(auth)/auth/new-verification/new-verification-form";
 import { BackButton } from "@/app/_components/custom/back-button";
 
 export default async function Page(props: {

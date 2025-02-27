@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { eq } from "drizzle-orm";
-import { db } from "@/drizzle";
+import { db, Transaction } from "@/drizzle";
 import { users } from "@/drizzle/schemas";
 
 import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
@@ -11,9 +11,14 @@ import { DatabaseUserUpdateException } from "@/src/iam/infrastructure/exceptions
 
 @injectable()
 export class UserRepository implements IUserRepository {
-    public async update(id: string, properties: Partial<User>): Promise<User> {
+    public async update(
+        id: string,
+        properties: Partial<User>,
+        tx?: Transaction
+    ): Promise<User> {
+        const invoker = tx ?? db;
         try {
-            const [updatedUser] = await db
+            const query = invoker
                 .update(users)
                 .set({
                     emailVerified: properties.emailVerified,
@@ -24,6 +29,8 @@ export class UserRepository implements IUserRepository {
                 })
                 .where(eq(users.id, id))
                 .returning();
+
+            const [updatedUser] = await query.execute();
 
             if (!updatedUser) {
                 throw new DatabaseUserUpdateException();

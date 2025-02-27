@@ -18,7 +18,7 @@ export async function executeAction<T>({
         return {
             title: successTitle,
             message: response.message,
-            data: response.data,
+            data: response.data || undefined,
             status: response.status,
         };
     } catch (error) {

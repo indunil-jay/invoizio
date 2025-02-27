@@ -4,9 +4,9 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/app/_components/ui/button";
-import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
-
-import { emailVerification } from "@/app/(auth)/auth/actions";
+import { verifyEmail } from "@/app/(auth)/auth/actions";
+import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
+import { useRouter } from "next/navigation";
 
 interface NewVerificationFormProps {
     token: string | undefined;
@@ -14,13 +14,15 @@ interface NewVerificationFormProps {
 
 export const NewVerificationForm = ({ token }: NewVerificationFormProps) => {
     const form = useForm();
-    const toast = useShowToast();
+    const { toast } = useShowToast();
+    const router = useRouter();
 
     const onSubmit = async () => {
         if (token) {
-            const response = await emailVerification(token);
+            const response = await verifyEmail(token);
             toast(response);
         }
+        router.push("/auth/sign-in");
     };
 
     return (

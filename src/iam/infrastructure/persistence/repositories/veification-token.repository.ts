@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { eq } from "drizzle-orm";
-import { db } from "@/drizzle";
+import { db, Transaction } from "@/drizzle";
 import { verificationTokens } from "@/drizzle/schemas";
 import { IVerificationTokenRepository } from "@/src/iam/application/repositories/verification-token.repository";
 import { VerificationToken } from "@/src/iam/domain/verification-token.entity";
@@ -31,11 +31,14 @@ export class VerificationTokenRepository
         }
     }
 
-    public async remove(id: string): Promise<void> {
+    public async remove(id: string, tx?: Transaction): Promise<void> {
+        const invoker = tx ?? db;
         try {
-            await db
+            const query = invoker
                 .delete(verificationTokens)
                 .where(eq(verificationTokens.id, id));
+
+            await query.execute();
         } catch (error) {
             console.error(
                 `DATABASE_ERROR::VerificationTokenRepository::deleteById: ${error}`

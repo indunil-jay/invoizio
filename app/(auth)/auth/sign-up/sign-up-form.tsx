@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -16,9 +17,8 @@ import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
 import { signUpFormSchema } from "@/shared/validation-schemas/auth/sign-up-form.schema";
-import { signUp } from "../actions";
+import { signUp } from "@/app/(auth)/auth/actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
-import { useRouter } from "next/navigation";
 
 export function SignUpForm() {
     const { toast } = useShowToast();
