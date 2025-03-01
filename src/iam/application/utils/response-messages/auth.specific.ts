@@ -6,3 +6,6 @@ export const passwordResetLinkAlreadySent = () =>
 
 export const passwordResetLinkExpiredAndNewLinkASent = () =>
     "Your previous password reset link expired. A new email has been sent to your inbox.";
+
+export const verificationLinkAlreadySent = () =>
+    "Your previous verification link expired. A new one has been sent to your inbox.";

@@ -4,7 +4,6 @@ import { ResendVerifyEmailEvent } from "@/src/iam/domain/events/resend-verify-em
 import {
     EmailVerificationAlreadySentException,
     NotSignedUpException,
-    VerificationEmailExpiredException,
 } from "@/src/iam/application/exceptions/specific.exceptions";
 import { VerificationToken } from "@/src/iam/domain/verification-token.entity";
 import { getVerificationTokenExpiration } from "@/src/iam/application/utils/get-verifcation-token-expire";
@@ -71,7 +70,7 @@ export class ResendVerifyEmailEventHandler
                         verificationToken,
                         tx
                     );
-                } catch (error) {
+                } catch {
                     tx.rollback();
                 }
             });
@@ -79,9 +78,6 @@ export class ResendVerifyEmailEventHandler
             //send email again
             const user = await userRepository.getByEmail(event.email);
             await emailService.verifyAccount(user!, token!);
-
-            // TODO: need to think about another way
-            throw new VerificationEmailExpiredException();
         }
     }
 

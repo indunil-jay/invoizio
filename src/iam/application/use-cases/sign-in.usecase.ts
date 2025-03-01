@@ -5,6 +5,7 @@ import {
     InvalidPasswordException,
 } from "@/src/iam/application/exceptions/specific.exceptions";
 import { ResendVerifyEmailEvent } from "@/src/iam/domain/events/resend-verify-email.event";
+import { verificationLinkAlreadySent } from "@/src/iam/application/utils/response-messages/auth.specific";
 
 export const signInUseCase = {
     async execute({ email, password }: signInDto) {
@@ -36,6 +37,8 @@ export const signInUseCase = {
             await eventBus.publish(
                 new ResendVerifyEmailEvent(existingUser.email)
             );
+
+            return verificationLinkAlreadySent();
         }
 
         // Proceed with sign-in

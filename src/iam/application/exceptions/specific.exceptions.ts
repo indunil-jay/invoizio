@@ -52,15 +52,6 @@ export class EmailVerificationAlreadySentException extends AppError {
     }
 }
 
-export class VerificationEmailExpiredException extends AppError {
-    constructor() {
-        super(
-            "Your previous verification link expired. A new one has been sent to your inbox."
-        );
-        this.name = this.constructor.name;
-    }
-}
-
 class AuthenticationException extends AppError {
     constructor(message: string) {
         super(message);
