@@ -27,6 +27,7 @@ import { ActivityRepositoryModule } from "@/di/modules/repositories/activity-rep
 import { ResendVerifyEmailEventHandlerModule } from "@/di/modules/handlers/resend-verify-email.event-handler.module";
 import { PasswordResetTokenFactoryModule } from "./modules/factrories/password-reset-token-factory.module";
 import { SendResetPasswordEmailEventHandlerModule } from "./modules/handlers/send-reset-password-email.event-handler.module";
+import { PasswordResetedEventHandlerModule } from "./modules/handlers/password-reseted.event-handler.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -45,6 +46,8 @@ export const initializeContainer = () => {
     ApplicationContainer.load(UserSignedUpEventHandlerModule);
     ApplicationContainer.load(ResendVerifyEmailEventHandlerModule);
     ApplicationContainer.load(SendResetPasswordEmailEventHandlerModule);
+    ApplicationContainer.load(PasswordResetedEventHandlerModule);
+
     //services
     ApplicationContainer.load(AuthenticationServiceModule);
     ApplicationContainer.load(EmailServiceModule);
@@ -77,10 +80,11 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(VerificationTokenFactoryModule);
     ApplicationContainer.unload(UserFactoryModule);
     ApplicationContainer.unload(PasswordResetTokenFactoryModule);
+    ApplicationContainer.unload(PasswordResetedEventHandlerModule);
 
     //handlers
-    ApplicationContainer.unload(UserSignedUpHandlerModule);
-    ApplicationContainer.unload(ResendVerifyEmailHandlerModule);
+    ApplicationContainer.unload(UserSignedUpEventHandlerModule);
+    ApplicationContainer.unload(ResendVerifyEmailEventHandlerModule);
     ApplicationContainer.unload(SendResetPasswordEmailEventHandlerModule);
 
     //services

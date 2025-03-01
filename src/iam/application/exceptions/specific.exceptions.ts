@@ -43,6 +43,7 @@ export class EmailVerificationProcessException extends AppError {
         this.name = this.constructor.name;
     }
 }
+
 export class EmailVerificationAlreadySentException extends AppError {
     constructor() {
         super(
@@ -77,6 +78,31 @@ export class InvalidPasswordException extends AuthenticationException {
 export class NotSignedUpException extends AuthenticationException {
     constructor() {
         super("You are not signed up. Please sign up first");
+        this.name = this.constructor.name;
+    }
+}
+export class InvalidPasswordResetTokenException extends AuthenticationException {
+    constructor() {
+        super(
+            "The provided token is invalid or has already been used. Please request a new password reset link."
+        );
+        this.name = this.constructor.name;
+    }
+}
+export class ExpiredPasswordResetTokenException extends AuthenticationException {
+    constructor() {
+        super(
+            "The password reset token has expired. Please request a new link to reset your password."
+        );
+        this.name = this.constructor.name;
+    }
+}
+
+export class PasswordResetProcessException extends AppError {
+    constructor() {
+        super(
+            "There was an issue while reseting password. Please try again later. If the problem persists, contact support for assistance."
+        );
         this.name = this.constructor.name;
     }
 }

@@ -7,15 +7,38 @@ import { EmailSendingException } from "@/src/shared/resend/application/specific.
 import { User } from "@/src/iam/domain/user.entity";
 import InvoizioVerifyAccount from "@/src/shared/resend/presenter/templates/account-verifiy";
 import InvoizioResetPassword from "@/src/shared/resend/presenter/templates/reset-password";
+import InvoizioPasswordResetSuccess from "../presenter/templates/password-reset-done";
 
 const COMPANY_NAME = "invoizio";
 const HOST = `http://localhost:3000`;
 
 @injectable()
 export class EmailService implements IEmailService {
+    public async sendPasswordResetedEmail(user: User): Promise<void> {
+        const loginUrl = `${HOST}/auth/sign-in`;
+
+        try {
+            const { error } = await EmailService.resend.emails.send({
+                from: `${COMPANY_NAME} <onboarding@resend.dev>`,
+                to: user.email,
+                subject: "Password Reset Success",
+                react: InvoizioPasswordResetSuccess({
+                    userName: user.name,
+                    loginUrl,
+                }),
+            });
+
+            if (error) {
+                throw error;
+            }
+        } catch {
+            throw new EmailSendingException();
+        }
+    }
     private static readonly resend = new Resend(
         envValidationSchema.RESEND_API_KEY
     );
+
     public async sendResetPasswordEmail(
         user: User,
         token: string

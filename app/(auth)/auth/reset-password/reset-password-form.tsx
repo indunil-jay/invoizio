@@ -14,19 +14,11 @@ import {
 } from "@/app/_components/ui/form";
 import { Button } from "@/app/_components/ui/button";
 import { PasswordField } from "@/app/_components/custom/forms/password-input-field";
-import { Loader2 } from "lucide-react";
-
-export const resetPasswordFormSchema = z
-    .object({
-        password: z.string().min(8, {
-            message: "Password must contain at least 8 characters.",
-        }),
-        passwordConfirm: z.string({ message: "Confirm password is required." }),
-    })
-    .refine((data) => data.password === data.passwordConfirm, {
-        path: ["passwordConfirm"],
-        message: "Passwords does not match.",
-    });
+import { resetPasswordFormSchema } from "@/shared/validation-schemas/auth/reset-password-form.schema";
+import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
+import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
+import { resetPassword } from "../actions";
+import { useRouter } from "next/navigation";
 
 interface ResetPasswordFormPorps {
     token: string | undefined;
@@ -40,12 +32,15 @@ export const ResetPasswordForm = ({ token }: ResetPasswordFormPorps) => {
             passwordConfirm: "",
         },
     });
+    const { toast } = useShowToast();
+    const router = useRouter();
 
     const onSubmit = async (
         values: z.infer<typeof resetPasswordFormSchema>
     ) => {
-        // const response = await resetPassword(values, token);
-        // toast(response);
+        const response = await resetPassword(values, token);
+        toast(response);
+        router.push("/auth/sign-in");
     };
     return (
         <Form {...form}>
@@ -57,7 +52,10 @@ export const ResetPasswordForm = ({ token }: ResetPasswordFormPorps) => {
                         <FormItem>
                             <FormLabel>New Password</FormLabel>
                             <FormControl>
-                                <PasswordField {...field} />
+                                <PasswordField
+                                    {...field}
+                                    disabled={form.formState.isSubmitting}
+                                />
                             </FormControl>
 
                             <FormMessage />
@@ -71,7 +69,10 @@ export const ResetPasswordForm = ({ token }: ResetPasswordFormPorps) => {
                         <FormItem>
                             <FormLabel>Confirm new password</FormLabel>
                             <FormControl>
-                                <PasswordField {...field} />
+                                <PasswordField
+                                    {...field}
+                                    disabled={form.formState.isSubmitting}
+                                />
                             </FormControl>
 
                             <FormMessage />
@@ -88,9 +89,9 @@ export const ResetPasswordForm = ({ token }: ResetPasswordFormPorps) => {
                     className="w-full"
                 >
                     {form.formState.isSubmitting ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        <SpinnerBtnLoading />
                     ) : (
-                        "Reset Password"
+                        <span> Reset Password</span>
                     )}
                 </Button>
             </form>

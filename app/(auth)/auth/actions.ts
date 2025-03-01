@@ -9,6 +9,8 @@ import { signInFormSchema } from "@/shared/validation-schemas/auth/sign-in-form.
 import { signInController } from "@/src/iam/presenter/controllers/sign-in.controller";
 import { forgotPasswordFormSchema } from "@/shared/validation-schemas/auth/forget-password-form.schema";
 import { forgotPasswordController } from "@/src/iam/presenter/controllers/forgot-password.controller";
+import { resetPasswordFormSchema } from "@/shared/validation-schemas/auth/reset-password-form.schema";
+import { passwordResetController } from "@/src/iam/presenter/controllers/password-reset.controller";
 
 export const signUp = async (values: z.infer<typeof signUpFormSchema>) =>
     executeAction({
@@ -43,24 +45,13 @@ export const forgotPassword = async (
     });
 };
 
-// export const resetPassword = async (
-//     values: z.infer<typeof resetPasswordFormSchema>,
-//     token: string | undefined
-// ) => {
-//     return executeAction({
-//         actionFn: async () => await resetPasswordController(values, token),
-//         title: "Reset Password",
-//         redirectUrl: "/auth/sign-in",
-//     });
-// };
-
-// //later TODO:
-// export const signOut = async () => {
-//     try {
-//         await signOutController();
-//         console.log("success sign out");
-//     } catch (error) {
-//         console.log(error);
-//     }
-//     redirect("/auth/sign-in");
-// };
+export const resetPassword = async (
+    values: z.infer<typeof resetPasswordFormSchema>,
+    token: string | undefined
+) => {
+    return executeAction({
+        actionFn: async () => await passwordResetController(values, token),
+        successTitle: "Password Reset Successful 🎉",
+        failureTitle: "Password Reset Failed ❌",
+    });
+};

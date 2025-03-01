@@ -1,5 +1,4 @@
-import { UserEntity } from "@/drizzle/schemas/user";
-import { CreateUser } from "@/src/iam/application/dto/user.dto";
+import { CreateUser, UserEntity } from "@/drizzle/schemas/user";
 import { User } from "@/src/iam/domain/user.entity";
 
 export class UserMapper {

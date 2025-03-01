@@ -50,7 +50,7 @@ export const signUpSchema = createInsertSchema(users, {
 });
 
 // Inferred Input Type for SignUp
-// export type CreateUser = z.infer<typeof signUpSchema>;
+export type CreateUser = z.infer<typeof signUpSchema>;
 
 // Select Model Type for User
 export type UserEntity = InferSelectModel<typeof users>;
