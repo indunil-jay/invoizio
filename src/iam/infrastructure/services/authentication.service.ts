@@ -1,11 +1,41 @@
 import { injectable } from "inversify";
-import { signIn } from "@/auth";
-import { AuthError } from "next-auth";
+import { auth, signIn } from "@/auth";
+import { AuthError, Session } from "next-auth";
 import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
 import { signInDto } from "@/src/iam/application/dto/user.dto";
+import {
+    InvalidSession,
+    InvalidSessionException,
+    InvalidSessionUserException,
+} from "@/src/iam/infrastructure/exceptions/session.exceptions";
+import { User } from "@/src/iam/domain/user.entity";
+import { getInjection } from "@/di/container";
 
 @injectable()
 export class AuthenticationService implements IAuthenticationService {
+    public async verifySessionUser(): Promise<User> {
+        const userRepository = getInjection("IUserRepository");
+        const session = await this.getSession();
+        if (!session || !session.user || !session.user.id) {
+            throw new InvalidSessionException();
+        }
+
+        const existingUser = await userRepository.getById(session.user.id);
+        if (!existingUser) {
+            throw new InvalidSessionUserException();
+        }
+        return existingUser;
+    }
+
+    public async getSession(): Promise<Session | null> {
+        try {
+            return await auth();
+        } catch (error) {
+            console.log({ sessionError: error });
+            throw new InvalidSession();
+        }
+    }
+
     public async signInWithCredentials({
         email,
         password,

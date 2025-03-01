@@ -2,7 +2,7 @@ import { signUpFormSchema } from "@/shared/validation-schemas/auth/sign-up-form.
 import { signUpUseCase } from "@/src/iam/application/use-cases/sign-up.usecase";
 
 import { User } from "@/src/iam/domain/user.entity";
-import { BadRequestException } from "@/src/iam/presenter/exceptions/common.exceptions";
+import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
 
 const presenter = (data: User) => {
     return {

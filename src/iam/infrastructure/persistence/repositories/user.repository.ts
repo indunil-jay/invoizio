@@ -68,4 +68,17 @@ export class UserRepository implements IUserRepository {
             throw new DataBaseException();
         }
     }
+    public async getById(id: string): Promise<User | undefined> {
+        try {
+            const user = await db.query.users.findFirst({
+                where: eq(users.id, id),
+            });
+
+            if (!user) return;
+
+            return UserMapper.toDomain(user);
+        } catch {
+            throw new DataBaseException();
+        }
+    }
 }

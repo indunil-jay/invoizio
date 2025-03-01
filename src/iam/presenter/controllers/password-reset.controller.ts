@@ -1,5 +1,5 @@
 import { resetPasswordFormSchema } from "@/shared/validation-schemas/auth/reset-password-form.schema";
-import { BadRequestException } from "@/src/iam/presenter/exceptions/common.exceptions";
+import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
 import { resetPasswordUseCase } from "@/src/iam/application/use-cases/reset-password.usecase";
 
 const presenter = () => {

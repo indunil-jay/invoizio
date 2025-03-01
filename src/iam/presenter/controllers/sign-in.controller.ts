@@ -1,5 +1,5 @@
 import { signInFormSchema } from "@/shared/validation-schemas/auth/sign-in-form.schema";
-import { BadRequestException } from "@/src/iam/presenter/exceptions/common.exceptions";
+import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
 import { signInUseCase } from "@/src/iam/application/use-cases/sign-in.usecase";
 
 export const presenter = (message: string) => {

@@ -1,5 +1,5 @@
 import { emailVerifyUseCase } from "@/src/iam/application/use-cases/email-verify.usecase";
-import { BadRequestException } from "@/src/iam/presenter/exceptions/common.exceptions";
+import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
 
 const presenter = () => {
     return {
