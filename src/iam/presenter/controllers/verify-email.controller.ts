@@ -1,4 +1,5 @@
 import { emailVerifyUseCase } from "@/src/iam/application/use-cases/email-verify.usecase";
+import { BadRequestException } from "@/src/iam/presenter/exceptions/common.exceptions";
 
 const presenter = () => {
     return {
@@ -8,7 +9,10 @@ const presenter = () => {
     };
 };
 
-export const emailVerifyController = async (token: string) => {
+export const emailVerifyController = async (token: unknown) => {
+    if (typeof token !== "string") {
+        throw new BadRequestException();
+    }
     await emailVerifyUseCase.execute(token);
     return presenter();
 };

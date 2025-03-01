@@ -1,5 +1,5 @@
 import { User } from "@/src/iam/domain/user.entity";
 
 export class PasswordResetedEvent {
-    constructor(public user: User) {}
+    constructor(public readonly user: User) {}
 }

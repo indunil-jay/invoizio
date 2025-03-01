@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { VerificationToken } from "../verification-token.entity";
+import { VerificationToken } from "@/src/iam/domain/verification-token.entity";
 
 export interface IVerificationTokenFactory {
     create(email: string, token: string, expires: Date): VerificationToken;

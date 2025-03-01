@@ -1,12 +1,12 @@
 import { injectable } from "inversify";
+import { eq } from "drizzle-orm";
 
 import { db, Transaction } from "@/drizzle";
 import { passwordResetTokens } from "@/drizzle/schemas";
 import { IPasswordResetTokenRepository } from "@/src/iam/application/repositories/password-reset-token.repository";
 import { PasswordResetToken } from "@/src/iam/domain/password-reset-token.entity";
-import { eq } from "drizzle-orm";
-import { PasswordResetTokenMapper } from "../mappers/password-reset-token.mapper";
-import { DataBaseException } from "../../exceptions/common.exceptions";
+import { PasswordResetTokenMapper } from "@/src/iam/infrastructure/persistence/mappers/password-reset-token.mapper";
+import { DataBaseException } from "@/src/iam/infrastructure/exceptions/common.exceptions";
 
 @injectable()
 export class PasswordResetTokenRepository

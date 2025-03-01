@@ -17,7 +17,7 @@ import { Input } from "@/app/_components/ui/input";
 import { forgotPasswordFormSchema } from "@/shared/validation-schemas/auth/forget-password-form.schema";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
-import { forgotPassword } from "../actions";
+import { forgotPassword } from "@/app/(auth)/auth/actions";
 
 export const ForgotPasswordForm = () => {
     const form = useForm<z.infer<typeof forgotPasswordFormSchema>>({

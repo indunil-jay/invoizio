@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { getInjection } from "@/di/container";
 import { UserSignedUpEvent } from "@/src/iam/domain/events/user-signed-up.event";
-import { getVerificationTokenExpiration } from "../utils/get-verifcation-token-expire";
+import { getVerificationTokenExpiration } from "@/src/iam/application/utils/get-verifcation-token-expire";
 
 export interface IUserSignedUpEventHandler {
     handle(event: UserSignedUpEvent): Promise<void>;

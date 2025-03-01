@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { SendResetPasswordEmailEvent } from "@/src/iam/domain/events/send-reset-password-email.event";
 import { getInjection } from "@/di/container";
-import { getResetTokenExpiration } from "../utils/get-password-reset-token-expire";
+import { getResetTokenExpiration } from "@/src/iam/application/utils/get-password-reset-token-expire";
 
 export interface ISendResetPasswordEmailEventHandler {
     handle(event: SendResetPasswordEmailEvent): Promise<void>;

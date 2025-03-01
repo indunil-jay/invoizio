@@ -37,9 +37,7 @@ export const signInUseCase = {
 
         // tigger re-send email again
         if (!existingUser.emailVerified) {
-            await eventBus.publish(
-                new ResendVerifyEmailEvent(existingUser.email)
-            );
+            await eventBus.publish(new ResendVerifyEmailEvent(existingUser));
 
             return newVerificationLinkSent();
         }

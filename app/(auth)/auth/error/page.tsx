@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 
 import { MoveLeft, AlertCircle, RefreshCw, Home } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/app/_components/ui/card";
 import { Button } from "@/app/_components/ui/button";
-import { useState } from "react";
 import { cn } from "@/app/_lib/tailwind-css/utils";
 
 export default function ErrorPage({ errorMessage }: { errorMessage?: string }) {

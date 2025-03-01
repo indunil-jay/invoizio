@@ -5,9 +5,9 @@ import {
     InvalidPasswordResetTokenException,
     PasswordResetProcessException,
     UserNotFoundException,
-} from "../exceptions/specific.exceptions";
-import { PasswordResetToken } from "../../domain/password-reset-token.entity";
-import { PasswordResetedEvent } from "../../domain/events/password-reseted.event";
+} from "@/src/iam/application/exceptions/specific.exceptions";
+import { PasswordResetToken } from "@/src/iam/domain/password-reset-token.entity";
+import { PasswordResetedEvent } from "@/src/iam/domain/events/password-reseted.event";
 
 export const resetPasswordUseCase = {
     async execute({ password }: resetPasswordDto, token: string) {

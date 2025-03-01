@@ -17,7 +17,7 @@ import { PasswordField } from "@/app/_components/custom/forms/password-input-fie
 import { resetPasswordFormSchema } from "@/shared/validation-schemas/auth/reset-password-form.schema";
 import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
-import { resetPassword } from "../actions";
+import { resetPassword } from "@/app/(auth)/auth/actions";
 import { useRouter } from "next/navigation";
 
 interface ResetPasswordFormPorps {

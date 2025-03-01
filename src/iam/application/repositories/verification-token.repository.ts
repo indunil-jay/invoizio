@@ -1,4 +1,3 @@
-// import { Transaction } from "@/drizzle";
 import { Transaction } from "@/drizzle";
 import { CreateVerificationToken } from "@/drizzle/schemas/verification-token";
 import { VerificationToken } from "@/src/iam/domain/verification-token.entity";

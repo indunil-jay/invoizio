@@ -12,7 +12,7 @@ export const presenter = (message: string) => {
 
 export const signInController = async (request: unknown) => {
     const { data, error } = signInFormSchema.safeParse(request);
-    console.log({ data });
+
     if (error) {
         throw new BadRequestException();
     }

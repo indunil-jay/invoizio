@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { OrSeparator } from "@/app/_components/custom/forms/or-separator";
 import { GoogleSign } from "@/app/_components/custom/forms/google-sign";
@@ -25,7 +26,6 @@ import { signInWithCredentials } from "@/app/(auth)/auth/actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
 import { cn } from "@/app/_lib/tailwind-css/utils";
-import { useRouter } from "next/navigation";
 
 export function SignInForm() {
     const { toast } = useShowToast();

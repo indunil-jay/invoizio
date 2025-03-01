@@ -1,5 +1,5 @@
 import { injectable } from "inversify";
-import { PasswordResetedEvent } from "../../domain/events/password-reseted.event";
+import { PasswordResetedEvent } from "@/src/iam/domain/events/password-reseted.event";
 import { getInjection } from "@/di/container";
 
 export interface IPasswordResetedEventHandler {

@@ -1,3 +1,5 @@
+import { User } from "@/src/iam/domain/user.entity";
+
 export class ResendVerifyEmailEvent {
-    constructor(public readonly email: string) {}
+    constructor(public readonly user: User) {}
 }

@@ -7,7 +7,7 @@ import {
 } from "@/src/iam/application/exceptions/specific.exceptions";
 import { VerificationToken } from "@/src/iam/domain/verification-token.entity";
 import { getVerificationTokenExpiration } from "@/src/iam/application/utils/get-verifcation-token-expire";
-import { newVerificationLinkSent } from "../utils/response-messages/auth.specific";
+import { User } from "@/src/iam/domain/user.entity";
 
 export interface IResendVerifyEmailEventHandler {
     handle(event: ResendVerifyEmailEvent): Promise<void>;
@@ -24,7 +24,7 @@ export class ResendVerifyEmailEventHandler
 
         //check if existing token
         const existingVerificationToken =
-            await verificationTokenRepository.getByEmail(event.email);
+            await verificationTokenRepository.getByEmail(event.user.email);
 
         // if not
         if (!existingVerificationToken) {
@@ -38,11 +38,15 @@ export class ResendVerifyEmailEventHandler
 
         //if exits and has expired
 
-        await this.generateAndSendNewToken(existingVerificationToken);
+        await this.generateAndSendNewToken(
+            existingVerificationToken,
+            event.user
+        );
     }
 
     private async generateAndSendNewToken(
-        existingVerificationToken: VerificationToken
+        existingVerificationToken: VerificationToken,
+        user: User
     ) {
         const transactionManagerService = getInjection(
             "ITransactionManagerService"
@@ -56,7 +60,6 @@ export class ResendVerifyEmailEventHandler
         );
         const emailService = getInjection("IEmailService");
 
-        const userRepository = getInjection("IUserRepository");
         let token: string | undefined = undefined;
 
         await transactionManagerService.startTransaction(async (tx) => {
@@ -83,10 +86,7 @@ export class ResendVerifyEmailEventHandler
         });
 
         //send email again
-        const user = await userRepository.getByEmail(
-            existingVerificationToken.email
-        );
-        await emailService.verifyAccount(user!, token!);
+        await emailService.verifyAccount(user, token!);
     }
 
     private hasExpired(verificationToken: VerificationToken) {
