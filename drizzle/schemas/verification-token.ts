@@ -19,14 +19,18 @@ export const verificationTokens = pgTable(
     ]
 );
 
-export const createTokenSchema = createInsertSchema(verificationTokens).pick({
+export const createTokenSchema = createInsertSchema(verificationTokens, {
+    id: (schema) => schema.min(1),
+    email: (schema) => schema.email(),
+    token: (schema) => schema.min(1),
+}).pick({
     id: true,
     email: true,
     token: true,
     expires: true,
 });
 
-export type CreateToken = z.infer<typeof createTokenSchema>;
+export type CreateVerificationToken = z.infer<typeof createTokenSchema>;
 
 export type VerificationTokenEntity = InferSelectModel<
     typeof verificationTokens

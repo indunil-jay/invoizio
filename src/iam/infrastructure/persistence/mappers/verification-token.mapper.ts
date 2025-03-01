@@ -1,5 +1,5 @@
 import {
-    CreateToken,
+    CreateVerificationToken,
     VerificationTokenEntity,
 } from "@/drizzle/schemas/verification-token";
 import { VerificationToken } from "@/src/iam/domain/verification-token.entity";
@@ -16,7 +16,9 @@ export class VeirificationTokenMapper {
         );
     }
 
-    static toPersistence(verificationToken: VerificationToken): CreateToken {
+    static toPersistence(
+        verificationToken: VerificationToken
+    ): CreateVerificationToken {
         return {
             id: verificationToken.id,
             email: verificationToken.email,

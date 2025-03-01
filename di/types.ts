@@ -6,7 +6,6 @@ import { IClientAddressRepository } from "@/src/application/repositories/client-
 import { IClientRepository } from "@/src/application/repositories/client-repository.interface";
 import { IInvoiceItemsRepository } from "@/src/application/repositories/invoice-item-repository.interface";
 import { IInvoiceRepository } from "@/src/application/repositories/invoice-repository.interface";
-import { IPasswordResetTokenRepository } from "@/src/application/repositories/password-reset-token-repository.interface";
 
 import { IUserSignedUpHandler } from "@/src/iam/application/handlers/user-signed-up.handler";
 
@@ -21,6 +20,9 @@ import { IVerificationTokenFactory } from "@/src/iam/domain/factories/verificati
 import { IUserFactory } from "@/src/iam/domain/factories/user.factory";
 import { ITransactionManagerService } from "@/src/shared/database-transaction/transaction-manager.service.interface";
 import { IResendVerifyEmailHandler } from "@/src/iam/application/handlers/resend-verify-email.handler";
+import { IPasswordResetTokenFactory } from "@/src/iam/domain/factories/password-reset-token.factory";
+import { IPasswordResetTokenRepository } from "@/src/iam/application/repositories/password-reset-token.repository";
+import { ISendResetPasswordEmailEventHandler } from "@/src/iam/application/handlers/send-reset-password-email.event.handler";
 
 export const DI_SYMBOLS = {
     // Services
@@ -53,6 +55,10 @@ export const DI_SYMBOLS = {
     //factories
     IVerificationTokenFactory: Symbol.for("IVerificationTokenFactory"),
     IUserFactory: Symbol.for("IUserFactory"),
+    IPasswordResetTokenFactory: Symbol.for("IPasswordResetTokenFactory"),
+    ISendResetPasswordEmailEventHandler: Symbol.for(
+        "ISendResetPasswordEmailEventHandler"
+    ),
 };
 
 export interface DI_RETURN_TYPES {
@@ -79,11 +85,13 @@ export interface DI_RETURN_TYPES {
     //Handlers
     IUserSignedUpHandler: IUserSignedUpHandler;
     IResendVerifyEmailHandler: IResendVerifyEmailHandler;
+    ISendResetPasswordEmailEventHandler: ISendResetPasswordEmailEventHandler;
 
     //event bus
     IEventBus: IEventBus;
 
     //factories
     IVerificationTokenFactory: IVerificationTokenFactory;
+    IPasswordResetTokenFactory: IPasswordResetTokenFactory;
     IUserFactory: IUserFactory;
 }

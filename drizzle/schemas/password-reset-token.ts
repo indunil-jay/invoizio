@@ -4,34 +4,39 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const passwordResetTokens = pgTable(
-  "passwordResetToken",
-  {
-    id: text("id")
-      .primaryKey()
-      .notNull()
-      .$defaultFn(() => crypto.randomUUID()),
-    email: text("email").notNull(),
-    token: text("token").notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
-  },
-  (passwordResetToken) => [
-    unique("passwordResetToken_email_token_unique").on(
-      passwordResetToken.email,
-      passwordResetToken.token
-    ),
-  ]
+    "passwordResetToken",
+    {
+        id: text("id").primaryKey().notNull(),
+        email: text("email").notNull(),
+        token: text("token").notNull(),
+        expires: timestamp("expires", { mode: "date" }).notNull(),
+    },
+    (passwordResetToken) => [
+        unique("passwordResetToken_email_token_unique").on(
+            passwordResetToken.email,
+            passwordResetToken.token
+        ),
+    ]
 );
 
 export const passwordResetTokensSchema = createInsertSchema(
-  passwordResetTokens
+    passwordResetTokens,
+    {
+        id: (schema) => schema.min(1),
+        email: (schema) => schema.email(),
+        token: (schema) => schema.min(1),
+    }
 ).pick({
-  email: true,
-  token: true,
-  expires: true,
+    id: true,
+    email: true,
+    token: true,
+    expires: true,
 });
 
-export type PasswordResetToken = z.infer<typeof passwordResetTokensSchema>;
+export type CreatePasswordResetToken = z.infer<
+    typeof passwordResetTokensSchema
+>;
 
-export type PasswordResetTokenCollectionDocument = InferSelectModel<
-  typeof passwordResetTokens
+export type PasswordResetTokenEntity = InferSelectModel<
+    typeof passwordResetTokens
 >;

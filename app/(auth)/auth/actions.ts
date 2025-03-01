@@ -7,6 +7,8 @@ import { executeAction } from "@/app/_utils/execute.action";
 import { emailVerifyController } from "@/src/iam/presenter/controllers/verify-email.controller";
 import { signInFormSchema } from "@/shared/validation-schemas/auth/sign-in-form.schema";
 import { signInController } from "@/src/iam/presenter/controllers/sign-in.controller";
+import { forgotPasswordFormSchema } from "@/shared/validation-schemas/auth/forget-password-form.schema";
+import { forgotPasswordController } from "@/src/iam/presenter/controllers/forgot-password.controller";
 
 export const signUp = async (values: z.infer<typeof signUpFormSchema>) =>
     executeAction({
@@ -31,14 +33,15 @@ export const signInWithCredentials = async (
         failureTitle: "Sign-In Failed ❌",
     });
 
-// export const forgotPassword = async (
-//     values: z.infer<typeof forgotPasswordFormSchema>
-// ) => {
-//     return executeAction({
-//         actionFn: async () => await forgotPasswordController(values),
-//         title: "Request New Password",
-//     });
-// };
+export const forgotPassword = async (
+    values: z.infer<typeof forgotPasswordFormSchema>
+) => {
+    return executeAction({
+        actionFn: async () => await forgotPasswordController(values),
+        successTitle: "Password Reset Request Sent 🎉",
+        failureTitle: "Password Reset Request Failed ❌",
+    });
+};
 
 // export const resetPassword = async (
 //     values: z.infer<typeof resetPasswordFormSchema>,

@@ -15,13 +15,9 @@ import {
 } from "@/app/_components/ui/form";
 import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
-import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
-
-import { forgotPassword } from "@/app/(auth)/auth/actions";
-
-export const forgotPasswordFormSchema = z.object({
-    email: z.string().email({ message: "Invalid email" }),
-});
+import { forgotPasswordFormSchema } from "@/shared/validation-schemas/auth/forget-password-form.schema";
+import { forgotPassword } from "../actions";
+import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 
 export const ForgotPasswordForm = () => {
     const form = useForm<z.infer<typeof forgotPasswordFormSchema>>({
@@ -30,11 +26,11 @@ export const ForgotPasswordForm = () => {
             email: "",
         },
     });
-
-    const toast = useShowToast();
+    const { toast } = useShowToast();
 
     async function onSubmit(values: z.infer<typeof forgotPasswordFormSchema>) {
         const response = await forgotPassword(values);
+        console.log({ response });
         toast(response);
     }
     return (

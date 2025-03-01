@@ -1,5 +1,6 @@
 import { getInjection } from "@/di/container";
 import { ResendVerifyEmailEvent } from "@/src/iam/domain/events/resend-verify-email.event";
+import { SendResetPasswordEmailEvent } from "@/src/iam/domain/events/send-reset-password-email.event";
 import { UserSignedUpEvent } from "@/src/iam/domain/events/user-signed-up.event";
 
 const eventBus = getInjection("IEventBus");
@@ -13,6 +14,14 @@ eventBus.subscribe(
     ResendVerifyEmailEvent,
     async (event: ResendVerifyEmailEvent) => {
         const handler = getInjection("IResendVerifyEmailHandler");
+        await handler.handle(event);
+    }
+);
+
+eventBus.subscribe(
+    SendResetPasswordEmailEvent,
+    async (event: SendResetPasswordEmailEvent) => {
+        const handler = getInjection("ISendResetPasswordEmailEventHandler");
         await handler.handle(event);
     }
 );
