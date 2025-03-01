@@ -1,5 +1,4 @@
 import { getInjection } from "@/di/container";
-import { forgotPasswordDto } from "@/src/iam/application/dto/user.dto";
 import { UserNotFoundException } from "@/src/iam/application/exceptions/specific.exceptions";
 import { PasswordResetToken } from "@/src/iam/domain/password-reset-token.entity";
 import { SendResetPasswordEmailEvent } from "@/src/iam/domain/events/send-reset-password-email.event";
@@ -8,6 +7,7 @@ import {
     passwordResetLinkExpiredAndNewLinkASent,
     passwordResetLinkSent,
 } from "@/src/iam/application/utils/response-messages/auth.specific";
+import { forgotPasswordDto } from "@/src/iam/application/dto/forget-password.dto";
 
 export const forgotPasswordUseCase = {
     async execute({ email }: forgotPasswordDto): Promise<string> {

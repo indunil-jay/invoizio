@@ -1,15 +1,15 @@
 import { getInjection } from "@/di/container";
-import { changeNameOrEmailDto } from "../dto/change-user-name-or-email.dto";
+import { changeNameOrEmailDto } from "@/src/iam/application/dto/change-user-name-or-email.dto";
 import { User } from "@/src/iam/domain/user.entity";
 import {
     DuplicateEmailException,
     EmailAlreadyInUseException,
-} from "../exceptions/specific.exceptions";
+} from "@/src/iam/application/exceptions/specific.exceptions";
 import {
     EmailUpdateResponse,
     NoValidFieldsResponse,
     UserNameUpdateResponse,
-} from "../utils/response-messages/user.specific";
+} from "@/src/iam/application/utils/response-messages/user.specific";
 
 export const changeUserNameOrEmailUseCase = {
     async execute({ email, name }: changeNameOrEmailDto) {

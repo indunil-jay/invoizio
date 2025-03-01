@@ -1,5 +1,5 @@
 import { getInjection } from "@/di/container";
-import { resetPasswordDto } from "@/src/iam/application/dto/user.dto";
+
 import {
     ExpiredPasswordResetTokenException,
     InvalidPasswordResetTokenException,
@@ -8,6 +8,7 @@ import {
 } from "@/src/iam/application/exceptions/specific.exceptions";
 import { PasswordResetToken } from "@/src/iam/domain/password-reset-token.entity";
 import { PasswordResetedEvent } from "@/src/iam/domain/events/password-reseted.event";
+import { resetPasswordDto } from "@/src/iam/application/dto/reset-password.dto";
 
 export const resetPasswordUseCase = {
     async execute({ password }: resetPasswordDto, token: string) {

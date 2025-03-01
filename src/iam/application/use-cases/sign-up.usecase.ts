@@ -1,7 +1,7 @@
 import { getInjection } from "@/di/container";
-import { signUpDto } from "@/src/iam/application/dto/user.dto";
 import { EmailAlreadyExistsException } from "@/src/iam/application/exceptions/specific.exceptions";
 import { UserSignedUpEvent } from "@/src/iam/domain/events/user-signed-up.event";
+import { signUpDto } from "@/src/iam/application/dto/sign-up.dto";
 
 export const signUpUseCase = {
     async execute({ email, name, password }: signUpDto) {

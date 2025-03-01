@@ -1,5 +1,4 @@
 import { getInjection } from "@/di/container";
-import { signInDto } from "@/src/iam/application/dto/user.dto";
 import {
     InvalidCredentialException,
     InvalidPasswordException,
@@ -9,6 +8,7 @@ import {
     newVerificationLinkSent,
     signInSuccess,
 } from "@/src/iam/application/utils/response-messages/auth.specific";
+import { signInDto } from "@/src/iam/application/dto/sign-in.dto";
 
 export const signInUseCase = {
     async execute({ email, password }: signInDto) {
