@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
 
 import {
     Form,
@@ -16,8 +15,9 @@ import {
 import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { forgotPasswordFormSchema } from "@/shared/validation-schemas/auth/forget-password-form.schema";
-import { forgotPassword } from "../actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
+import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
+import { forgotPassword } from "../actions";
 
 export const ForgotPasswordForm = () => {
     const form = useForm<z.infer<typeof forgotPasswordFormSchema>>({
@@ -46,6 +46,7 @@ export const ForgotPasswordForm = () => {
                                 <Input
                                     placeholder="youremail@gmail.com"
                                     {...field}
+                                    disabled={form.formState.isSubmitting}
                                 />
                             </FormControl>
 
@@ -63,9 +64,9 @@ export const ForgotPasswordForm = () => {
                     className="w-full"
                 >
                     {form.formState.isSubmitting ? (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        <SpinnerBtnLoading />
                     ) : (
-                        "Send Password Reset Link"
+                        <span>Send Password Reset Link</span>
                     )}
                 </Button>
             </form>

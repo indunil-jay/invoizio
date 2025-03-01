@@ -37,7 +37,7 @@ export const NewVerificationForm = ({ token }: NewVerificationFormProps) => {
                 {form.formState.isSubmitting ? (
                     <SpinnerBtnLoading />
                 ) : (
-                    "Verify Email"
+                    <span> Verify Email</span>
                 )}
             </Button>
         </form>

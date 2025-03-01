@@ -6,9 +6,11 @@ import {
 } from "@/src/iam/application/handlers/user-signed-up.event-handler";
 
 const initializeModule = (bind: interfaces.Bind) => {
-    bind<IUserSignedUpEventHandler>(DI_SYMBOLS.IUserSignedUpHandler).to(
+    bind<IUserSignedUpEventHandler>(DI_SYMBOLS.IUserSignedUpEventHandler).to(
         UserSignedUpEventHandler
     );
 };
 
-export const UserSignedUpHandlerModule = new ContainerModule(initializeModule);
+export const UserSignedUpEventHandlerModule = new ContainerModule(
+    initializeModule
+);

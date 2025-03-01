@@ -7,10 +7,10 @@ import { ContainerModule, interfaces } from "inversify";
 
 const initializeModule = (bind: interfaces.Bind) => {
     bind<IResendVerifyEmailEventHandler>(
-        DI_SYMBOLS.IResendVerifyEmailHandler
+        DI_SYMBOLS.IResendVerifyEmailEventHandler
     ).to(ResendVerifyEmailEventHandler);
 };
 
-export const ResendVerifyEmailHandlerModule = new ContainerModule(
+export const ResendVerifyEmailEventHandlerModule = new ContainerModule(
     initializeModule
 );
