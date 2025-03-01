@@ -29,7 +29,9 @@ export const forgotPasswordUseCase = {
 
         if (!existingPasswordResetToken) {
             // Send email with new token
-            await eventBus.publish(new SendResetPasswordEmailEvent(email));
+            await eventBus.publish(
+                new SendResetPasswordEmailEvent(existingUser)
+            );
             return passwordResetLinkSent();
         }
 
@@ -42,7 +44,7 @@ export const forgotPasswordUseCase = {
         await passwordResetTokenRepository.remove(
             existingPasswordResetToken.id
         );
-        await eventBus.publish(new SendResetPasswordEmailEvent(email));
+        await eventBus.publish(new SendResetPasswordEmailEvent(existingUser));
 
         return passwordResetLinkExpiredAndNewLinkASent();
     },

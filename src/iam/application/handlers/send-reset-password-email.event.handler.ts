@@ -1,4 +1,3 @@
-import { PasswordResetTokenRepository } from "./../../../infastructure/repositories/password-reset-token.repository";
 import { injectable } from "inversify";
 import { SendResetPasswordEmailEvent } from "@/src/iam/domain/events/send-reset-password-email.event";
 import { getInjection } from "@/di/container";
@@ -27,7 +26,7 @@ export class SendResetPasswordEmailEventHandler
         const token = tokenGenerateService.generate();
         const expires = getResetTokenExpiration();
         const passwordResetToken = passwordResetTokenFactory.create(
-            event.email,
+            event.user.email,
             token,
             expires
         );
@@ -36,6 +35,6 @@ export class SendResetPasswordEmailEventHandler
         await passwordResetTokenRepository.insert(passwordResetToken);
 
         //send email
-        console.log("Email sent");
+        await emailService.sendResetPasswordEmail(event.user, token);
     }
 }

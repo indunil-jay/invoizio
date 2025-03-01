@@ -1,6 +1,6 @@
 import { forgotPasswordFormSchema } from "@/shared/validation-schemas/auth/forget-password-form.schema";
-import { BadRequestException } from "../exceptions/common.exceptions";
-import { forgotPasswordUseCase } from "../../application/use-cases/forgot-password.usecase";
+import { BadRequestException } from "@/src/iam/presenter/exceptions/common.exceptions";
+import { forgotPasswordUseCase } from "@/src/iam/application/use-cases/forgot-password.usecase";
 
 export const presenter = (message: string) => {
     return {
