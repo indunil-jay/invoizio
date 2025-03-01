@@ -36,9 +36,7 @@ export class UserRepository implements IUserRepository {
                 throw new DatabaseUserUpdateException();
             }
             return UserMapper.toDomain(updatedUser);
-        } catch (error) {
-            //TODO:should remove
-            console.error(`DATABASE_ERROR::UserRepository::update: ${error}`);
+        } catch {
             throw new DataBaseException();
         }
     }
@@ -52,9 +50,7 @@ export class UserRepository implements IUserRepository {
                 .returning();
 
             return UserMapper.toDomain(insertedUser);
-        } catch (error) {
-            //TODO:should remove
-            console.error(`DATABASE_ERROR::UserRepository::insert: ${error}`);
+        } catch {
             throw new DataBaseException();
         }
     }
@@ -68,11 +64,7 @@ export class UserRepository implements IUserRepository {
             if (!user) return;
 
             return UserMapper.toDomain(user);
-        } catch (error) {
-            //TODO:should remove
-            console.error(
-                `DATABASE_ERROR::UserRepository::getByEmail: ${error}`
-            );
+        } catch {
             throw new DataBaseException();
         }
     }

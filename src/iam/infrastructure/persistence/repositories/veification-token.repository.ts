@@ -7,7 +7,6 @@ import { VerificationToken } from "@/src/iam/domain/verification-token.entity";
 import { VeirificationTokenMapper } from "@/src/iam/infrastructure/persistence/mappers/verification-token.mapper";
 import { DataBaseException } from "@/src/iam/infrastructure/exceptions/common.exceptions";
 
-// TODO: REMOVE COMMENTS
 @injectable()
 export class VerificationTokenRepository
     implements IVerificationTokenRepository
@@ -29,10 +28,7 @@ export class VerificationTokenRepository
             const [insertedVerificationToken] = await query.execute();
 
             return VeirificationTokenMapper.toDomain(insertedVerificationToken);
-        } catch (error) {
-            console.error(
-                `DATABASE_ERROR::VerificationTokenRepository::create: ${error}`
-            );
+        } catch {
             throw new DataBaseException();
         }
     }
@@ -45,10 +41,7 @@ export class VerificationTokenRepository
                 .where(eq(verificationTokens.id, id));
 
             await query.execute();
-        } catch (error) {
-            console.error(
-                `DATABASE_ERROR::VerificationTokenRepository::deleteById: ${error}`
-            );
+        } catch {
             throw new DataBaseException();
         }
     }
@@ -63,10 +56,7 @@ export class VerificationTokenRepository
             if (!verificationTokenEntity) return undefined;
 
             return VeirificationTokenMapper.toDomain(verificationTokenEntity);
-        } catch (error) {
-            console.error(
-                `DATABASE_ERROR::VerificationTokenRepository::getByToken: ${error}`
-            );
+        } catch {
             throw new DataBaseException();
         }
     }
@@ -81,10 +71,7 @@ export class VerificationTokenRepository
             if (!verificationTokenEntity) return undefined;
 
             return VeirificationTokenMapper.toDomain(verificationTokenEntity);
-        } catch (error) {
-            console.error(
-                `DATABASE_ERROR::VerificationTokenRepository::getByEmail: ${error}`
-            );
+        } catch {
             throw new DataBaseException();
         }
     }

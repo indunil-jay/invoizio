@@ -31,10 +31,7 @@ export class PasswordResetTokenRepository
             return PasswordResetTokenMapper.toDomain(
                 insertedPasswordResetToken
             );
-        } catch (error) {
-            console.error(
-                `DATABASE_ERROR::VerificationTokenRepository::create: ${error}`
-            );
+        } catch {
             throw new DataBaseException();
         }
     }
@@ -49,10 +46,7 @@ export class PasswordResetTokenRepository
                 });
             if (!passwordResetToken) return;
             return PasswordResetTokenMapper.toDomain(passwordResetToken);
-        } catch (error) {
-            console.error(
-                `DATABASE_ERROR::VerificationTokenRepository::getBytoken: ${error}`
-            );
+        } catch {
             throw new DataBaseException();
         }
     }
@@ -67,10 +61,7 @@ export class PasswordResetTokenRepository
                 });
             if (!passwordResetToken) return;
             return PasswordResetTokenMapper.toDomain(passwordResetToken);
-        } catch (error) {
-            console.error(
-                `DATABASE_ERROR::VerificationTokenRepository::getByEmail: ${error}`
-            );
+        } catch {
             throw new DataBaseException();
         }
     }
@@ -83,10 +74,7 @@ export class PasswordResetTokenRepository
                 .where(eq(passwordResetTokens.id, id));
 
             await query.execute();
-        } catch (error) {
-            console.error(
-                `DATABASE_ERROR::VerificationTokenRepository::deleteById: ${error}`
-            );
+        } catch {
             throw new DataBaseException();
         }
     }

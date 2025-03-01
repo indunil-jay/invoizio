@@ -17,10 +17,6 @@ export class AuthenticationService implements IAuthenticationService {
                 redirect: false,
             });
         } catch (error) {
-            console.error(
-                "##################NEXT_AUTH_ERROR#################",
-                error
-            );
             if (error instanceof AuthError) {
                 switch (error.type) {
                     case "CredentialsSignin":
