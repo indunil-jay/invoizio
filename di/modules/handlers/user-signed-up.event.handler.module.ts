@@ -1,13 +1,13 @@
 import { ContainerModule, interfaces } from "inversify";
 import { DI_SYMBOLS } from "@/di/types";
 import {
-    IUserSignedUpHandler,
-    UserSignedUpHandler,
-} from "@/src/iam/application/handlers/user-signed-up.handler";
+    IUserSignedUpEventHandler,
+    UserSignedUpEventHandler,
+} from "@/src/iam/application/handlers/user-signed-up.event-handler";
 
 const initializeModule = (bind: interfaces.Bind) => {
-    bind<IUserSignedUpHandler>(DI_SYMBOLS.IUserSignedUpHandler).to(
-        UserSignedUpHandler
+    bind<IUserSignedUpEventHandler>(DI_SYMBOLS.IUserSignedUpHandler).to(
+        UserSignedUpEventHandler
     );
 };
 

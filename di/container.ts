@@ -12,7 +12,7 @@ import { TransactionManagerServiceModule } from "@/di/modules/services/transacti
 import { VerificationTokenFactoryModule } from "@/di/modules/factrories/verification-token-factory.module";
 import { UserFactoryModule } from "@/di/modules/factrories/user-factory.module";
 
-import { UserSignedUpHandlerModule } from "@/di/modules/handlers/user-signed-up-handler.module";
+import { UserSignedUpHandlerModule } from "@/di/modules/handlers/user-signed-up.event.handler.module";
 import { UserRepositoryModule } from "@/di/modules/repositories/user-repository.module";
 import { VerificationTokenRepositoryModule } from "@/di/modules/repositories/verification-token-repository.module";
 import { PasswordResetTokenRepositoryModule } from "@/di/modules/repositories/password-reset-token-repository.module";
@@ -24,7 +24,7 @@ import { ClientAddressRepositoryModule } from "@/di/modules/repositories/client-
 import { InvoiceRepositoryModule } from "@/di/modules/repositories/invoice-repository.module";
 import { InvoiceItemsRepositoryModule } from "@/di/modules/repositories/invoice-items-repository.module";
 import { ActivityRepositoryModule } from "@/di/modules/repositories/activity-repository.module";
-import { ResendVerifyEmailHandlerModule } from "@/di/modules/handlers/resend-verify-email-handler.module";
+import { ResendVerifyEmailHandlerModule } from "@/di/modules/handlers/resend-verify-email.event-handler.module";
 import { PasswordResetTokenFactoryModule } from "./modules/factrories/password-reset-token-factory.module";
 import { SendResetPasswordEmailEventHandlerModule } from "./modules/handlers/send-reset-password-email.event-handler.module";
 

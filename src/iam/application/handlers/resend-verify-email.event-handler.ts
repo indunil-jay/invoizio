@@ -9,12 +9,14 @@ import {
 import { VerificationToken } from "@/src/iam/domain/verification-token.entity";
 import { getVerificationTokenExpiration } from "@/src/iam/application/utils/get-verifcation-token-expire";
 
-export interface IResendVerifyEmailHandler {
+export interface IResendVerifyEmailEventHandler {
     handle(event: ResendVerifyEmailEvent): Promise<void>;
 }
 
 @injectable()
-export class ResendVerifyEmailHandler implements IResendVerifyEmailHandler {
+export class ResendVerifyEmailEventHandler
+    implements IResendVerifyEmailEventHandler
+{
     public async handle(event: ResendVerifyEmailEvent): Promise<void> {
         const emailService = getInjection("IEmailService");
         const tokenGenerateService = getInjection("ITokenGenerateService");

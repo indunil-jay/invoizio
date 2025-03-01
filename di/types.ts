@@ -7,7 +7,7 @@ import { IClientRepository } from "@/src/application/repositories/client-reposit
 import { IInvoiceItemsRepository } from "@/src/application/repositories/invoice-item-repository.interface";
 import { IInvoiceRepository } from "@/src/application/repositories/invoice-repository.interface";
 
-import { IUserSignedUpHandler } from "@/src/iam/application/handlers/user-signed-up.handler";
+import { IUserSignedUpEventHandler } from "@/src/iam/application/handlers/user-signed-up.event-handler";
 
 import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
 import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
@@ -19,7 +19,7 @@ import { IVerificationTokenRepository } from "@/src/iam/application/repositories
 import { IVerificationTokenFactory } from "@/src/iam/domain/factories/verification-token.factory";
 import { IUserFactory } from "@/src/iam/domain/factories/user.factory";
 import { ITransactionManagerService } from "@/src/shared/database-transaction/transaction-manager.service.interface";
-import { IResendVerifyEmailHandler } from "@/src/iam/application/handlers/resend-verify-email.handler";
+import { IResendVerifyEmailEventHandler } from "@/src/iam/application/handlers/resend-verify-email.event-handler";
 import { IPasswordResetTokenFactory } from "@/src/iam/domain/factories/password-reset-token.factory";
 import { IPasswordResetTokenRepository } from "@/src/iam/application/repositories/password-reset-token.repository";
 import { ISendResetPasswordEmailEventHandler } from "@/src/iam/application/handlers/send-reset-password-email.event.handler";
@@ -46,9 +46,13 @@ export const DI_SYMBOLS = {
     IActivityRepository: Symbol.for("IActivityRepository"),
 
     //Handlers
-    IUserSignedUpHandler: Symbol.for("IUserSignedUpHandler"),
-    IResendVerifyEmailHandler: Symbol.for("IResendVerifyEmailHandler"),
-
+    IUserSignedUpEventHandler: Symbol.for("IUserSignedUpEventHandler"),
+    IResendVerifyEmailEventHandler: Symbol.for(
+        "IResendVerifyEmailEventHandler"
+    ),
+    ISendResetPasswordEmailEventHandler: Symbol.for(
+        "ISendResetPasswordEmailEventHandler"
+    ),
     //Event Bus
     IEventBus: Symbol.for("IEventBus"),
 
@@ -56,9 +60,6 @@ export const DI_SYMBOLS = {
     IVerificationTokenFactory: Symbol.for("IVerificationTokenFactory"),
     IUserFactory: Symbol.for("IUserFactory"),
     IPasswordResetTokenFactory: Symbol.for("IPasswordResetTokenFactory"),
-    ISendResetPasswordEmailEventHandler: Symbol.for(
-        "ISendResetPasswordEmailEventHandler"
-    ),
 };
 
 export interface DI_RETURN_TYPES {
@@ -83,8 +84,8 @@ export interface DI_RETURN_TYPES {
     IActivityRepository: IActivityRepository;
 
     //Handlers
-    IUserSignedUpHandler: IUserSignedUpHandler;
-    IResendVerifyEmailHandler: IResendVerifyEmailHandler;
+    IUserSignedUpEventHandler: IUserSignedUpEventHandler;
+    IResendVerifyEmailEventHandler: IResendVerifyEmailEventHandler;
     ISendResetPasswordEmailEventHandler: ISendResetPasswordEmailEventHandler;
 
     //event bus

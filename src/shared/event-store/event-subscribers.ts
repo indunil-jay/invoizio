@@ -6,14 +6,14 @@ import { UserSignedUpEvent } from "@/src/iam/domain/events/user-signed-up.event"
 const eventBus = getInjection("IEventBus");
 
 eventBus.subscribe(UserSignedUpEvent, async (event: UserSignedUpEvent) => {
-    const handler = getInjection("IUserSignedUpHandler");
+    const handler = getInjection("IUserSignedUpEventHandler");
     await handler.handle(event);
 });
 
 eventBus.subscribe(
     ResendVerifyEmailEvent,
     async (event: ResendVerifyEmailEvent) => {
-        const handler = getInjection("IResendVerifyEmailHandler");
+        const handler = getInjection("IResendVerifyEmailEventHandler");
         await handler.handle(event);
     }
 );
