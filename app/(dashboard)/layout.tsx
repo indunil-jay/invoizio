@@ -1,4 +1,3 @@
-"use client";
 import { Separator } from "@/app/_components/ui/separator";
 import {
     SidebarInset,
@@ -7,30 +6,43 @@ import {
 } from "@/app/_components/ui/sidebar";
 import { AppSidebar } from "./_components/app-sidebar";
 import { DynamicBreadCumb } from "../_components/custom/dynamic-breadcumb";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import DashboardClient from "./_components/dashboard-client";
+import { User } from "../stores/user-store";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+        redirect("/auth/sign-in");
+    }
     return (
-        <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-                <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-                    <div className="flex items-center gap-2 px-4">
-                        <SidebarTrigger className="-ml-1" />
-                        <Separator
-                            orientation="vertical"
-                            className="mr-2 h-4"
-                        />
-                        <DynamicBreadCumb />
+        <>
+            <DashboardClient user={session.user as User} />
+
+            <SidebarProvider>
+                <AppSidebar />
+                <SidebarInset>
+                    <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+                        <div className="flex items-center gap-2 px-4">
+                            <SidebarTrigger className="-ml-1" />
+                            <Separator
+                                orientation="vertical"
+                                className="mr-2 h-4"
+                            />
+                            <DynamicBreadCumb />
+                        </div>
+                    </header>
+                    <div className="flex flex-1 flex-col gap-4 p-4 pt-0 ">
+                        {children}
                     </div>
-                </header>
-                <div className="flex flex-1 flex-col gap-4 p-4 pt-0 ">
-                    {children}
-                </div>
-            </SidebarInset>
-        </SidebarProvider>
+                </SidebarInset>
+            </SidebarProvider>
+        </>
     );
 }

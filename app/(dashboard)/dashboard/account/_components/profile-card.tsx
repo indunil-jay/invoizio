@@ -1,3 +1,4 @@
+"use client";
 import {
     Avatar,
     AvatarFallback,
@@ -11,16 +12,19 @@ import {
 } from "@/app/_components/ui/card";
 import { Separator } from "@/app/_components/ui/separator";
 import { ChangePasswordForm } from "./change-password-form";
+import { useUserStore } from "@/app/stores/user-store";
 import { UpdateProfileForm } from "./update-profile-form";
-import { fallbackUsername } from "@/app/stores/fallback-username";
-import { type User } from "@/app/(dashboard)/dashboard/account/types";
+import { UserProfileSkelton } from "./skeltons/user-profile-skelton";
 
-interface ProfileCardProps {
-    user: User;
-}
+export const ProfileCard = () => {
+    const user = useUserStore((state) => state.user);
+    const isLoading = useUserStore((state) => state.isLoading);
 
-export const ProfileCard = ({ user }: ProfileCardProps) => {
-    return (
+    const pending = isLoading || !user;
+
+    return pending ? (
+        <UserProfileSkelton />
+    ) : (
         <Card className="w-full">
             <CardHeader className="p-0 rounded-br-none rounded-bl-none rounded-tr-md rounded-tl-md overflow-clip">
                 <div className="w-full bg-red-200 h-44"></div>
@@ -30,17 +34,17 @@ export const ProfileCard = ({ user }: ProfileCardProps) => {
                     <Avatar className="h-24 w-24 border-white/80 border-2">
                         <AvatarImage
                             className="h-24 w-24"
-                            src={user.image ?? ""}
+                            src={user?.image ?? ""}
                             alt="@user-profile-img"
                         />
                         <AvatarFallback className="h-24 w-24">
-                            {fallbackUsername(user.name)}
+                            {/* {fallbackUsername(user?.name)} */}
                         </AvatarFallback>
                     </Avatar>
                     <div className="self-end">
-                        <p className="text-2xl font-semibold">{user.name}</p>
+                        <p className="text-2xl font-semibold">{user?.name}</p>
                         <p className="text-sm text-muted-foreground">
-                            {user.email}
+                            {user?.email}
                         </p>
                     </div>
                 </div>
