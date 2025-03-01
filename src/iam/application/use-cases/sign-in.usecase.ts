@@ -5,7 +5,10 @@ import {
     InvalidPasswordException,
 } from "@/src/iam/application/exceptions/specific.exceptions";
 import { ResendVerifyEmailEvent } from "@/src/iam/domain/events/resend-verify-email.event";
-import { verificationLinkAlreadySent } from "@/src/iam/application/utils/response-messages/auth.specific";
+import {
+    newVerificationLinkSent,
+    signInSuccess,
+} from "@/src/iam/application/utils/response-messages/auth.specific";
 
 export const signInUseCase = {
     async execute({ email, password }: signInDto) {
@@ -38,10 +41,11 @@ export const signInUseCase = {
                 new ResendVerifyEmailEvent(existingUser.email)
             );
 
-            return verificationLinkAlreadySent();
+            return newVerificationLinkSent();
         }
 
         // Proceed with sign-in
         await authenticationService.signInWithCredentials({ email, password });
+        return signInSuccess();
     },
 };

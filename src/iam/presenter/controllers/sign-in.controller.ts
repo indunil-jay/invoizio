@@ -2,11 +2,11 @@ import { signInFormSchema } from "@/shared/validation-schemas/auth/sign-in-form.
 import { BadRequestException } from "@/src/iam/presenter/exceptions/common.exceptions";
 import { signInUseCase } from "@/src/iam/application/use-cases/sign-in.usecase";
 
-export const presenter = () => {
+export const presenter = (message: string) => {
     return {
         data: undefined,
         status: true,
-        message: "Successfully signed in. Welcome back!",
+        message: message,
     };
 };
 
@@ -16,6 +16,6 @@ export const signInController = async (request: unknown) => {
     if (error) {
         throw new BadRequestException();
     }
-    await signInUseCase.execute(data);
-    return presenter();
+    const message = await signInUseCase.execute(data);
+    return presenter(message);
 };

@@ -24,6 +24,7 @@ import { signUp } from "@/app/(auth)/auth/actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import { CardFooter } from "@/app/_components/ui/card";
 import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
+import { cn } from "@/app/_lib/tailwind-css/utils";
 
 export function SignUpForm() {
     const { toast } = useShowToast();

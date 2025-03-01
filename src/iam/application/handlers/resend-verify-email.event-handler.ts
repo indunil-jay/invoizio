@@ -7,6 +7,7 @@ import {
 } from "@/src/iam/application/exceptions/specific.exceptions";
 import { VerificationToken } from "@/src/iam/domain/verification-token.entity";
 import { getVerificationTokenExpiration } from "@/src/iam/application/utils/get-verifcation-token-expire";
+import { newVerificationLinkSent } from "../utils/response-messages/auth.specific";
 
 export interface IResendVerifyEmailEventHandler {
     handle(event: ResendVerifyEmailEvent): Promise<void>;
@@ -17,18 +18,9 @@ export class ResendVerifyEmailEventHandler
     implements IResendVerifyEmailEventHandler
 {
     public async handle(event: ResendVerifyEmailEvent): Promise<void> {
-        const emailService = getInjection("IEmailService");
-        const tokenGenerateService = getInjection("ITokenGenerateService");
         const verificationTokenRepository = getInjection(
             "IVerificationTokenRepository"
         );
-        const verificationTokenFactory = getInjection(
-            "IVerificationTokenFactory"
-        );
-        const transactionManagerService = getInjection(
-            "ITransactionManagerService"
-        );
-        const userRepository = getInjection("IUserRepository");
 
         //check if existing token
         const existingVerificationToken =
@@ -46,39 +38,55 @@ export class ResendVerifyEmailEventHandler
 
         //if exits and has expired
 
-        if (this.hasExpired(existingVerificationToken)) {
-            let token: string | undefined = undefined;
+        await this.generateAndSendNewToken(existingVerificationToken);
+    }
 
-            await transactionManagerService.startTransaction(async (tx) => {
-                try {
-                    //delete old token
-                    await verificationTokenRepository.remove(
-                        existingVerificationToken.id,
-                        tx
-                    );
-                    //create new token
-                    token = tokenGenerateService.generate();
-                    const expires = getVerificationTokenExpiration();
-                    const verificationToken = verificationTokenFactory.create(
-                        event.email,
-                        token,
-                        expires
-                    );
+    private async generateAndSendNewToken(
+        existingVerificationToken: VerificationToken
+    ) {
+        const transactionManagerService = getInjection(
+            "ITransactionManagerService"
+        );
+        const tokenGenerateService = getInjection("ITokenGenerateService");
+        const verificationTokenFactory = getInjection(
+            "IVerificationTokenFactory"
+        );
+        const verificationTokenRepository = getInjection(
+            "IVerificationTokenRepository"
+        );
+        const emailService = getInjection("IEmailService");
 
-                    //insert new token
-                    await verificationTokenRepository.insert(
-                        verificationToken,
-                        tx
-                    );
-                } catch {
-                    tx.rollback();
-                }
-            });
+        const userRepository = getInjection("IUserRepository");
+        let token: string | undefined = undefined;
 
-            //send email again
-            const user = await userRepository.getByEmail(event.email);
-            await emailService.verifyAccount(user!, token!);
-        }
+        await transactionManagerService.startTransaction(async (tx) => {
+            try {
+                //delete old token
+                await verificationTokenRepository.remove(
+                    existingVerificationToken.id,
+                    tx
+                );
+                //create new token
+                token = tokenGenerateService.generate();
+                const expires = getVerificationTokenExpiration();
+                const verificationToken = verificationTokenFactory.create(
+                    existingVerificationToken.email,
+                    token,
+                    expires
+                );
+
+                //insert new token
+                await verificationTokenRepository.insert(verificationToken, tx);
+            } catch {
+                tx.rollback();
+            }
+        });
+
+        //send email again
+        const user = await userRepository.getByEmail(
+            existingVerificationToken.email
+        );
+        await emailService.verifyAccount(user!, token!);
     }
 
     private hasExpired(verificationToken: VerificationToken) {
