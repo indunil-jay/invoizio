@@ -1,7 +1,7 @@
 import { getInjection } from "@/di/container";
-import { changePasswordDto } from "@/src/account/application/dto/change-password.dto";
+import { changePasswordDto } from "@/src/iam/application/dto/change-password.dto";
 import { User } from "@/src/iam/domain/user.entity";
-import { IncorrectPasswordException } from "../exceptions/specific.exceptions";
+import { IncorrectPasswordException } from "@/src/iam/application/exceptions/specific.exceptions";
 
 export const changePasswordUseCase = {
     async execute({ newPassword, currentPassword }: changePasswordDto) {

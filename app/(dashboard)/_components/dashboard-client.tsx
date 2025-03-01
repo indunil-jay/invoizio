@@ -9,19 +9,16 @@ interface DashboardClientProps {
 
 export default function DashboardClient({ user }: DashboardClientProps) {
     const setUser = useUserStore((state) => state.setUser);
+    const currentUser = useUserStore((state) => state.user);
     const setLoading = useUserStore((state) => state.setLoading);
 
     useEffect(() => {
-        // Set loading to true when starting to fetch user data
-        setLoading(true);
-
-        if (user) {
-            setUser(user);
+        if (!currentUser) {
+            setLoading(true);
+            setUser(user); // Only hydrate Zustand if it’s empty
+            setLoading(false);
         }
-
-        // After setting the user, set loading to false
-        setLoading(false);
-    }, [user, setUser, setLoading]);
+    }, [user, setUser, currentUser]);
 
     return null;
 }

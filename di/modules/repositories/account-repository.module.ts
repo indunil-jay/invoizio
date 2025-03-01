@@ -1,7 +1,7 @@
 import { ContainerModule, interfaces } from "inversify";
-import { AccountRepository } from "@/src/infastructure/repositories/account.repository";
 import { DI_SYMBOLS } from "@/di/types";
-import { IAccountRepository } from "@/src/application/repositories/account-repository.interface";
+import { IAccountRepository } from "@/src/iam/application/repositories/provider-account.repository";
+import { AccountRepository } from "@/src/iam/infrastructure/persistence/repositories/provider-account.repository";
 
 const initializeModule = (bind: interfaces.Bind) => {
     bind<IAccountRepository>(DI_SYMBOLS.IAccountRepository).to(

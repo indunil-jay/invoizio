@@ -106,3 +106,30 @@ export class PasswordResetProcessException extends AppError {
         this.name = this.constructor.name;
     }
 }
+
+export class IncorrectPasswordException extends AppError {
+    constructor() {
+        super(
+            "The current password you entered is incorrect. Please try again."
+        );
+        this.name = this.constructor.name;
+    }
+}
+
+export class EmailAlreadyInUseException extends AppError {
+    constructor() {
+        super(
+            "This email is your current address. Please use a different one."
+        );
+        this.name = this.constructor.name;
+    }
+}
+
+export class DuplicateEmailException extends AppError {
+    constructor() {
+        super(
+            "The requested email is already in use. Please delete the existing account or provide a different email."
+        );
+        this.name = this.constructor.name;
+    }
+}

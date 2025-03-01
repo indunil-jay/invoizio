@@ -1,4 +1,3 @@
-import { IAccountRepository } from "@/src/application/repositories/account-repository.interface";
 import { IActivityRepository } from "@/src/application/repositories/activities-repository.interface";
 import { IBusinessAddressRepository } from "@/src/application/repositories/business-address-repository.interface";
 import { IBusinessRepository } from "@/src/application/repositories/business-repository.interface";
@@ -24,6 +23,7 @@ import { IPasswordResetTokenFactory } from "@/src/iam/domain/factories/password-
 import { IPasswordResetTokenRepository } from "@/src/iam/application/repositories/password-reset-token.repository";
 import { ISendResetPasswordEmailEventHandler } from "@/src/iam/application/handlers/send-reset-password-email.event.handler";
 import { IPasswordResetedEventHandler } from "@/src/iam/application/handlers/password-reseted-event-handler";
+import { IAccountRepository } from "@/src/iam/application/repositories/provider-account.repository";
 
 export const DI_SYMBOLS = {
     // Services

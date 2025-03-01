@@ -26,6 +26,7 @@ export const defaultInitState: UserState = {
 
 export const useUserStore = create<UserStore>()((set) => ({
     ...defaultInitState,
-    setUser: (user: User | null) => set({ user }),
+    setUser: (user: User | null) =>
+        set(() => ({ user: user ? { ...user } : null })),
     setLoading: (loading: boolean) => set({ isLoading: loading }),
 }));

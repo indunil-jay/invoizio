@@ -1,6 +1,6 @@
 import { changePasswordFormSchema } from "@/shared/validation-schemas/account/change-password-form-schema";
 import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
-import { changePasswordUseCase } from "../../application/use-cases/change-password.usecase";
+import { changePasswordUseCase } from "@/src/iam/application/use-cases/change-password.usecase";
 
 const presenter = () => {
     return {
