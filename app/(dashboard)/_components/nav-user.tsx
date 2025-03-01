@@ -1,11 +1,7 @@
 "use client";
+
 import Link from "next/link";
 import { BadgeCheck, Bell, ChevronsUpDown, LogOut } from "lucide-react";
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from "@/app/_components/ui/avatar";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -23,7 +19,8 @@ import {
 } from "@/app/_components/ui/sidebar";
 import { signOut } from "next-auth/react";
 import { useUserStore } from "@/app/stores/user-store";
-import { fallbackUsername } from "@/app/stores/fallback-username";
+import { SidebarProfileAvatarSkelton } from "@/app/(dashboard)/_components/skeltons/sidebar-profile-avatar-skelton";
+import { SidebarProfileAvatar } from "@/app/(dashboard)/_components/sidebar-profile-avatar";
 
 export function NavUser() {
     const { isMobile } = useSidebar();
@@ -34,7 +31,7 @@ export function NavUser() {
         await signOut();
     };
 
-    if (isLoading || !user) return "Loading..........";
+    const pending = isLoading || !user;
 
     return (
         <SidebarMenu>
@@ -45,23 +42,12 @@ export function NavUser() {
                             size="lg"
                             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                         >
-                            <Avatar className="h-8 w-8 rounded-lg">
-                                <AvatarImage
-                                    src={user?.image || ""}
-                                    alt={user?.name || "user image"}
-                                />
-                                <AvatarFallback className="rounded-lg">
-                                    {fallbackUsername(user.name)}
-                                </AvatarFallback>
-                            </Avatar>
-                            <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-semibold">
-                                    {user?.name}
-                                </span>
-                                <span className="truncate text-xs">
-                                    {user?.email}
-                                </span>
-                            </div>
+                            {pending ? (
+                                <SidebarProfileAvatarSkelton />
+                            ) : (
+                                <SidebarProfileAvatar user={user} />
+                            )}
+
                             <ChevronsUpDown className="ml-auto size-4" />
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
@@ -73,23 +59,11 @@ export function NavUser() {
                     >
                         <DropdownMenuLabel className="p-0 font-normal">
                             <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                                <Avatar className="h-8 w-8 rounded-lg">
-                                    <AvatarImage
-                                        src={user?.image || ""}
-                                        alt={user?.name || "user-image"}
-                                    />
-                                    <AvatarFallback className="rounded-lg">
-                                        {fallbackUsername(user.name)}
-                                    </AvatarFallback>
-                                </Avatar>
-                                <div className="grid flex-1 text-left text-sm leading-tight">
-                                    <span className="truncate font-semibold">
-                                        {user?.name}
-                                    </span>
-                                    <span className="truncate text-xs">
-                                        {user?.email}
-                                    </span>
-                                </div>
+                                {pending ? (
+                                    <SidebarProfileAvatarSkelton />
+                                ) : (
+                                    <SidebarProfileAvatar user={user} />
+                                )}
                             </div>
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
