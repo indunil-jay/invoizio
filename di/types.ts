@@ -34,10 +34,10 @@ export const DI_SYMBOLS = {
     ITokenGenerateService: Symbol.for("ITokenGenerateService"),
     IEmailService: Symbol.for("IEmailService"),
     ITransactionManagerService: Symbol.for("ITransactionManagerService"),
+    ICloudinaryService: Symbol.for("ICloudinaryService"),
     // Repositories
     IUserRepository: Symbol.for("IUserRepository"),
     IVerificationTokenRepository: Symbol.for("IVerificationTokenRepository"),
-
     IPasswordResetTokenRepository: Symbol.for("IPasswordResetTokenRepository"),
     IAccountRepository: Symbol.for("IAccountRepository"),
     IBusinessRepository: Symbol.for("IBusinessRepository"),

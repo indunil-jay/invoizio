@@ -30,6 +30,7 @@ import { SendResetPasswordEmailEventHandlerModule } from "./modules/handlers/sen
 import { PasswordResetedEventHandlerModule } from "./modules/handlers/password-reseted.event-handler.module";
 import { EmailUpdatedEventHandlerModule } from "./modules/handlers/email-updated.event-handler.module";
 import { PasswordChangedEventHandlerModule } from "./modules/handlers/password-changed.event-handler.module";
+import { CloudinaryServiceServiceModule } from "./modules/services/cloudinary-service.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -58,6 +59,7 @@ export const initializeContainer = () => {
     ApplicationContainer.load(HashingServiceModule);
     ApplicationContainer.load(TokenGeneratorServiceModule);
     ApplicationContainer.load(TransactionManagerServiceModule);
+    ApplicationContainer.load(CloudinaryServiceServiceModule);
 
     //repositories
     ApplicationContainer.load(UserRepositoryModule);
@@ -100,6 +102,7 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(HashingServiceModule);
     ApplicationContainer.unload(TokenGeneratorServiceModule);
     ApplicationContainer.unload(TransactionManagerServiceModule);
+    ApplicationContainer.unload(CloudinaryServiceServiceModule);
 
     //repositories
     ApplicationContainer.unload(UserRepositoryModule);
