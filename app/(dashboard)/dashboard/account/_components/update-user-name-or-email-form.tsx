@@ -58,7 +58,6 @@ export const UpdateUserNameOrEmailForm = ({
         undefined
     );
     const setUser = useUserStore((state) => state.setUser);
-    const userz = useUserStore((state) => state.user);
 
     const defaultValues = useMemo(
         () => ({
@@ -139,7 +138,6 @@ export const UpdateUserNameOrEmailForm = ({
     };
     return (
         <>
-            {JSON.stringify(userz)}
             <Form {...form}>
                 <form className="space-y-6 flex flex-col">
                     {/* Username field */}

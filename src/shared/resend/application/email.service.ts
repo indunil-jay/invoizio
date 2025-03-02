@@ -8,12 +8,35 @@ import { User } from "@/src/iam/domain/user.entity";
 import InvoizioVerifyAccount from "@/src/shared/resend/presenter/templates/account-verifiy";
 import InvoizioResetPassword from "@/src/shared/resend/presenter/templates/reset-password";
 import InvoizioPasswordResetSuccess from "../presenter/templates/password-reset-done";
+import InvoizioVerifyNewEmail from "../presenter/templates/verify-new-email";
 
 const COMPANY_NAME = "invoizio";
 const HOST = `http://localhost:3000`;
 
 @injectable()
 export class EmailService implements IEmailService {
+    public async sendVerifyEmail(user: User, token: string): Promise<void> {
+        const verifyUrl = `${HOST}/auth/new-verification?token=${token}`;
+
+        try {
+            const { error } = await EmailService.resend.emails.send({
+                from: `${COMPANY_NAME} <onboarding@resend.dev>`,
+                to: user.email,
+                subject: "Email Updated Success Verify New Email.",
+                react: InvoizioVerifyNewEmail({
+                    userName: user.name,
+                    verifyUrl,
+                }),
+            });
+
+            if (error) {
+                throw error;
+            }
+        } catch {
+            throw new EmailSendingException();
+        }
+    }
+
     public async sendPasswordResetedEmail(user: User): Promise<void> {
         const loginUrl = `${HOST}/auth/sign-in`;
 

@@ -10,6 +10,7 @@ import {
     NoValidFieldsResponse,
     UserNameUpdateResponse,
 } from "@/src/iam/application/utils/response-messages/user.specific";
+import { EmailUpdatedEvent } from "../../domain/events/email-updated.event";
 
 export const changeUserNameOrEmailUseCase = {
     async execute({ email, name }: changeNameOrEmailDto) {
@@ -41,6 +42,7 @@ export const changeUserNameOrEmailUseCase = {
     async updateEmail(email: string, user: User) {
         const userRepository = getInjection("IUserRepository");
         const accountRepository = getInjection("IAccountRepository");
+        const eventBus = getInjection("IEventBus");
 
         //check send email is different than current email
         if (email === user.email) {
@@ -68,8 +70,8 @@ export const changeUserNameOrEmailUseCase = {
         });
 
         //send verification email
-        console.log("verification email sent");
 
+        await eventBus.publish(new EmailUpdatedEvent(updatedUser));
         return EmailUpdateResponse(updatedUser);
     },
 };
