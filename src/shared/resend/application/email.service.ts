@@ -9,12 +9,38 @@ import InvoizioVerifyAccount from "@/src/shared/resend/presenter/templates/accou
 import InvoizioResetPassword from "@/src/shared/resend/presenter/templates/reset-password";
 import InvoizioPasswordResetSuccess from "../presenter/templates/password-reset-done";
 import InvoizioVerifyNewEmail from "../presenter/templates/verify-new-email";
+import InvoizioPasswordChangeSuccess from "../presenter/templates/changed-password";
 
 const COMPANY_NAME = "invoizio";
 const HOST = `http://localhost:3000`;
 
 @injectable()
 export class EmailService implements IEmailService {
+    private static readonly resend = new Resend(
+        envValidationSchema.RESEND_API_KEY
+    );
+    public async sendPasswordChangedEmail(user: User): Promise<void> {
+        const loginUrl = `${HOST}/auth/sign-in`;
+
+        try {
+            const { error } = await EmailService.resend.emails.send({
+                from: `${COMPANY_NAME} <onboarding@resend.dev>`,
+                to: user.email,
+                subject: "Password Change Success",
+                react: InvoizioPasswordChangeSuccess({
+                    userName: user.name,
+                    loginUrl,
+                }),
+            });
+
+            if (error) {
+                throw error;
+            }
+        } catch {
+            throw new EmailSendingException();
+        }
+    }
+
     public async sendVerifyEmail(user: User, token: string): Promise<void> {
         const verifyUrl = `${HOST}/auth/new-verification?token=${token}`;
 
@@ -58,9 +84,6 @@ export class EmailService implements IEmailService {
             throw new EmailSendingException();
         }
     }
-    private static readonly resend = new Resend(
-        envValidationSchema.RESEND_API_KEY
-    );
 
     public async sendResetPasswordEmail(
         user: User,

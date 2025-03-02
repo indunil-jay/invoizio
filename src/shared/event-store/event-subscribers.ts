@@ -1,5 +1,6 @@
 import { getInjection } from "@/di/container";
 import { EmailUpdatedEvent } from "@/src/iam/domain/events/email-updated.event";
+import { PasswordChangedEvent } from "@/src/iam/domain/events/password-changed.event";
 import { PasswordResetedEvent } from "@/src/iam/domain/events/password-reseted.event";
 import { ResendVerifyEmailEvent } from "@/src/iam/domain/events/resend-verify-email.event";
 import { SendResetPasswordEmailEvent } from "@/src/iam/domain/events/send-reset-password-email.event";
@@ -39,3 +40,11 @@ eventBus.subscribe(EmailUpdatedEvent, async (event: EmailUpdatedEvent) => {
     const handler = getInjection("IEmailUpdatedEventHandler");
     await handler.handle(event);
 });
+
+eventBus.subscribe(
+    PasswordChangedEvent,
+    async (event: PasswordChangedEvent) => {
+        const handler = getInjection("IPasswordChangedEventHandler");
+        await handler.handle(event);
+    }
+);

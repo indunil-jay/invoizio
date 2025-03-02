@@ -25,6 +25,7 @@ import { ISendResetPasswordEmailEventHandler } from "@/src/iam/application/handl
 import { IPasswordResetedEventHandler } from "@/src/iam/application/handlers/password-reseted-event-handler";
 import { IAccountRepository } from "@/src/iam/application/repositories/provider-account.repository";
 import { IEmailUpdatedEventHandler } from "@/src/iam/application/handlers/email-updated.event-handler";
+import { IPasswordChangedEventHandler } from "@/src/iam/application/handlers/password-changed.event-handler";
 
 export const DI_SYMBOLS = {
     // Services
@@ -57,6 +58,7 @@ export const DI_SYMBOLS = {
     ),
     IPasswordResetedEventHandler: Symbol.for("IPasswordResetedEventHandler"),
     IEmailUpdatedEventHandler: Symbol.for("IEmailUpdatedEventHandler"),
+    IPasswordChangedEventHandler: Symbol.for("IPasswordChangedEventHandler"),
 
     //Event Bus
     IEventBus: Symbol.for("IEventBus"),
@@ -94,6 +96,7 @@ export interface DI_RETURN_TYPES {
     ISendResetPasswordEmailEventHandler: ISendResetPasswordEmailEventHandler;
     IPasswordResetedEventHandler: IPasswordResetedEventHandler;
     IEmailUpdatedEventHandler: IEmailUpdatedEventHandler;
+    IPasswordChangedEventHandler: IPasswordChangedEventHandler;
 
     //event bus
     IEventBus: IEventBus;

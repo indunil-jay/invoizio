@@ -2,16 +2,21 @@ import { getInjection } from "@/di/container";
 import { changePasswordDto } from "@/src/iam/application/dto/change-password.dto";
 import { User } from "@/src/iam/domain/user.entity";
 import { IncorrectPasswordException } from "@/src/iam/application/exceptions/specific.exceptions";
+import { PasswordChangedEvent } from "../../domain/events/password-changed.event";
 
 export const changePasswordUseCase = {
     async execute({ newPassword, currentPassword }: changePasswordDto) {
         const authenticationService = getInjection("IAuthenticationService");
+        const eventBus = getInjection("IEventBus");
         //check session
         const user = await authenticationService.verifySessionUser();
         //check if password is correct
         await this.verifyPassword(currentPassword, user);
         //if,so create new password
         await this.updateNewPassword(newPassword, user);
+
+        //public password changed event
+        await eventBus.publish(new PasswordChangedEvent(user));
     },
 
     async verifyPassword(currentPassword: string, user: User) {
