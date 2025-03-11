@@ -9,6 +9,4 @@ const initializeModule = (bind: interfaces.Bind) => {
     );
 };
 
-export const CloudinaryServiceServiceModule = new ContainerModule(
-    initializeModule
-);
+export const CloudinaryServiceModule = new ContainerModule(initializeModule);

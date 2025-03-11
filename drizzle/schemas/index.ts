@@ -40,3 +40,8 @@ export {
     activities,
     defineActivitiesRelations,
 } from "@/drizzle/schemas/activity";
+
+export {
+    userCoverImages,
+    defineUserCoverImagesRelations,
+} from "@/drizzle/schemas/user-cover-images";

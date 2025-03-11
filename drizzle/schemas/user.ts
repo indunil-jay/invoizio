@@ -2,7 +2,13 @@ import { InferSelectModel, relations } from "drizzle-orm";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { accounts, authenticators, businesses } from "@/drizzle/schemas";
+import {
+    accounts,
+    authenticators,
+    businesses,
+    userCoverImages,
+    userProfileImages,
+} from "@/drizzle/schemas";
 
 export const users = pgTable("user", {
     id: text("id").primaryKey().notNull(),
@@ -10,7 +16,6 @@ export const users = pgTable("user", {
     email: text("email").unique().notNull(),
     emailVerified: timestamp("emailVerified", { mode: "date" }),
     image: text("image"),
-
     password: text("password"),
 
     createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
@@ -24,6 +29,9 @@ export const defineUsersRelations = relations(users, ({ one, many }) => ({
     authenticators: one(authenticators),
     //one user has many business
     businesses: many(businesses),
+
+    //one user has one cover image
+    userCoverImages: one(userCoverImages),
 }));
 
 //schema validation

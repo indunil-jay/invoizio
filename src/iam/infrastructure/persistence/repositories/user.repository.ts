@@ -59,8 +59,11 @@ export class UserRepository implements IUserRepository {
         try {
             const user = await db.query.users.findFirst({
                 where: eq(users.email, email),
+                with: {
+                    userCoverImages: true,
+                },
             });
-
+            console.log({ user });
             if (!user) return;
 
             return UserMapper.toDomain(user);
@@ -72,8 +75,11 @@ export class UserRepository implements IUserRepository {
         try {
             const user = await db.query.users.findFirst({
                 where: eq(users.id, id),
+                with: {
+                    userCoverImages: true,
+                },
             });
-
+            console.log({ user });
             if (!user) return;
 
             return UserMapper.toDomain(user);

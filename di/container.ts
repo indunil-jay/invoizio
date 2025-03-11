@@ -30,7 +30,9 @@ import { SendResetPasswordEmailEventHandlerModule } from "./modules/handlers/sen
 import { PasswordResetedEventHandlerModule } from "./modules/handlers/password-reseted.event-handler.module";
 import { EmailUpdatedEventHandlerModule } from "./modules/handlers/email-updated.event-handler.module";
 import { PasswordChangedEventHandlerModule } from "./modules/handlers/password-changed.event-handler.module";
-import { CloudinaryServiceServiceModule } from "./modules/services/cloudinary-service.module";
+import { CloudinaryServiceModule } from "./modules/services/cloudinary-service.module";
+import { UserCoverImageFactoryModule } from "./modules/factrories/user-cover-image-factory.module";
+import { UserCoverImageRepositoryModule } from "./modules/repositories/user-cover-image-repository.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -44,6 +46,7 @@ export const initializeContainer = () => {
     ApplicationContainer.load(VerificationTokenFactoryModule);
     ApplicationContainer.load(UserFactoryModule);
     ApplicationContainer.load(PasswordResetTokenFactoryModule);
+    ApplicationContainer.load(UserCoverImageFactoryModule);
 
     //handlers
     ApplicationContainer.load(UserSignedUpEventHandlerModule);
@@ -59,7 +62,7 @@ export const initializeContainer = () => {
     ApplicationContainer.load(HashingServiceModule);
     ApplicationContainer.load(TokenGeneratorServiceModule);
     ApplicationContainer.load(TransactionManagerServiceModule);
-    ApplicationContainer.load(CloudinaryServiceServiceModule);
+    ApplicationContainer.load(CloudinaryServiceModule);
 
     //repositories
     ApplicationContainer.load(UserRepositoryModule);
@@ -73,6 +76,7 @@ export const initializeContainer = () => {
     ApplicationContainer.load(InvoiceRepositoryModule);
     ApplicationContainer.load(InvoiceItemsRepositoryModule);
     ApplicationContainer.load(ActivityRepositoryModule);
+    ApplicationContainer.load(UserCoverImageRepositoryModule);
 
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("@/src/shared/event-store/event-subscribers");
@@ -86,7 +90,7 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(VerificationTokenFactoryModule);
     ApplicationContainer.unload(UserFactoryModule);
     ApplicationContainer.unload(PasswordResetTokenFactoryModule);
-    ApplicationContainer.unload(PasswordResetedEventHandlerModule);
+    ApplicationContainer.unload(UserCoverImageFactoryModule);
 
     //handlers
     ApplicationContainer.unload(UserSignedUpEventHandlerModule);
@@ -102,7 +106,7 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(HashingServiceModule);
     ApplicationContainer.unload(TokenGeneratorServiceModule);
     ApplicationContainer.unload(TransactionManagerServiceModule);
-    ApplicationContainer.unload(CloudinaryServiceServiceModule);
+    ApplicationContainer.unload(CloudinaryServiceModule);
 
     //repositories
     ApplicationContainer.unload(UserRepositoryModule);
@@ -116,6 +120,7 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(InvoiceRepositoryModule);
     ApplicationContainer.unload(InvoiceItemsRepositoryModule);
     ApplicationContainer.unload(ActivityRepositoryModule);
+    ApplicationContainer.unload(UserCoverImageRepositoryModule);
 };
 initializeContainer();
 

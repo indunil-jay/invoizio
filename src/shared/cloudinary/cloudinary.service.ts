@@ -47,8 +47,6 @@ export class CloudinaryService implements ICloudinaryService {
                 }
             );
 
-            console.log({ upload });
-
             if (file instanceof Readable) {
                 file.pipe(upload);
             } else {

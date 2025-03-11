@@ -26,6 +26,9 @@ import { IPasswordResetedEventHandler } from "@/src/iam/application/handlers/pas
 import { IAccountRepository } from "@/src/iam/application/repositories/provider-account.repository";
 import { IEmailUpdatedEventHandler } from "@/src/iam/application/handlers/email-updated.event-handler";
 import { IPasswordChangedEventHandler } from "@/src/iam/application/handlers/password-changed.event-handler";
+import { ICloudinaryService } from "@/src/shared/cloudinary/cloudinary.service.interface";
+import { IUserCoverImageFactory } from "@/src/iam/domain/factories/user-cover-image.factory";
+import { IUserCoverImageRepository } from "@/src/iam/application/repositories/user-cover-image.repository";
 
 export const DI_SYMBOLS = {
     // Services
@@ -35,6 +38,7 @@ export const DI_SYMBOLS = {
     IEmailService: Symbol.for("IEmailService"),
     ITransactionManagerService: Symbol.for("ITransactionManagerService"),
     ICloudinaryService: Symbol.for("ICloudinaryService"),
+
     // Repositories
     IUserRepository: Symbol.for("IUserRepository"),
     IVerificationTokenRepository: Symbol.for("IVerificationTokenRepository"),
@@ -47,6 +51,7 @@ export const DI_SYMBOLS = {
     IInvoiceRepository: Symbol.for("IInvoiceRepository"),
     IInvoiceItemsRepository: Symbol.for("IInvoiceItemsRepository"),
     IActivityRepository: Symbol.for("IActivityRepository"),
+    IUserCoverImageRepository: Symbol.for("IUserCoverImageRepository"),
 
     //Handlers
     IUserSignedUpEventHandler: Symbol.for("IUserSignedUpEventHandler"),
@@ -67,6 +72,7 @@ export const DI_SYMBOLS = {
     IVerificationTokenFactory: Symbol.for("IVerificationTokenFactory"),
     IUserFactory: Symbol.for("IUserFactory"),
     IPasswordResetTokenFactory: Symbol.for("IPasswordResetTokenFactory"),
+    IUserCoverImageFactory: Symbol.for("IUserCoverImageFactory"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -76,6 +82,7 @@ export interface DI_RETURN_TYPES {
     ITokenGenerateService: ITokenGenerateService;
     IEmailService: IEmailService;
     ITransactionManagerService: ITransactionManagerService;
+    ICloudinaryService: ICloudinaryService;
 
     // Repositories
     IUserRepository: IUserRepository;
@@ -89,6 +96,7 @@ export interface DI_RETURN_TYPES {
     IInvoiceRepository: IInvoiceRepository;
     IInvoiceItemsRepository: IInvoiceItemsRepository;
     IActivityRepository: IActivityRepository;
+    IUserCoverImageRepository: IUserCoverImageRepository;
 
     //Handlers
     IUserSignedUpEventHandler: IUserSignedUpEventHandler;
@@ -105,4 +113,5 @@ export interface DI_RETURN_TYPES {
     IVerificationTokenFactory: IVerificationTokenFactory;
     IPasswordResetTokenFactory: IPasswordResetTokenFactory;
     IUserFactory: IUserFactory;
+    IUserCoverImageFactory: IUserCoverImageFactory;
 }

@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import { auth, signIn } from "@/auth";
 import { AuthError, Session } from "next-auth";
 import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
-import { signInDto } from "@/src/iam/application/dto/user.dto";
+
 import {
     InvalidSession,
     InvalidSessionException,
@@ -10,6 +10,7 @@ import {
 } from "@/src/iam/infrastructure/exceptions/session.exceptions";
 import { User } from "@/src/iam/domain/user.entity";
 import { getInjection } from "@/di/container";
+import { signInDto } from "../../application/dto/sign-in.dto";
 
 @injectable()
 export class AuthenticationService implements IAuthenticationService {

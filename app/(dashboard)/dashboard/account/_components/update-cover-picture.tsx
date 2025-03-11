@@ -13,18 +13,9 @@ import {
     TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
 import { useImageUpload } from "../_hooks/use-image-upload";
-
-const updateCoverPhotoFormSchema = z.object({
-    image: z
-        .union([
-            z.instanceof(File),
-            z
-                .string()
-                .nullable()
-                .transform((val) => val || undefined),
-        ])
-        .optional(),
-});
+import { updateCoverPhotoFormSchema } from "@/shared/validation-schemas/account/update-cover-photo-form-schema";
+import { uploadCoverImage } from "../actions";
+import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 
 export const UpdateCoverPhotoForm = () => {
     const form = useForm<z.infer<typeof updateCoverPhotoFormSchema>>({
@@ -33,17 +24,22 @@ export const UpdateCoverPhotoForm = () => {
             image: undefined,
         },
     });
-
-    // ✅ Use the custom hook
     const { fileRef, imagePreview, handleImageChange, removeImage } =
         useImageUpload(form, "image");
+    const { toast } = useShowToast();
 
-    const onSubmit = (values: z.infer<typeof updateCoverPhotoFormSchema>) => {
-        const formData = {
-            ...values,
-            image: values.image instanceof File ? values.image : undefined,
-        };
-        console.log({ formData });
+    const onSubmit = async (
+        values: z.infer<typeof updateCoverPhotoFormSchema>
+    ) => {
+        if (values.image === undefined || !(values.image instanceof File)) {
+            console.log("SHOW ERROR");
+            return;
+        }
+        const formData = new FormData();
+        formData.append("image", values.image);
+
+        const response = await uploadCoverImage(formData);
+        toast(response);
     };
 
     return (

@@ -43,6 +43,13 @@
       "when": 1738419234438,
       "tag": "0005_fuzzy_wrecking_crew",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1741696638196,
+      "tag": "0006_sticky_jane_foster",
+      "breakpoints": true
     }
   ]
 }
