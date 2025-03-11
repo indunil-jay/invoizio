@@ -16,6 +16,7 @@ import { useUserStore } from "@/app/stores/user-store";
 import { UpdateUserNameOrEmailForm } from "./update-user-name-or-email-form";
 import { UserProfileSkelton } from "./skeltons/user-profile-skelton";
 import { fallbackUsername } from "@/app/stores/fallback-username";
+import { UpdateCoverPhotoForm } from "./update-cover-picture";
 
 export const ProfileCard = () => {
     const user = useUserStore((state) => state.user);
@@ -28,7 +29,7 @@ export const ProfileCard = () => {
     ) : (
         <Card className="w-full">
             <CardHeader className="p-0 rounded-br-none rounded-bl-none rounded-tr-md rounded-tl-md overflow-clip">
-                <div className="w-full bg-red-200 h-44"></div>
+                <UpdateCoverPhotoForm />
             </CardHeader>
             <CardContent className="px-12">
                 <div className="-mt-8 flex gap-3 lg:gap-6">

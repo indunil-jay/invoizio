@@ -1,17 +1,9 @@
-import Spinner from "../_components/custom/spinner";
-import { Button } from "../_components/ui/button";
+
+
+import { UpdateProfilePictureForm } from "../(dashboard)/dashboard/account/_components/update-profile-picture-form";
 
 const page = () => {
-    return (
-        <div className="w-72 m-20">
-            <Button
-                type="submit"
-                className="w-full "
-                size={"lg"}
-                disabled={true}
-            ></Button>
-        </div>
-    );
+    return <UpdateProfilePictureForm />;
 };
 
 export default page;

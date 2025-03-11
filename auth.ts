@@ -50,6 +50,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         async linkAccount({ user }) {
             //mark verified user as when login with google
 
+            console.log({ authFile: user });
+
             if (user && user.id) {
                 const userRepository = getInjection("IUserRepository");
                 await userRepository.update(user.id, {
