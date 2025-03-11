@@ -1,4 +1,3 @@
-import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,6 +12,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
+import { useImageUpload } from "../_hooks/use-image-upload";
 
 const updateCoverPhotoFormSchema = z.object({
     image: z
@@ -34,29 +34,9 @@ export const UpdateCoverPhotoForm = () => {
         },
     });
 
-    const fileRef = useRef<HTMLInputElement | null>(null);
-
-    const [imagePreview, setImagePreview] = useState<string | undefined>();
-
-    const imageValue = form.watch("image");
-
-    useEffect(() => {
-        if (imageValue instanceof File) {
-            const objectURL = URL.createObjectURL(imageValue);
-            setImagePreview(objectURL);
-            return () => URL.revokeObjectURL(objectURL);
-        } else {
-            setImagePreview(imageValue);
-        }
-    }, [imageValue]);
-
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-
-        if (file) {
-            form.setValue("image", file);
-        }
-    };
+    // ✅ Use the custom hook
+    const { fileRef, imagePreview, handleImageChange, removeImage } =
+        useImageUpload(form, "image");
 
     const onSubmit = (values: z.infer<typeof updateCoverPhotoFormSchema>) => {
         const formData = {
@@ -108,14 +88,14 @@ export const UpdateCoverPhotoForm = () => {
 
                                 <TooltipProvider>
                                     {field.value ? (
-                                        <div className="flex gap-3 absolute right-8 top-8  ">
+                                        <div className="flex gap-3 absolute right-8 top-8">
                                             <Tooltip>
                                                 <TooltipTrigger asChild>
                                                     <Button
                                                         type="submit"
                                                         size={"icon"}
                                                         variant={"ghost"}
-                                                        className=" bg-white p-2 rounded-full"
+                                                        className="bg-white p-2 rounded-full"
                                                     >
                                                         <Save />
                                                     </Button>
@@ -131,18 +111,8 @@ export const UpdateCoverPhotoForm = () => {
                                                         type="button"
                                                         size={"icon"}
                                                         variant={"destructive"}
-                                                        className=" p-2 rounded-full"
-                                                        onClick={() => {
-                                                            field.onChange(
-                                                                null
-                                                            );
-                                                            if (
-                                                                fileRef.current
-                                                            ) {
-                                                                fileRef.current.value =
-                                                                    "";
-                                                            }
-                                                        }}
+                                                        className="p-2 rounded-full"
+                                                        onClick={removeImage}
                                                     >
                                                         <Trash />
                                                     </Button>
