@@ -17,6 +17,7 @@ export class AuthenticationService implements IAuthenticationService {
     public async verifySessionUser(): Promise<User> {
         const userRepository = getInjection("IUserRepository");
         const session = await this.getSession();
+
         if (!session || !session.user || !session.user.id) {
             throw new InvalidSessionException();
         }

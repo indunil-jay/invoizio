@@ -1,3 +1,5 @@
+import { UserCoverImage } from "./user-cover-image.entity";
+
 export class User {
     constructor(
         public readonly id: string,
@@ -5,7 +7,8 @@ export class User {
         public readonly email: string,
         public readonly password?: string | null,
         public readonly emailVerified?: Date | null,
-        public readonly image?: string | null
+        public readonly image?: string | null,
+        public readonly coverImages?: UserCoverImage
     ) {}
 
     public toJSON() {
@@ -15,6 +18,7 @@ export class User {
             email: this.email,
             emailVerified: this.emailVerified,
             image: this.image,
+            coverImages: this.coverImages?.toJSON(),
         };
     }
 }

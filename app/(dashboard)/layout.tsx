@@ -9,6 +9,7 @@ import { DynamicBreadCumb } from "../_components/custom/dynamic-breadcumb";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import DashboardClient from "./_components/dashboard-client";
+import { getCurrentUser } from "./dashboard/account/queries";
 import { User } from "../stores/user-store";
 
 export default async function DashboardLayout({
@@ -21,9 +22,12 @@ export default async function DashboardLayout({
     if (!session?.user?.id) {
         redirect("/auth/sign-in");
     }
+
+    const user = await getCurrentUser();
+
     return (
         <>
-            <DashboardClient user={session.user as User} />
+            <DashboardClient user={user as User} />
 
             <SidebarProvider>
                 <AppSidebar />

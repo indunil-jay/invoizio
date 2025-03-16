@@ -15,10 +15,10 @@ export default function DashboardClient({ user }: DashboardClientProps) {
     useEffect(() => {
         if (!currentUser) {
             setLoading(true);
-            setUser(user); // Only hydrate Zustand if it’s empty
+            setUser(user);
             setLoading(false);
         }
-    }, [user, setUser, currentUser]);
+    }, [user, setUser, currentUser, setLoading]);
 
     return null;
 }

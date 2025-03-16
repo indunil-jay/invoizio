@@ -1,14 +1,13 @@
 "use server";
+import { z } from "zod";
 import { executeAction } from "@/app/_utils/execute.action";
 import { changePasswordFormSchema } from "@/shared/validation-schemas/account/change-password-form-schema";
 import { changeUserNameOrEmailFormSchema } from "@/shared/validation-schemas/account/change-user-name-or-email-form.schema";
-import { updateCoverPhotoFormSchema } from "@/shared/validation-schemas/account/update-cover-photo-form-schema";
 import { changePasswordController } from "@/src/iam/presenter/controllers/change-password.controller";
 import { changeUserNameOrEmailController } from "@/src/iam/presenter/controllers/change-user-name-or-email.controller";
 import { uploadCoverImageController } from "@/src/iam/presenter/controllers/upload-cover-image.controller";
-import { z } from "zod";
 
-export const changePassword = async (
+export const changePassword = (
     values: z.infer<typeof changePasswordFormSchema>
 ) =>
     executeAction({
@@ -17,7 +16,7 @@ export const changePassword = async (
         failureTitle: "password change failed",
     });
 
-export const updateProfile = async (
+export const updateProfile = (
     values: z.infer<typeof changeUserNameOrEmailFormSchema>
 ) => {
     return executeAction({
@@ -27,7 +26,7 @@ export const updateProfile = async (
     });
 };
 
-export const uploadCoverImage = async (formData: FormData) => {
+export const uploadCoverImage = (formData: FormData) => {
     const image = formData.get("image") as File | null;
     return executeAction({
         actionFn: async () => await uploadCoverImageController({ image }),

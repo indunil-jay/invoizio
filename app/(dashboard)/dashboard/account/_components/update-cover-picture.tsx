@@ -1,11 +1,13 @@
+"use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Image from "next/image";
+import { Camera, ImageIcon, Save, Trash } from "lucide-react";
+
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Button } from "@/app/_components/ui/button";
 import { Form, FormField } from "@/app/_components/ui/form";
-import { Camera, ImageIcon, Save, Trash } from "lucide-react";
 import {
     Tooltip,
     TooltipContent,
@@ -16,6 +18,7 @@ import { useImageUpload } from "../_hooks/use-image-upload";
 import { updateCoverPhotoFormSchema } from "@/shared/validation-schemas/account/update-cover-photo-form-schema";
 import { uploadCoverImage } from "../actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
+import { useUserStore } from "@/app/stores/user-store";
 
 export const UpdateCoverPhotoForm = () => {
     const form = useForm<z.infer<typeof updateCoverPhotoFormSchema>>({
@@ -26,13 +29,21 @@ export const UpdateCoverPhotoForm = () => {
     });
     const { fileRef, imagePreview, handleImageChange, removeImage } =
         useImageUpload(form, "image");
+
     const { toast } = useShowToast();
+
+    const currentUser = useUserStore((state) => state.user);
 
     const onSubmit = async (
         values: z.infer<typeof updateCoverPhotoFormSchema>
     ) => {
         if (values.image === undefined || !(values.image instanceof File)) {
-            console.log("SHOW ERROR");
+            toast({
+                status: false,
+                message:
+                    "Please select a valid image file (PNG, JPEG, or SVG) before uploading.",
+                title: "Form Input Invalid",
+            });
             return;
         }
         const formData = new FormData();
@@ -51,13 +62,21 @@ export const UpdateCoverPhotoForm = () => {
                         name="image"
                         render={({ field }) => (
                             <div>
-                                {imagePreview ? (
-                                    <div className="h-44 relative rounded-md overflow-hidden">
+                                {imagePreview ||
+                                currentUser?.userCoverImages?.url ? (
+                                    <div className="h-44 relative w-full rounded-md overflow-hidden">
                                         <Image
                                             alt="profile-cover-photo"
-                                            fill
                                             className="object-cover"
-                                            src={imagePreview}
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            priority
+                                            src={
+                                                imagePreview ??
+                                                currentUser?.userCoverImages
+                                                    ?.url ??
+                                                ""
+                                            }
                                         />
                                     </div>
                                 ) : (

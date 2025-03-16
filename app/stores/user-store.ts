@@ -1,11 +1,17 @@
 import { create } from "zustand";
 
-export type User = {
+interface UserCoverImage {
+    url: string;
+}
+
+export interface User {
     id: string;
     name: string;
     email: string;
+    emailVerified: Date;
     image: string;
-};
+    userCoverImages: UserCoverImage | null;
+}
 
 export type UserState = {
     user: User | null;
