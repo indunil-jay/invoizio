@@ -1,4 +1,4 @@
-import { ProfileCard } from "./_components/profile-card";
+import { ProfileCard } from "@/app/(dashboard)/dashboard/account/_components/profile-card";
 
 export default async function Page() {
     return (
