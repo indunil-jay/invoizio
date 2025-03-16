@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const updateCoverPhotoFormSchema = z.object({
+export const changeCoverPhotoFormSchema = z.object({
     image: z.union([
         z.instanceof(File),
         z

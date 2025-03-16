@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Camera, ImageIcon, Save, Trash } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
@@ -14,17 +15,16 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
-import { useImageUpload } from "../_hooks/use-image-upload";
-import { updateCoverPhotoFormSchema } from "@/shared/validation-schemas/account/update-cover-photo-form-schema";
-import { uploadCoverImage } from "../actions";
+import { useImageUpload } from "@/app/(dashboard)/dashboard/account/_hooks/use-image-upload";
+import { changeCoverPhotoFormSchema } from "@/shared/validation-schemas/account/change-cover-photo-form-schema";
+import { uploadCoverImage } from "@/app/(dashboard)/dashboard/account/actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import { useUserStore } from "@/app/stores/user-store";
 import { cn } from "@/app/_lib/tailwind-css/utils";
-import { useRouter } from "next/navigation";
 
-export const UpdateCoverPhotoForm = () => {
-    const form = useForm<z.infer<typeof updateCoverPhotoFormSchema>>({
-        resolver: zodResolver(updateCoverPhotoFormSchema),
+export const ChangeCoverPicture = () => {
+    const form = useForm<z.infer<typeof changeCoverPhotoFormSchema>>({
+        resolver: zodResolver(changeCoverPhotoFormSchema),
         defaultValues: {
             image: undefined,
         },
@@ -37,7 +37,7 @@ export const UpdateCoverPhotoForm = () => {
     const currentUser = useUserStore((state) => state.user);
 
     const onSubmit = async (
-        values: z.infer<typeof updateCoverPhotoFormSchema>
+        values: z.infer<typeof changeCoverPhotoFormSchema>
     ) => {
         if (values.image === undefined || !(values.image instanceof File)) {
             toast({

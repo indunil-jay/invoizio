@@ -50,7 +50,7 @@ interface UpdateUserNameOrEmailFormProps {
     user: User;
 }
 
-export const UpdateUserNameOrEmailForm = ({
+export const ChangeUserNameOrEmailForm = ({
     user,
 }: UpdateUserNameOrEmailFormProps) => {
     const [showModal, setShowModal] = useState(false);
@@ -85,6 +85,7 @@ export const UpdateUserNameOrEmailForm = ({
             toast(response);
 
             if (response.status) {
+                // TODO:
                 setUser(response.data as User);
                 console.log(response?.data);
             }
