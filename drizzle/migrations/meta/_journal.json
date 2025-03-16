@@ -50,6 +50,13 @@
       "when": 1741696638196,
       "tag": "0006_sticky_jane_foster",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1742128726316,
+      "tag": "0007_melted_quicksilver",
+      "breakpoints": true
     }
   ]
 }

@@ -33,6 +33,8 @@ import { PasswordChangedEventHandlerModule } from "./modules/handlers/password-c
 import { CloudinaryServiceModule } from "./modules/services/cloudinary-service.module";
 import { UserCoverImageFactoryModule } from "./modules/factrories/user-cover-image-factory.module";
 import { UserCoverImageRepositoryModule } from "./modules/repositories/user-cover-image-repository.module";
+import { UserProfileImageFactoryModule } from "./modules/factrories/user-profile-image-factory.module";
+import { UserProfileImageRepositoryModule } from "./modules/repositories/user-profile-image-repository.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -47,6 +49,7 @@ export const initializeContainer = () => {
     ApplicationContainer.load(UserFactoryModule);
     ApplicationContainer.load(PasswordResetTokenFactoryModule);
     ApplicationContainer.load(UserCoverImageFactoryModule);
+    ApplicationContainer.load(UserProfileImageFactoryModule);
 
     //handlers
     ApplicationContainer.load(UserSignedUpEventHandlerModule);
@@ -77,6 +80,7 @@ export const initializeContainer = () => {
     ApplicationContainer.load(InvoiceItemsRepositoryModule);
     ApplicationContainer.load(ActivityRepositoryModule);
     ApplicationContainer.load(UserCoverImageRepositoryModule);
+    ApplicationContainer.load(UserProfileImageRepositoryModule);
 
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("@/src/shared/event-store/event-subscribers");
@@ -91,6 +95,7 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(UserFactoryModule);
     ApplicationContainer.unload(PasswordResetTokenFactoryModule);
     ApplicationContainer.unload(UserCoverImageFactoryModule);
+    ApplicationContainer.unload(UserProfileImageFactoryModule);
 
     //handlers
     ApplicationContainer.unload(UserSignedUpEventHandlerModule);
@@ -121,6 +126,7 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(InvoiceItemsRepositoryModule);
     ApplicationContainer.unload(ActivityRepositoryModule);
     ApplicationContainer.unload(UserCoverImageRepositoryModule);
+    ApplicationContainer.unload(UserProfileImageRepositoryModule);
 };
 initializeContainer();
 

@@ -45,3 +45,8 @@ export {
     userCoverImages,
     defineUserCoverImagesRelations,
 } from "@/drizzle/schemas/user-cover-images";
+
+export {
+    userProfileImages,
+    defineUserProfileImagesRelations,
+} from "@/drizzle/schemas/user-profile-images";

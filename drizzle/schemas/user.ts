@@ -32,6 +32,7 @@ export const defineUsersRelations = relations(users, ({ one, many }) => ({
 
     //one user has one cover image
     userCoverImages: one(userCoverImages),
+    userProfileImages: one(userProfileImages),
 }));
 
 //schema validation

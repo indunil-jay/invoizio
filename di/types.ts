@@ -29,6 +29,8 @@ import { IPasswordChangedEventHandler } from "@/src/iam/application/handlers/pas
 import { ICloudinaryService } from "@/src/shared/cloudinary/cloudinary.service.interface";
 import { IUserCoverImageFactory } from "@/src/iam/domain/factories/user-cover-image.factory";
 import { IUserCoverImageRepository } from "@/src/iam/application/repositories/user-cover-image.repository";
+import { IUserProfileImageFactory } from "@/src/iam/domain/factories/user-profile-image.factory";
+import { IUserProfileImageRepository } from "@/src/iam/application/repositories/user-profile-image.repository";
 
 export const DI_SYMBOLS = {
     // Services
@@ -52,6 +54,7 @@ export const DI_SYMBOLS = {
     IInvoiceItemsRepository: Symbol.for("IInvoiceItemsRepository"),
     IActivityRepository: Symbol.for("IActivityRepository"),
     IUserCoverImageRepository: Symbol.for("IUserCoverImageRepository"),
+    IUserProfileImageRepository: Symbol.for("IUserProfileImageRepository"),
 
     //Handlers
     IUserSignedUpEventHandler: Symbol.for("IUserSignedUpEventHandler"),
@@ -73,6 +76,7 @@ export const DI_SYMBOLS = {
     IUserFactory: Symbol.for("IUserFactory"),
     IPasswordResetTokenFactory: Symbol.for("IPasswordResetTokenFactory"),
     IUserCoverImageFactory: Symbol.for("IUserCoverImageFactory"),
+    IUserProfileImageFactory: Symbol.for("IUserProfileImageFactory"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -97,6 +101,7 @@ export interface DI_RETURN_TYPES {
     IInvoiceItemsRepository: IInvoiceItemsRepository;
     IActivityRepository: IActivityRepository;
     IUserCoverImageRepository: IUserCoverImageRepository;
+    IUserProfileImageRepository: IUserProfileImageRepository;
 
     //Handlers
     IUserSignedUpEventHandler: IUserSignedUpEventHandler;
@@ -114,4 +119,5 @@ export interface DI_RETURN_TYPES {
     IPasswordResetTokenFactory: IPasswordResetTokenFactory;
     IUserFactory: IUserFactory;
     IUserCoverImageFactory: IUserCoverImageFactory;
+    IUserProfileImageFactory: IUserProfileImageFactory;
 }

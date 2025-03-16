@@ -1,9 +1,10 @@
 import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
 import { uploadCoverImageUseCase } from "@/src/iam/application/use-cases/upload-cover-image.usecase";
+import { UserCoverImage } from "@/src/iam/domain/user-cover-image.entity";
 
-const presenter = () => {
+const presenter = (coverImage: UserCoverImage) => {
     return {
-        data: undefined,
+        data: coverImage,
         status: true,
         message: "Your cover image has been uploaded successfully.",
     };
@@ -15,7 +16,7 @@ export const uploadCoverImageController = async (request: any) => {
         throw new BadRequestException();
     }
 
-    await uploadCoverImageUseCase.execute(request);
+    const coverImage = await uploadCoverImageUseCase.execute(request);
 
-    return presenter();
+    return presenter(coverImage);
 };

@@ -6,6 +6,7 @@ import { changeUserNameOrEmailFormSchema } from "@/shared/validation-schemas/acc
 import { changePasswordController } from "@/src/iam/presenter/controllers/change-password.controller";
 import { changeUserNameOrEmailController } from "@/src/iam/presenter/controllers/change-user-name-or-email.controller";
 import { uploadCoverImageController } from "@/src/iam/presenter/controllers/upload-cover-image.controller";
+import { uploadProfilePictureController } from "@/src/iam/presenter/controllers/upload-profile-picture.controller";
 
 export const changePassword = (
     values: z.infer<typeof changePasswordFormSchema>
@@ -32,5 +33,13 @@ export const uploadCoverImage = (formData: FormData) => {
         actionFn: async () => await uploadCoverImageController({ image }),
         successTitle: "Cover Image Uploaded Success",
         failureTitle: "Cover Image Uploaded Failed",
+    });
+};
+export const changeProfileImage = (formData: FormData) => {
+    const image = formData.get("image") as File | null;
+    return executeAction({
+        actionFn: async () => await uploadProfilePictureController({ image }),
+        successTitle: "Profile Picture Uploaded Success",
+        failureTitle: "Profile Picture Uploaded Failed",
     });
 };

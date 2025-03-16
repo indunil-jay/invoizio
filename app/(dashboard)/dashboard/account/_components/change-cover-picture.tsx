@@ -35,6 +35,9 @@ export const ChangeCoverPicture = () => {
     const { toast } = useShowToast();
     const router = useRouter();
     const currentUser = useUserStore((state) => state.user);
+    const updateUserProperty = useUserStore(
+        (state) => state.updateUserProperty
+    );
 
     const onSubmit = async (
         values: z.infer<typeof changeCoverPhotoFormSchema>
@@ -55,6 +58,7 @@ export const ChangeCoverPicture = () => {
 
         toast(response);
         if (response.status) {
+            updateUserProperty("userCoverImages", response.data!);
             form.reset();
             router.refresh();
         }
@@ -64,7 +68,7 @@ export const ChangeCoverPicture = () => {
         <div
             className={cn(
                 "w-full bg-neutral-100 h-44 relative",
-                form.formState.isSubmitting && "opacity-50"
+                form.formState.isSubmitting && "opacity-50 pointer-events-none"
             )}
         >
             <Form {...form}>

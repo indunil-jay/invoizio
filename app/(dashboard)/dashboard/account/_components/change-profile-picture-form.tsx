@@ -1,3 +1,11 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { Camera, Save, Trash } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import {
     Avatar,
     AvatarFallback,
@@ -12,28 +20,16 @@ import {
     TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
 import { fallbackUsername } from "@/app/stores/fallback-username";
-import { User } from "@/app/stores/user-store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, Save, Trash } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useImageUpload } from "../_hooks/use-image-upload";
+import { User, useUserStore } from "@/app/stores/user-store";
+import { useImageUpload } from "@/app/(dashboard)/dashboard/account/_hooks/use-image-upload";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
-import { useRouter } from "next/navigation";
+import { changeProfilePictureFormSchema } from "@/shared/validation-schemas/account/change-profile-picture-form-schema";
+import { changeProfileImage } from "../actions";
+import { cn } from "@/app/_lib/tailwind-css/utils";
 
 interface updateProfilePictureProps {
     user: User;
 }
-
-export const changeProfilePictureFormSchema = z.object({
-    image: z.union([
-        z.instanceof(File),
-        z
-            .string()
-            .nullable()
-            .transform((val) => val || undefined),
-    ]),
-});
 
 export const ChangeProfilePicture = ({ user }: updateProfilePictureProps) => {
     const form = useForm<z.infer<typeof changeProfilePictureFormSchema>>({
@@ -47,7 +43,9 @@ export const ChangeProfilePicture = ({ user }: updateProfilePictureProps) => {
 
     const { toast } = useShowToast();
     const router = useRouter();
-
+    const updateUserProperty = useUserStore(
+        (state) => state.updateUserProperty
+    );
     const onSubmit = async (
         values: z.infer<typeof changeProfilePictureFormSchema>
     ) => {
@@ -63,17 +61,25 @@ export const ChangeProfilePicture = ({ user }: updateProfilePictureProps) => {
         const formData = new FormData();
         formData.append("image", values.image);
 
-        // const response = await uploadCoverImage(formData);
+        const response = await changeProfileImage(formData);
 
-        // toast(response);
-        // if (response.status) {
-        //     form.reset();
-        //     router.refresh();
-        // }
+        toast(response);
+        if (response.status) {
+            updateUserProperty("image", response.data!.url);
+            form.reset();
+            router.refresh();
+        }
     };
     return (
         <Form {...form}>
-            <form className="relative" onSubmit={form.handleSubmit(onSubmit)}>
+            <form
+                className={cn(
+                    "relative",
+                    form.formState.isSubmitting &&
+                        "opacity-80 pointer-events-none"
+                )}
+                onSubmit={form.handleSubmit(onSubmit)}
+            >
                 <FormField
                     control={form.control}
                     name="image"

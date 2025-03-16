@@ -1,32 +1,33 @@
 import { Readable } from "stream";
 import { getInjection } from "@/di/container";
-import { uploadCoverImageDto } from "@/src/iam/application/dto/upload-cover-image.dto";
 import {
     ICloudinaryService,
     IUploadedImageReturnType,
 } from "@/src/shared/cloudinary/cloudinary.service.interface";
 import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
-import { IUserCoverImageRepository } from "@/src/iam/application/repositories/user-cover-image.repository";
-import { IUserCoverImageFactory } from "@/src/iam/domain/factories/user-cover-image.factory";
+import { uploadProfileImageDto } from "@/src/iam/application/dto/upload-profile-image.dto";
+import { IUserProfileImageFactory } from "../../domain/factories/user-profile-image.factory";
+import { IUserProfileImageRepository } from "../repositories/user-profile-image.repository";
 
-export const uploadCoverImageUseCase = {
-    async execute({ image }: uploadCoverImageDto) {
+export const uploadProfilePictureUseCase = {
+    async execute({ image }: uploadProfileImageDto) {
         const {
             authenticationService,
             uploadService,
-            userCoverImageFactory,
-            userCoverImageRepository,
+            userProfileImageRepository,
+            userProfileImageFactory,
+            userRepository,
         } = this.getServices();
 
         // Verify valid session
         const user = await this.verifyUserSession(authenticationService);
 
         // Remove existing cover image if it exists
-        if (user.coverImage) {
+        if (user.profileImage) {
             // Remove from DB
-            await userCoverImageRepository.remove(user.coverImage.id);
+            await userProfileImageRepository.remove(user.profileImage.id);
             // Remove from Cloudinary
-            await uploadService.deleteFile(user.coverImage.publicId);
+            await uploadService.deleteFile(user.profileImage.publicId);
         }
 
         // Upload new cover image
@@ -37,20 +38,30 @@ export const uploadCoverImageUseCase = {
         );
 
         // Create and save new cover image entry in the database
-        return await this.saveUserCoverImage(
+        const updatedUserProfileImage = await this.saveUserProfileImage(
             user.id,
             uploadResults,
-            userCoverImageFactory,
-            userCoverImageRepository
+            userProfileImageFactory,
+            userProfileImageRepository
         );
+
+        //remvoe if google image connect with user account
+        if (user.image) {
+            await userRepository.update(user.id, { image: null });
+        }
+
+        return updatedUserProfileImage;
     },
 
     getServices() {
         return {
             authenticationService: getInjection("IAuthenticationService"),
             uploadService: getInjection("ICloudinaryService"),
-            userCoverImageFactory: getInjection("IUserCoverImageFactory"),
-            userCoverImageRepository: getInjection("IUserCoverImageRepository"),
+            userProfileImageFactory: getInjection("IUserProfileImageFactory"),
+            userProfileImageRepository: getInjection(
+                "IUserProfileImageRepository"
+            ),
+            userRepository: getInjection("IUserRepository"),
         };
     },
 
@@ -68,16 +79,16 @@ export const uploadCoverImageUseCase = {
         buffer: Buffer
     ) {
         const readableStream = Readable.from(buffer);
-        return await uploadService.uploadFile(readableStream, "coverImages");
+        return await uploadService.uploadFile(readableStream, "profileImage");
     },
 
-    async saveUserCoverImage(
+    async saveUserProfileImage(
         userId: string,
         uploadResults: IUploadedImageReturnType,
-        userCoverImageFactory: IUserCoverImageFactory,
-        userCoverImageRepository: IUserCoverImageRepository
+        userProfileImageFactory: IUserProfileImageFactory,
+        userProfileImageRepository: IUserProfileImageRepository
     ) {
-        const userCoverImage = userCoverImageFactory.create(
+        const userCoverImage = userProfileImageFactory.create(
             userId,
             uploadResults.url,
             uploadResults.publicId,
@@ -85,6 +96,6 @@ export const uploadCoverImageUseCase = {
             uploadResults.type,
             uploadResults.mimeType
         );
-        return await userCoverImageRepository.insert(userCoverImage);
+        return await userProfileImageRepository.insert(userCoverImage);
     },
 };

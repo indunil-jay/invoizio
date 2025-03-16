@@ -7,10 +7,8 @@ const presenter = (user: User) => {
         name: user.name,
         email: user.email,
         emailVerified: user.emailVerified?.toISOString(),
-        image: user.image,
-        userCoverImages: user.coverImages
-            ? { url: user.coverImages.url }
-            : null,
+        image: user.image || user.profileImage?.url,
+        userCoverImages: user.coverImage ? { url: user.coverImage.url } : null,
     };
 };
 

@@ -61,9 +61,10 @@ export class UserRepository implements IUserRepository {
                 where: eq(users.email, email),
                 with: {
                     userCoverImages: true,
+                    userProfileImages: true,
                 },
             });
-            console.log({ user });
+
             if (!user) return;
 
             return UserMapper.toDomain(user);
@@ -77,9 +78,10 @@ export class UserRepository implements IUserRepository {
                 where: eq(users.id, id),
                 with: {
                     userCoverImages: true,
+                    userProfileImages: true,
                 },
             });
-            console.log({ user });
+
             if (!user) return;
 
             return UserMapper.toDomain(user);

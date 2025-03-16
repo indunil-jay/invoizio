@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
-import { UserCoverImage } from "@/src/iam/domain/user-cover-image.entity";
+import { UserProfileImage } from "@/src/iam/domain/user-profile-image.entity";
 
-export interface IUserCoverImageFactory {
+export interface IUserProfileImageFactory {
     create(
         userId: string,
         url: string,
@@ -9,11 +9,11 @@ export interface IUserCoverImageFactory {
         size: string,
         type: string,
         mimeType: string
-    ): UserCoverImage;
+    ): UserProfileImage;
 }
 
 @injectable()
-export class UserCoverImageFactory {
+export class UserProfileImageFactory {
     create(
         userId: string,
         url: string,
@@ -23,7 +23,7 @@ export class UserCoverImageFactory {
         mimeType: string
     ) {
         const id = crypto.randomUUID();
-        return new UserCoverImage(
+        return new UserProfileImage(
             id,
             userId,
             url,
