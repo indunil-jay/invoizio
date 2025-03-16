@@ -10,40 +10,67 @@ import {
     NoValidFieldsResponse,
     UserNameUpdateResponse,
 } from "@/src/iam/application/utils/response-messages/user.specific";
-import { EmailUpdatedEvent } from "../../domain/events/email-updated.event";
+import { EmailUpdatedEvent } from "@/src/iam/domain/events/email-updated.event";
+import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
+import { IAccountRepository } from "@/src/iam/application/repositories/provider-account.repository";
+import { IEventBus } from "@/src/shared/event-store/event-bus.interface";
 
 export const changeUserNameOrEmailUseCase = {
     async execute({ email, name }: changeNameOrEmailDto) {
-        const authenticationService = getInjection("IAuthenticationService");
+        const {
+            authenticationService,
+            userRepository,
+            accountRepository,
+            eventBus,
+        } = this.getServices();
         //check if valid session
         const user = await authenticationService.verifySessionUser();
 
         //when email request to change
-
         if (email) {
-            return await this.updateEmail(email, user);
+            return await this.updateEmail(
+                email,
+                user,
+                userRepository,
+                accountRepository,
+                eventBus
+            );
         }
 
         //when username request to change
         if (name) {
-            return await this.updateUserName(name, user);
+            return await this.updateUserName(name, user, userRepository);
         }
 
         return NoValidFieldsResponse();
     },
 
-    async updateUserName(name: string, user: User) {
-        const userRepository = getInjection("IUserRepository");
+    getServices() {
+        return {
+            authenticationService: getInjection("IAuthenticationService"),
+            userRepository: getInjection("IUserRepository"),
+            accountRepository: getInjection("IAccountRepository"),
+            eventBus: getInjection("IEventBus"),
+        };
+    },
+
+    async updateUserName(
+        name: string,
+        user: User,
+        userRepository: IUserRepository
+    ) {
         const updatedUser = await userRepository.update(user.id, { name });
 
         return UserNameUpdateResponse(updatedUser);
     },
 
-    async updateEmail(email: string, user: User) {
-        const userRepository = getInjection("IUserRepository");
-        const accountRepository = getInjection("IAccountRepository");
-        const eventBus = getInjection("IEventBus");
-
+    async updateEmail(
+        email: string,
+        user: User,
+        userRepository: IUserRepository,
+        accountRepository: IAccountRepository,
+        eventBus: IEventBus
+    ) {
         //check send email is different than current email
         if (email === user.email) {
             throw new EmailAlreadyInUseException();
