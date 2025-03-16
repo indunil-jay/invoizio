@@ -19,6 +19,8 @@ import { updateCoverPhotoFormSchema } from "@/shared/validation-schemas/account/
 import { uploadCoverImage } from "../actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import { useUserStore } from "@/app/stores/user-store";
+import { cn } from "@/app/_lib/tailwind-css/utils";
+import { useRouter } from "next/navigation";
 
 export const UpdateCoverPhotoForm = () => {
     const form = useForm<z.infer<typeof updateCoverPhotoFormSchema>>({
@@ -31,7 +33,7 @@ export const UpdateCoverPhotoForm = () => {
         useImageUpload(form, "image");
 
     const { toast } = useShowToast();
-
+    const router = useRouter();
     const currentUser = useUserStore((state) => state.user);
 
     const onSubmit = async (
@@ -50,11 +52,21 @@ export const UpdateCoverPhotoForm = () => {
         formData.append("image", values.image);
 
         const response = await uploadCoverImage(formData);
+
         toast(response);
+        if (response.status) {
+            form.reset();
+            router.refresh();
+        }
     };
 
     return (
-        <div className="w-full bg-neutral-100 h-44 relative">
+        <div
+            className={cn(
+                "w-full bg-neutral-100 h-44 relative",
+                form.formState.isSubmitting && "opacity-50"
+            )}
+        >
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <FormField
