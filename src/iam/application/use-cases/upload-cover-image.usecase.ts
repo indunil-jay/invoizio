@@ -1,45 +1,90 @@
-import { getInjection } from "@/di/container";
-import { uploadCoverImageDto } from "../dto/upload-cover-image.dto";
 import { Readable } from "stream";
-import { IUploadedImageReturnType } from "@/src/shared/cloudinary/cloudinary.service.interface";
+import { getInjection } from "@/di/container";
+import { uploadCoverImageDto } from "@/src/iam/application/dto/upload-cover-image.dto";
+import {
+    ICloudinaryService,
+    IUploadedImageReturnType,
+} from "@/src/shared/cloudinary/cloudinary.service.interface";
+import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
+import { IUserCoverImageRepository } from "@/src/iam/application/repositories/user-cover-image.repository";
+import { IUserCoverImageFactory } from "@/src/iam/domain/factories/user-cover-image.factory";
 
 export const uploadCoverImageUseCase = {
     async execute({ image }: uploadCoverImageDto) {
-        const authenticationService = getInjection("IAuthenticationService");
-        const uploadService = getInjection("ICloudinaryService");
-        const userCoverImageFactory = getInjection("IUserCoverImageFactory");
-        const userCoverImageRepository = getInjection(
-            "IUserCoverImageRepository"
+        const {
+            authenticationService,
+            uploadService,
+            userCoverImageFactory,
+            userCoverImageRepository,
+        } = this.getServices();
+
+        // Verify valid session
+        const user = await this.verifyUserSession(authenticationService);
+
+        // Remove existing cover image if it exists
+        if (user.coverImages) {
+            // Remove from DB
+            await userCoverImageRepository.remove(user.coverImages.id);
+            // Remove from Cloudinary
+            await uploadService.deleteFile(user.coverImages.publicId);
+        }
+
+        // Upload new cover image
+        const buffer = await this.convertImageToBuffer(image);
+        const uploadResults = await this.uploadImageToCloud(
+            uploadService,
+            buffer
         );
-        //verify valid session
 
-        const user = await authenticationService.verifySessionUser();
-        //check if existsing cover image
-        //if so remove and create new
-        //if not create new
-
-        // Convert `File` to Buffer
-        const arrayBuffer = await image.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
-
-        // Convert `Buffer` to Readable Stream (if required)
-        const readableStream = Readable.from(buffer);
-
-        // Upload file
-        const uploadResults: IUploadedImageReturnType =
-            await uploadService.uploadFile(readableStream, "coverImages");
-
-        //save in db
-        const userCoverImage = userCoverImageFactory.create(
+        // Create and save new cover image entry in the database
+        await this.saveUserCoverImage(
             user.id,
+            uploadResults,
+            userCoverImageFactory,
+            userCoverImageRepository
+        );
+    },
+
+    getServices() {
+        return {
+            authenticationService: getInjection("IAuthenticationService"),
+            uploadService: getInjection("ICloudinaryService"),
+            userCoverImageFactory: getInjection("IUserCoverImageFactory"),
+            userCoverImageRepository: getInjection("IUserCoverImageRepository"),
+        };
+    },
+
+    async verifyUserSession(authenticationService: IAuthenticationService) {
+        return await authenticationService.verifySessionUser();
+    },
+
+    async convertImageToBuffer(image: File) {
+        const arrayBuffer = await image.arrayBuffer();
+        return Buffer.from(arrayBuffer);
+    },
+
+    async uploadImageToCloud(
+        uploadService: ICloudinaryService,
+        buffer: Buffer
+    ) {
+        const readableStream = Readable.from(buffer);
+        return await uploadService.uploadFile(readableStream, "coverImages");
+    },
+
+    async saveUserCoverImage(
+        userId: string,
+        uploadResults: IUploadedImageReturnType,
+        userCoverImageFactory: IUserCoverImageFactory,
+        userCoverImageRepository: IUserCoverImageRepository
+    ) {
+        const userCoverImage = userCoverImageFactory.create(
+            userId,
             uploadResults.url,
             uploadResults.publicId,
             uploadResults.size,
             uploadResults.type,
             uploadResults.mimeType
         );
-
-        console.log({ userCoverImage });
         await userCoverImageRepository.insert(userCoverImage);
     },
 };

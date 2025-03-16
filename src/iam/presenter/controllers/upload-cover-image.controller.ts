@@ -1,5 +1,5 @@
 import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
-import { uploadCoverImageUseCase } from "../../application/use-cases/upload-cover-image.usecase";
+import { uploadCoverImageUseCase } from "@/src/iam/application/use-cases/upload-cover-image.usecase";
 
 const presenter = () => {
     return {

@@ -1,6 +1,5 @@
 import { signUpFormSchema } from "@/shared/validation-schemas/auth/sign-up-form.schema";
 import { signUpUseCase } from "@/src/iam/application/use-cases/sign-up.usecase";
-
 import { User } from "@/src/iam/domain/user.entity";
 import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
 
