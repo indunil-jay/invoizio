@@ -1,11 +1,20 @@
-import { redirect } from "next/navigation";
-import { getAllBusinesses } from "./queries";
+"use client";
 
-export default async function Page() {
-    const allBusinesses = await getAllBusinesses();
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useBusinessStore } from "@/app/stores/business-store";
 
-    if (!allBusinesses || allBusinesses.length === 0) {
-        redirect(`/dashboard/business/create`);
-    }
-    redirect(`/dashboard/business/${allBusinesses[0].id}/invoices`);
+export default function Page() {
+    const router = useRouter();
+    const businesses = useBusinessStore((state) => state.businesses);
+
+    useEffect(() => {
+        if (businesses.length === 0) {
+            router.replace("/dashboard/business/create");
+        } else {
+            router.replace(`/dashboard/business/${businesses[0].id}/invoices`);
+        }
+    }, [businesses, router]);
+
+    return <div>Loading...</div>;
 }
