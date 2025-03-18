@@ -20,7 +20,7 @@ export class BusinessRepository implements IBusinessRepository {
             });
 
             if (!businessEntity) return null;
-            console.log({ businessEntity });
+
             return BusinessMapper.toDomain(businessEntity);
         } catch (error) {
             console.log("GET BUSINESS ERROR (business repository)", error);

@@ -10,7 +10,7 @@ const presenter = (data: Business) => {
         image: data.profileImage,
     };
     return {
-        success: true,
+        status: true,
         message: "The business profile has been created successfully.",
         data: JSON.parse(JSON.stringify(value)),
     };

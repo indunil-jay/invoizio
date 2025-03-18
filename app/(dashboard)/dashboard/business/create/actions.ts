@@ -8,14 +8,14 @@ export const createNewBusiness = async (formData: FormData) => {
 
     const address = {
         addressLine1: formData.get("address[addressLine1]") as string,
-        addressLine2: formData.get("address[addressLine2]") as string,
+        addressLine2: formData.get("address[addressLine2]") as string | null,
         city: formData.get("address[city]") as string,
         postalCode: formData.get("address[postalCode]") as string,
     };
     return executeAction({
         actionFn: async () =>
             await createNewBusinessController({ name, image, address }),
-        successTitle: "Business Profile Create Success",
-        failureTitle: "Business Profile Create Failed",
+        successTitle: "Business Profile Creation Success",
+        failureTitle: "Business Profile Creation Failed",
     });
 };

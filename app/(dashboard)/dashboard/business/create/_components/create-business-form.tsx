@@ -28,6 +28,8 @@ import { cn } from "@/app/_lib/tailwind-css/utils";
 import { createBusinessFormSchema } from "@/shared/validation-schemas/business/create-business-from-schema";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import { createNewBusiness } from "@/app/(dashboard)/dashboard/business/create/actions";
+import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
+import { useRouter } from "next/navigation";
 
 interface CreateBusinessFormProps {
     onCloseModal?: (value: boolean) => void;
@@ -51,7 +53,7 @@ export const CreateBusinessForm = ({
     });
 
     const { toast } = useShowToast();
-
+    const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,6 +82,10 @@ export const CreateBusinessForm = ({
 
         const response = await createNewBusiness(formData);
         toast(response);
+        if (response.status) {
+            form.reset();
+            router.push(`/dashboard/business/${response.data.id}/invoices`);
+        }
     };
 
     const businessAddress =
@@ -105,6 +111,7 @@ export const CreateBusinessForm = ({
                                     <Input
                                         placeholder="Enter business name"
                                         {...field}
+                                        disabled={form.formState.isSubmitting}
                                     />
                                 </FormControl>
 
@@ -129,7 +136,9 @@ export const CreateBusinessForm = ({
 
                                 <div
                                     className={cn(
-                                        "flex items-center h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+                                        form.formState.isSubmitting &&
+                                            "pointer-events-none opacity-50 ",
+                                        "flex items-center h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors  md:text-sm",
                                         businessAddress
                                             ? "text-primary"
                                             : "text-muted-foreground"
@@ -148,7 +157,7 @@ export const CreateBusinessForm = ({
                         <PopoverContent align="end" className="w-80 ">
                             <AddressForm
                                 fieldPrefix="address"
-                                disabled={false}
+                                disabled={form.formState.isSubmitting}
                             />
                         </PopoverContent>
                     </Popover>
@@ -187,6 +196,9 @@ export const CreateBusinessForm = ({
                                             JPG, PNG, SVG, JPEG, max 1 MB
                                         </p>
                                         <input
+                                            disabled={
+                                                form.formState.isSubmitting
+                                            }
                                             className="hidden"
                                             type="file"
                                             about=".png, .jpg, .jpeg, .svg"
@@ -195,6 +207,9 @@ export const CreateBusinessForm = ({
                                         />
                                         {field.value ? (
                                             <Button
+                                                disabled={
+                                                    form.formState.isSubmitting
+                                                }
                                                 type="button"
                                                 variant={"destructive"}
                                                 size={"sm"}
@@ -211,6 +226,9 @@ export const CreateBusinessForm = ({
                                             </Button>
                                         ) : (
                                             <Button
+                                                disabled={
+                                                    form.formState.isSubmitting
+                                                }
                                                 type="button"
                                                 variant={"secondary"}
                                                 size={"sm"}
@@ -235,16 +253,21 @@ export const CreateBusinessForm = ({
                         type="button"
                         size={"lg"}
                         variant={"secondary"}
+                        disabled={form.formState.isSubmitting}
                     >
                         Cancel
                     </Button>
-                    <Button type="submit" size={"lg"}>
+                    <Button
+                        disabled={form.formState.isSubmitting}
+                        type="submit"
+                        size={"lg"}
+                    >
                         {form.formState.isSubmitting ? (
-                            <span className="flex gap-2 items-center">
-                                <span>Creating Business </span>
-                            </span>
+                            <>
+                                Creating Business <SpinnerBtnLoading />
+                            </>
                         ) : (
-                            "Create Business"
+                            <span> Create Business </span>
                         )}
                     </Button>
                 </div>
