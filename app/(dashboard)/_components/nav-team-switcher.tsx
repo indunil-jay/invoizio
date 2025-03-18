@@ -1,4 +1,8 @@
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ChevronsUpDown, Plus } from "lucide-react";
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -21,13 +25,10 @@ import {
     AvatarImage,
 } from "@/app/_components/ui/avatar";
 import { fallbackUsername } from "@/app/stores/fallback-username";
-import { useRouter } from "next/navigation";
-import { CreateBusinessForm } from "../dashboard/business/create/_components/create-business-form";
 import { Dialog, DialogContent } from "@/app/_components/ui/dialog";
-import { Business } from "../dashboard/business/type";
-
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
-import { useState } from "react";
+import { Business } from "@/app/stores/business-store";
+import { CreateBusinessForm } from "../dashboard/business/create/_components/create-business-form";
 
 export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
     const { isMobile } = useSidebar();
@@ -37,7 +38,7 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [allBusinesses, setAllBusinesses] = useState<Business[]>(businesses);
     const [activeBusiness, setActiveBusiness] = useState<Business>(
-        allBusinesses[0]
+        businesses[0]
     );
 
     // Update active business and navigate when selecting a business
@@ -71,7 +72,7 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
                                 <Avatar className="flex aspect-square size-7 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
                                     <AvatarImage
                                         className="size-7 rounded-md"
-                                        src={activeBusiness.image || " "}
+                                        src={activeBusiness.image?.url || " "}
                                         alt={activeBusiness.name}
                                     />
                                     <AvatarFallback className="size-7 rounded-md bg-primary">
@@ -110,7 +111,10 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
                                             <Avatar className="flex aspect-square size-6 items-center justify-center rounded-sm bg-sidebar-primary text-sidebar-primary-foreground">
                                                 <AvatarImage
                                                     className="size-6 rounded-sm"
-                                                    src={business.image || " "}
+                                                    src={
+                                                        business.image?.url ||
+                                                        " "
+                                                    }
                                                     alt={business.name}
                                                 />
                                                 <AvatarFallback className="size-6 rounded-sm bg-primary">
@@ -149,7 +153,7 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
             >
                 <DialogContent className="max-w-lg w-full mx-auto">
                     <CreateBusinessForm
-                        handleBusinessCreate={handleBusinessCreate}
+                        // handleBusinessCreate={handleBusinessCreate}
                         onCloseModal={setDialogOpen}
                     />
                 </DialogContent>
