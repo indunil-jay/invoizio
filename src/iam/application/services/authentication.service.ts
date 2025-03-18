@@ -1,6 +1,6 @@
-import { signInDto } from "@/src/iam/application/dto/user.dto";
 import { Session } from "next-auth";
 import { User } from "@/src/iam/domain/user.entity";
+import { signInDto } from "../dto/sign-in.dto";
 
 export interface IAuthenticationService {
     signInWithCredentials(data: signInDto): Promise<void>;

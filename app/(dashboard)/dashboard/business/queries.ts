@@ -1,9 +1,7 @@
 "use server";
-import { executeQuery } from "@/app/_utils/execute.queries";
-import { getAllBusinessController } from "@/src/presenter/controllers/business/get-all-business.controller";
 
-export const getAllBusiness = () => {
-    return executeQuery({
-        queryFn: async () => await getAllBusinessController(),
-    });
-};
+import { executeQuery } from "@/app/_utils/execute.queries";
+import { getAllBusinessesController } from "@/src/business/presenter/controllers/get-all-businesses.controller";
+
+export const getAllBusinesses = () =>
+    executeQuery({ queryFn: async () => await getAllBusinessesController() });

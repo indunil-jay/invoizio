@@ -1,12 +1,11 @@
 import { redirect } from "next/navigation";
-
-export const dynamic = "force-dynamic";
+import { getAllBusinesses } from "./queries";
 
 export default async function Page() {
-    // const getAllBusinessArr = await getAllBusiness();
+    const allBusinesses = await getAllBusinesses();
 
-    // if (!getAllBusinessArr || getAllBusinessArr.length === 0) {
-    redirect(`/dashboard/business/create`);
-    // }
-    // redirect(`/dashboard/business/${getAllBusinessArr[0].id}`);
+    if (!allBusinesses || allBusinesses.length === 0) {
+        redirect(`/dashboard/business/create`);
+    }
+    redirect(`/dashboard/business/${allBusinesses[0].id}/invoices`);
 }

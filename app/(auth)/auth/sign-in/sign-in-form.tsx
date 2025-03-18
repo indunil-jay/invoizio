@@ -43,7 +43,7 @@ export function SignInForm() {
         toast(response);
 
         if (response.status) {
-            router.refresh();
+            router.push("/dashboard/business");
         }
     }
 

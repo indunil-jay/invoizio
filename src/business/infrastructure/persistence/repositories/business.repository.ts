@@ -9,6 +9,24 @@ import { eq } from "drizzle-orm";
 
 @injectable()
 export class BusinessRepository implements IBusinessRepository {
+    public async getAll(userId: string): Promise<Business[] | []> {
+        try {
+            const businessEntities = await db.query.businesses.findMany({
+                where: eq(businesses.userId, userId),
+                with: {
+                    image: true,
+                    address: true,
+                },
+            });
+            return businessEntities.map((businessEntity) =>
+                BusinessMapper.toDomain(businessEntity)
+            );
+        } catch (error) {
+            console.log("GET ALL BUSINESS ERROR (business repository)", error);
+            throw new DataBaseException();
+        }
+    }
+
     public async get(id: string): Promise<Business | null> {
         try {
             const businessEntity = await db.query.businesses.findFirst({
