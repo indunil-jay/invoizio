@@ -21,7 +21,7 @@ export const SidebarNavMainSkelton = () => {
         <SidebarGroup>
             <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
-                {Array.from({ length: 2 }).map((_, index) => (
+                {Array.from({ length: 3 }).map((_, index) => (
                     <Collapsible
                         key={index}
                         asChild
@@ -31,7 +31,7 @@ export const SidebarNavMainSkelton = () => {
                         <SidebarMenuItem>
                             <CollapsibleTrigger asChild>
                                 <SidebarMenuButton>
-                                    <Skeleton className="h-6 w-6 rounded-md" />
+                                    <Skeleton className="h-6 w-6 rounded-sm" />
                                     <Skeleton className="h-6 w-full rounded-md" />
 
                                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
