@@ -1,6 +1,4 @@
 import { IActivityRepository } from "@/src/application/repositories/activities-repository.interface";
-import { IBusinessAddressRepository } from "@/src/application/repositories/business-address-repository.interface";
-import { IBusinessRepository } from "@/src/application/repositories/business-repository.interface";
 import { IClientAddressRepository } from "@/src/application/repositories/client-address-repository.interface";
 import { IClientRepository } from "@/src/application/repositories/client-repository.interface";
 import { IInvoiceItemsRepository } from "@/src/application/repositories/invoice-item-repository.interface";
@@ -31,6 +29,12 @@ import { IUserCoverImageFactory } from "@/src/iam/domain/factories/user-cover-im
 import { IUserCoverImageRepository } from "@/src/iam/application/repositories/user-cover-image.repository";
 import { IUserProfileImageFactory } from "@/src/iam/domain/factories/user-profile-image.factory";
 import { IUserProfileImageRepository } from "@/src/iam/application/repositories/user-profile-image.repository";
+import { IBusinessProfileImageFactory } from "@/src/business/domain/factories/business-profile-image.factory";
+import { IBusinessProfileImageRepository } from "@/src/business/application/repositories/business-profile-image.repository";
+import { IBusinessRepository } from "@/src/business/application/repositories/business.repository";
+import { IBusinessAddressRepository } from "@/src/business/application/repositories/business-address.repository";
+import { IBusinessFactory } from "@/src/business/domain/factories/business.factory";
+import { IBusinessAddressFactory } from "@/src/business/domain/factories/business-address-factory";
 
 export const DI_SYMBOLS = {
     // Services
@@ -55,6 +59,9 @@ export const DI_SYMBOLS = {
     IActivityRepository: Symbol.for("IActivityRepository"),
     IUserCoverImageRepository: Symbol.for("IUserCoverImageRepository"),
     IUserProfileImageRepository: Symbol.for("IUserProfileImageRepository"),
+    IBusinessProfileImageRepository: Symbol.for(
+        "IBusinessProfileImageRepository"
+    ),
 
     //Handlers
     IUserSignedUpEventHandler: Symbol.for("IUserSignedUpEventHandler"),
@@ -77,6 +84,9 @@ export const DI_SYMBOLS = {
     IPasswordResetTokenFactory: Symbol.for("IPasswordResetTokenFactory"),
     IUserCoverImageFactory: Symbol.for("IUserCoverImageFactory"),
     IUserProfileImageFactory: Symbol.for("IUserProfileImageFactory"),
+    IBusinessProfileImageFactory: Symbol.for("IBusinessProfileImageFactory"),
+    IBusinessFactory: Symbol.for("IBusinessFactory"),
+    IBusinessAddressFactory: Symbol.for("IBusinessAddressFactory"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -93,15 +103,17 @@ export interface DI_RETURN_TYPES {
     IVerificationTokenRepository: IVerificationTokenRepository;
     IPasswordResetTokenRepository: IPasswordResetTokenRepository;
     IAccountRepository: IAccountRepository;
+    IUserCoverImageRepository: IUserCoverImageRepository;
+    IUserProfileImageRepository: IUserProfileImageRepository;
+    IBusinessProfileImageRepository: IBusinessProfileImageRepository;
     IBusinessRepository: IBusinessRepository;
     IBusinessAddressRepository: IBusinessAddressRepository;
+
     IClientRepository: IClientRepository;
     IClientAddressRepository: IClientAddressRepository;
     IInvoiceRepository: IInvoiceRepository;
     IInvoiceItemsRepository: IInvoiceItemsRepository;
     IActivityRepository: IActivityRepository;
-    IUserCoverImageRepository: IUserCoverImageRepository;
-    IUserProfileImageRepository: IUserProfileImageRepository;
 
     //Handlers
     IUserSignedUpEventHandler: IUserSignedUpEventHandler;
@@ -120,4 +132,7 @@ export interface DI_RETURN_TYPES {
     IUserFactory: IUserFactory;
     IUserCoverImageFactory: IUserCoverImageFactory;
     IUserProfileImageFactory: IUserProfileImageFactory;
+    IBusinessProfileImageFactory: IBusinessProfileImageFactory;
+    IBusinessFactory: IBusinessFactory;
+    IBusinessAddressFactory: IBusinessAddressFactory;
 }

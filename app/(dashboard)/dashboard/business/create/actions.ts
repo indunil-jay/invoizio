@@ -1,15 +1,21 @@
 "use server";
 import { executeAction } from "@/app/_utils/execute.action";
-import { createNewBusinessController } from "@/src/presenter/controllers/business/create-new-business.controller";
-import { createBusinessFormSchema } from "../_components/create-business-form";
-import { z } from "zod";
+import { createNewBusinessController } from "@/src/business/presenter/controllers/create-new-business.controller";
 
-export const createNewBusiness = (
-    values: z.infer<typeof createBusinessFormSchema>
-) => {
+export const createNewBusiness = async (formData: FormData) => {
+    const name = formData.get("name") as string;
+    const image = formData.get("image") as File | null;
+
+    const address = {
+        addressLine1: formData.get("address[addressLine1]") as string,
+        addressLine2: formData.get("address[addressLine2]") as string,
+        city: formData.get("address[city]") as string,
+        postalCode: formData.get("address[postalCode]") as string,
+    };
     return executeAction({
-        actionFn: async () => await createNewBusinessController(values),
-        title: "Create New Business",
-        redirectUrl: "/",
+        actionFn: async () =>
+            await createNewBusinessController({ name, image, address }),
+        successTitle: "Business Profile Create Success",
+        failureTitle: "Business Profile Create Failed",
     });
 };

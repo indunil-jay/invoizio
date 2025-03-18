@@ -1,21 +1,16 @@
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import {
     users,
-    invoices,
     businessAddresses,
-    activities,
+    businessProfileImages,
 } from "@/drizzle/schemas";
 import { InferSelectModel, relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const businesses = pgTable("business", {
-    id: text("id")
-        .primaryKey()
-        .notNull()
-        .$defaultFn(() => crypto.randomUUID()),
+    id: text("id").primaryKey().notNull(),
     name: text("name").notNull(),
-    image: text("image"),
     userId: text("userId")
         .notNull()
         .references(() => users.id, { onDelete: "cascade" }),
@@ -41,26 +36,25 @@ export const defineBusinessRelations = relations(
             fields: [businesses.id],
             references: [businessAddresses.businessId],
         }),
-        invoices: many(invoices),
-        business: many(activities),
+
+        //one business has one image
+        image: one(businessProfileImages, {
+            fields: [businesses.id],
+            references: [businessProfileImages.businessId],
+        }),
     })
 );
 
 export const businessSchema = createInsertSchema(businesses, {
+    id: (schema) => schema.min(1),
     name: (schema) => schema.min(1),
     userId: (schema) => schema.min(1),
 }).pick({
+    id: true,
     name: true,
     userId: true,
-    image: true,
 });
 
-export type InsertBusinessSchema = z.infer<typeof businessSchema>;
-export type UpdateBusinessSchema = Partial<z.infer<typeof businessSchema>>;
+export type CreateBusiness = z.infer<typeof businessSchema>;
 
-export type BusinessCollectionDocument = InferSelectModel<typeof businesses>;
-
-export type BusinessCollectionWithAddressDocument =
-    BusinessCollectionDocument & {
-        address: InferSelectModel<typeof businessAddresses>;
-    };
+export type BusinessEntity = InferSelectModel<typeof businesses>;

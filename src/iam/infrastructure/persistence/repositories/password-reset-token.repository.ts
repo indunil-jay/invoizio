@@ -6,7 +6,7 @@ import { passwordResetTokens } from "@/drizzle/schemas";
 import { IPasswordResetTokenRepository } from "@/src/iam/application/repositories/password-reset-token.repository";
 import { PasswordResetToken } from "@/src/iam/domain/password-reset-token.entity";
 import { PasswordResetTokenMapper } from "@/src/iam/infrastructure/persistence/mappers/password-reset-token.mapper";
-import { DataBaseException } from "@/src/iam/infrastructure/exceptions/common.exceptions";
+import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
 
 @injectable()
 export class PasswordResetTokenRepository

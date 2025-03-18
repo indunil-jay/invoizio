@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import { eq } from "drizzle-orm";
 import { db } from "@/drizzle";
 
-import { DataBaseException } from "@/src/iam/infrastructure/exceptions/common.exceptions";
+import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
 import { userProfileImages } from "@/drizzle/schemas";
 import { UserCoverImageMapper } from "@/src/iam/infrastructure/persistence/mappers/user-cover-image.mapper";
 import { IUserProfileImageRepository } from "@/src/iam/application/repositories/user-profile-image.repository";

@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/drizzle";
 import { IUserCoverImageRepository } from "@/src/iam/application/repositories/user-cover-image.repository";
 import { UserCoverImage } from "@/src/iam/domain/user-cover-image.entity";
-import { DataBaseException } from "@/src/iam/infrastructure/exceptions/common.exceptions";
+import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
 import { userCoverImages } from "@/drizzle/schemas";
 import { UserCoverImageMapper } from "@/src/iam/infrastructure/persistence/mappers/user-cover-image.mapper";
 

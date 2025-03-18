@@ -35,6 +35,10 @@ import { UserCoverImageFactoryModule } from "./modules/factrories/user-cover-ima
 import { UserCoverImageRepositoryModule } from "./modules/repositories/user-cover-image-repository.module";
 import { UserProfileImageFactoryModule } from "./modules/factrories/user-profile-image-factory.module";
 import { UserProfileImageRepositoryModule } from "./modules/repositories/user-profile-image-repository.module";
+import { BusinessProfileImageFactoryModule } from "./modules/factrories/business-profile-image-factory.module";
+import { BusinessProfileImageRepositoryModule } from "./modules/repositories/business-profile-image-repository.module";
+import { BusinessFactoryModule } from "./modules/factrories/business-factory.module";
+import { BusinessAddressFactoryModule } from "./modules/factrories/business-address-factory.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -50,6 +54,9 @@ export const initializeContainer = () => {
     ApplicationContainer.load(PasswordResetTokenFactoryModule);
     ApplicationContainer.load(UserCoverImageFactoryModule);
     ApplicationContainer.load(UserProfileImageFactoryModule);
+    ApplicationContainer.load(BusinessProfileImageFactoryModule);
+    ApplicationContainer.load(BusinessFactoryModule);
+    ApplicationContainer.load(BusinessAddressFactoryModule);
 
     //handlers
     ApplicationContainer.load(UserSignedUpEventHandlerModule);
@@ -81,6 +88,7 @@ export const initializeContainer = () => {
     ApplicationContainer.load(ActivityRepositoryModule);
     ApplicationContainer.load(UserCoverImageRepositoryModule);
     ApplicationContainer.load(UserProfileImageRepositoryModule);
+    ApplicationContainer.load(BusinessProfileImageRepositoryModule);
 
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     require("@/src/shared/event-store/event-subscribers");
@@ -96,6 +104,9 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(PasswordResetTokenFactoryModule);
     ApplicationContainer.unload(UserCoverImageFactoryModule);
     ApplicationContainer.unload(UserProfileImageFactoryModule);
+    ApplicationContainer.unload(BusinessProfileImageFactoryModule);
+    ApplicationContainer.unload(BusinessFactoryModule);
+    ApplicationContainer.unload(BusinessAddressFactoryModule);
 
     //handlers
     ApplicationContainer.unload(UserSignedUpEventHandlerModule);
@@ -127,6 +138,7 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(ActivityRepositoryModule);
     ApplicationContainer.unload(UserCoverImageRepositoryModule);
     ApplicationContainer.unload(UserProfileImageRepositoryModule);
+    ApplicationContainer.unload(BusinessProfileImageRepositoryModule);
 };
 initializeContainer();
 

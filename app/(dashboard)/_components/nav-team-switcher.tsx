@@ -22,7 +22,7 @@ import {
 } from "@/app/_components/ui/avatar";
 import { fallbackUsername } from "@/app/stores/fallback-username";
 import { useRouter } from "next/navigation";
-import { CreateBusinessForm } from "../dashboard/business/_components/create-business-form";
+import { CreateBusinessForm } from "../dashboard/business/create/_components/create-business-form";
 import { Dialog, DialogContent } from "@/app/_components/ui/dialog";
 import { Business } from "../dashboard/business/type";
 

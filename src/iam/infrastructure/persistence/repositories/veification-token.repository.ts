@@ -5,7 +5,7 @@ import { verificationTokens } from "@/drizzle/schemas";
 import { IVerificationTokenRepository } from "@/src/iam/application/repositories/verification-token.repository";
 import { VerificationToken } from "@/src/iam/domain/verification-token.entity";
 import { VeirificationTokenMapper } from "@/src/iam/infrastructure/persistence/mappers/verification-token.mapper";
-import { DataBaseException } from "@/src/iam/infrastructure/exceptions/common.exceptions";
+import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
 
 @injectable()
 export class VerificationTokenRepository

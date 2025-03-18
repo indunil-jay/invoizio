@@ -3,7 +3,7 @@ import { accounts, AccountsEntity } from "@/drizzle/schemas/account";
 import { IAccountRepository } from "@/src/application/repositories/account-repository.interface";
 import { eq } from "drizzle-orm";
 import { injectable } from "inversify";
-import { DataBaseException } from "../../exceptions/common.exceptions";
+import { DataBaseException } from "../../../../shared/infrastructure/exceptions/common.exceptions";
 
 @injectable()
 export class AccountRepository implements IAccountRepository {

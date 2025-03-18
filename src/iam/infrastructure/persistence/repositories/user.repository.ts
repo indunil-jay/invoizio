@@ -4,7 +4,7 @@ import { db, Transaction } from "@/drizzle";
 import { users } from "@/drizzle/schemas";
 
 import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
-import { DataBaseException } from "@/src/iam/infrastructure/exceptions/common.exceptions";
+import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
 import { User } from "@/src/iam/domain/user.entity";
 import { UserMapper } from "@/src/iam/infrastructure/persistence/mappers/user.mapper";
 import { DatabaseUserUpdateException } from "@/src/iam/infrastructure/exceptions/specific.exceptions";

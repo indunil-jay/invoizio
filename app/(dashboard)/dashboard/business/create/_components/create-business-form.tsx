@@ -1,4 +1,12 @@
 "use client";
+
+import { useRef } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import Image from "next/image";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { ImageIcon } from "lucide-react";
+
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -8,74 +16,24 @@ import {
     FormLabel,
     FormMessage,
 } from "@/app/_components/ui/form";
-import { Input } from "@/app/_components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ImageIcon } from "lucide-react";
-import Image from "next/image";
-import { useRef } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { z } from "zod";
-import { createNewBusiness } from "../create/actions";
-import { toast } from "@/app/_hooks/use-toast";
-import { useRouter } from "next/navigation";
-import { Business } from "../type";
-import { AddressForm } from "./address-form";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/app/_components/ui/popover";
+import { Input } from "@/app/_components/ui/input";
+import { AddressForm } from "@/app/(dashboard)/dashboard/business/_components/address-form";
 import { Label } from "@/app/_components/ui/label";
 import { cn } from "@/app/_lib/tailwind-css/utils";
-
-export const createBusinessFormSchema = z.object({
-    name: z
-        .string()
-        .trim()
-        .min(1, { message: "Business name is required." })
-        .min(3, {
-            message: "Business name must be at least 3 characters long.",
-        }),
-    image: z.union([
-        z.instanceof(File, {
-            message: "Uploaded file must be a valid image file.",
-        }),
-        z
-            .string()
-            .transform((value) => (value === "" ? undefined : value))
-            .optional()
-            .refine(
-                (value) => value === undefined || value.startsWith("http"),
-                {
-                    message: "Image URL must be valid or empty.",
-                }
-            ),
-    ]),
-    address: z.object({
-        addressLine1: z
-            .string()
-            .min(1, { message: "Address Line 1 is required." }),
-        addressLine2: z.string().optional(),
-        city: z
-            .string()
-            .min(1, { message: "City is required." })
-            .max(100, { message: "City must be 100 characters or less." }),
-        postalCode: z
-            .string()
-            .min(1, { message: "postalCode is required." })
-            .refine((val) => (val ? /^\d{5,6}$/.test(val.toString()) : true), {
-                message: "Postal code must be a valid 5-6 digit number.",
-            }),
-    }),
-});
+import { createBusinessFormSchema } from "@/shared/validation-schemas/business/create-business-from-schema";
+import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
+import { createNewBusiness } from "@/app/(dashboard)/dashboard/business/create/actions";
 
 interface CreateBusinessFormProps {
-    handleBusinessCreate?: (business: Business) => void;
     onCloseModal?: (value: boolean) => void;
 }
 
 export const CreateBusinessForm = ({
-    handleBusinessCreate,
     onCloseModal,
 }: CreateBusinessFormProps) => {
     const form = useForm<z.infer<typeof createBusinessFormSchema>>({
@@ -92,8 +50,9 @@ export const CreateBusinessForm = ({
         },
     });
 
+    const { toast } = useShowToast();
+
     const inputRef = useRef<HTMLInputElement>(null);
-    const router = useRouter();
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -106,23 +65,21 @@ export const CreateBusinessForm = ({
     const onSubmit = async (
         values: z.infer<typeof createBusinessFormSchema>
     ) => {
-        const formData = {
-            ...values,
-            image: values.image instanceof File ? values.image : undefined,
-        };
+        const formData = new FormData();
+        formData.append("name", values.name);
+
+        // Handle file upload properly
+        if (values.image instanceof File) {
+            formData.append("image", values.image);
+        }
+
+        // Convert nested address object into FormData
+        Object.entries(values.address).forEach(([key, value]) => {
+            formData.append(`address[${key}]`, value);
+        });
+
         const response = await createNewBusiness(formData);
         toast(response);
-
-        if (response.success === true && response.newBusinessDocument) {
-            router.push(
-                `/dashboard/business/${response.newBusinessDocument.id}/invoices`
-            );
-            if (typeof handleBusinessCreate === "function") {
-                handleBusinessCreate(response.newBusinessDocument);
-            } else {
-                console.error("onCreate is not a function");
-            }
-        }
     };
 
     const businessAddress =
@@ -133,6 +90,7 @@ export const CreateBusinessForm = ({
                   "address.city"
               )}, ${form.getValues("address.postalCode")}`
             : "";
+
     return (
         <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>

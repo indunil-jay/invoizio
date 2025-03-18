@@ -50,3 +50,8 @@ export {
     userProfileImages,
     defineUserProfileImagesRelations,
 } from "@/drizzle/schemas/user-profile-images";
+
+export {
+    defineBusniessProfileImagesRelations,
+    businessProfileImages,
+} from "@/drizzle/schemas/business-profile-images";
