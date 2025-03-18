@@ -29,6 +29,7 @@ export type BusinessState = {
 
 export type BusinessActions = {
     setBusinesses: (business: Business[] | []) => void;
+    addBusiness: (business: Business) => void;
 };
 
 export type BusinessStore = BusinessState & BusinessActions;
@@ -41,4 +42,8 @@ export const useBusinessStore = create<BusinessStore>()((set) => ({
     ...defaultInitState,
     setBusinesses: (businesses: Business[] | []) =>
         set(() => ({ businesses: businesses ? [...businesses] : [] })),
+    addBusiness: (business) =>
+        set((state) => ({
+            businesses: [...state.businesses, business],
+        })),
 }));

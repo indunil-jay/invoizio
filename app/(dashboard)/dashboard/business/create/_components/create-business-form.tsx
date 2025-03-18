@@ -30,13 +30,16 @@ import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import { createNewBusiness } from "@/app/(dashboard)/dashboard/business/create/actions";
 import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
 import { useRouter } from "next/navigation";
+import { Business, useBusinessStore } from "@/app/stores/business-store";
 
 interface CreateBusinessFormProps {
     onCloseModal?: (value: boolean) => void;
+    setActiveBusiness?: (business: Business) => void;
 }
 
 export const CreateBusinessForm = ({
     onCloseModal,
+    setActiveBusiness,
 }: CreateBusinessFormProps) => {
     const form = useForm<z.infer<typeof createBusinessFormSchema>>({
         resolver: zodResolver(createBusinessFormSchema),
@@ -55,6 +58,7 @@ export const CreateBusinessForm = ({
     const { toast } = useShowToast();
     const router = useRouter();
     const inputRef = useRef<HTMLInputElement>(null);
+    const addBusinessStore = useBusinessStore((state) => state.addBusiness);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -81,9 +85,16 @@ export const CreateBusinessForm = ({
         });
 
         const response = await createNewBusiness(formData);
+
         toast(response);
+
         if (response.status) {
             form.reset();
+            if (onCloseModal) {
+                onCloseModal(false);
+            }
+            addBusinessStore(response.data);
+            setActiveBusiness(response.data);
             router.push(`/dashboard/business/${response.data.id}/invoices`);
         }
     };

@@ -25,10 +25,14 @@ import {
     AvatarImage,
 } from "@/app/_components/ui/avatar";
 import { fallbackUsername } from "@/app/stores/fallback-username";
-import { Dialog, DialogContent } from "@/app/_components/ui/dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+} from "@/app/_components/ui/dialog";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import { Business } from "@/app/stores/business-store";
-import { CreateBusinessForm } from "../dashboard/business/create/_components/create-business-form";
+import { CreateBusinessForm } from "@/app/(dashboard)/dashboard/business/create/_components/create-business-form";
 
 export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
     const { isMobile } = useSidebar();
@@ -36,23 +40,14 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
-    const [allBusinesses, setAllBusinesses] = useState<Business[]>(businesses);
     const [activeBusiness, setActiveBusiness] = useState<Business>(
-        businesses[0]
+        businesses[businesses.length - 1]
     );
 
     // Update active business and navigate when selecting a business
     const setActiveBusinessHandler = (business: Business) => {
         setActiveBusiness(business);
         router.push(`/dashboard/business/${business.id}/invoices`);
-    };
-
-    // Handle business creation
-    const handleBusinessCreate = (newBusiness: Business) => {
-        setAllBusinesses((prevBusinesses) => [newBusiness, ...prevBusinesses]);
-        setActiveBusiness(newBusiness);
-        setDialogOpen(false);
-        setDropdownOpen(false);
     };
 
     return (
@@ -99,7 +94,7 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
                             </DropdownMenuLabel>
 
                             <ScrollArea className="h-auto max-h-60">
-                                {allBusinesses.map((business) => (
+                                {businesses.map((business) => (
                                     <DropdownMenuItem
                                         key={business.id}
                                         onClick={() =>
@@ -151,10 +146,11 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
                 open={dialogOpen && !dropdownOpen}
                 onOpenChange={setDialogOpen}
             >
+                <DialogTitle>{null}</DialogTitle>
                 <DialogContent className="max-w-lg w-full mx-auto">
                     <CreateBusinessForm
-                        // handleBusinessCreate={handleBusinessCreate}
                         onCloseModal={setDialogOpen}
+                        setActiveBusiness={setActiveBusiness}
                     />
                 </DialogContent>
             </Dialog>

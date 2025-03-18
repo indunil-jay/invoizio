@@ -5,7 +5,9 @@ import { Business } from "@/src/business/domain/business.entity";
 
 const presenter = (data: Business) => {
     const value = {
-        ...data,
+        id: data.id,
+        name: data.name,
+        userId: data.userId,
         address: data.address,
         image: data.profileImage,
     };
