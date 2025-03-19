@@ -1,7 +1,7 @@
-import { updateBusinessFormSchema } from "@/shared/validation-schemas/business/update-business-form-schema";
 import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
-import { updateBusinessUseCase } from "../../application/use-cases/update-business.usecase";
-import { Business } from "../../domain/business.entity";
+import { Business } from "@/src/business/domain/business.entity";
+import { updateBusinessFormSchema } from "@/shared/validation-schemas/business/update-business-form-schema";
+import { updateBusinessUseCase } from "@/src/business/application/use-cases/update-business.usecase";
 
 const presenter = (data: Business) => {
     const value = {
@@ -23,7 +23,9 @@ export const updateBusinessController = async (
     request: unknown
 ) => {
     const { data, error } = updateBusinessFormSchema.safeParse(request);
+
     if (error) {
+        console.log({ error });
         throw new BadRequestException();
     }
 

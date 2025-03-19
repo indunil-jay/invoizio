@@ -11,6 +11,27 @@ import { BusinessProfileImageMapper } from "@/src/business/infrastructure/persis
 export class BusinessProfileImageRepository
     implements IBusinessProfileImageRepository
 {
+    public async get(
+        businessId: string
+    ): Promise<BusinessProfileImage | undefined> {
+        try {
+            const businessProfileEntity =
+                await db.query.businessProfileImages.findFirst({
+                    where: eq(businessProfileImages.businessId, businessId),
+                });
+
+            if (!businessProfileEntity) return;
+
+            return BusinessProfileImageMapper.toDomain(businessProfileEntity);
+        } catch (error) {
+            console.log(
+                "GET BUSINESS PROFILE IMAGE ERROR (business image repository",
+                error
+            );
+            throw new DataBaseException();
+        }
+    }
+
     public async remove(id: string): Promise<void> {
         try {
             await db

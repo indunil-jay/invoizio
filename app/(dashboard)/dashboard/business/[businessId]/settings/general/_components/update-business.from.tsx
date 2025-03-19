@@ -35,7 +35,7 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
             image: business.image ? business.image.url : undefined,
             address: {
                 addressLine1: business.address.addressLine1,
-                addressLine2: business.address.addressLine2 ?? "",
+                addressLine2: business.address.addressLine2 ?? undefined,
                 city: business.address.city,
                 postalCode: business.address.postalCode,
             },
@@ -64,13 +64,18 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
         const updatedFields: z.infer<typeof updateBusinessFormSchema> = {};
 
         if (values.name !== business.name) updatedFields.name = values.name;
-        if (values.image !== business.image?.url)
-            updatedFields.image = values.image;
 
-        if (
-            JSON.stringify(values.address) !== JSON.stringify(business.address)
-        ) {
-            updatedFields.address = values.address;
+        // Check if address has actually changed
+        if (values.address) {
+            if (
+                values.address.addressLine1 !== business.address.addressLine1 ||
+                values.address.addressLine2 !==
+                    (business.address.addressLine2 ?? undefined) ||
+                values.address.city !== business.address.city ||
+                values.address.postalCode !== business.address.postalCode
+            ) {
+                updatedFields.address = values.address;
+            }
         }
 
         // If there are no updates, do not submit
@@ -79,17 +84,8 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
             return;
         }
 
-        const formData = {
-            ...updatedFields,
-            image:
-                updatedFields.image instanceof File
-                    ? updatedFields.image
-                    : undefined,
-        };
-
-        console.log({ formData });
         // Make the API call here to update the business
-        const response = await updateBusiness(business.id, formData);
+        const response = await updateBusiness(business.id, updatedFields);
         toast(response);
 
         if (response.status) {

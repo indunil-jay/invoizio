@@ -7,4 +7,5 @@ export interface IBusinessProfileImageRepository {
         tx?: Transaction
     ): Promise<BusinessProfileImage>;
     remove(id: string): Promise<void>;
+    get(businessId: string): Promise<BusinessProfileImage | undefined>;
 }
