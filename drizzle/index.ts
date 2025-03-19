@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "@/drizzle/schemas";
-import envValidationSchema from "@/lib/env-validation-schema";
+import envValidationSchema from "@/shared/lib/env-validation-schema";
 import { PgQueryResultHKT, PgTransaction } from "drizzle-orm/pg-core";
 import { ExtractTablesWithRelations } from "drizzle-orm";
 

@@ -5,7 +5,7 @@ import Credentials from "next-auth/providers/credentials";
 import { getInjection } from "@/di/container";
 import authConfig from "./auth.config";
 
-import envValidationSchema from "@/lib/env-validation-schema";
+import envValidationSchema from "@/shared/lib/env-validation-schema";
 import Google from "next-auth/providers/google";
 import { User } from "./src/iam/domain/user.entity";
 import { signInFormSchema } from "./shared/validation-schemas/auth/sign-in-form.schema";

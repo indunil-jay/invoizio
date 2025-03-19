@@ -1,7 +1,7 @@
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import config from "@/drizzle.config";
 import { connection, db } from "@/drizzle";
-import envValidationSchema from "@/lib/env-validation-schema";
+import envValidationSchema from "@/shared/lib/env-validation-schema";
 
 if (!envValidationSchema.DB_MIGRATING) {
     throw new Error(

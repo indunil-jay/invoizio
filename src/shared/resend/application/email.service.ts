@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { Resend } from "resend";
 
-import envValidationSchema from "@/lib/env-validation-schema";
+import envValidationSchema from "@/shared/lib/env-validation-schema";
 import { IEmailService } from "@/src/shared/resend/application/email.service.interface";
 import { EmailSendingException } from "@/src/shared/resend/application/specific.exceptions";
 import { User } from "@/src/iam/domain/user.entity";

@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { ICloudinaryService } from "./cloudinary.service.interface";
 import { v2 as Cloudinary } from "cloudinary";
-import envValidationSchema from "@/lib/env-validation-schema";
+import envValidationSchema from "@/shared/lib/env-validation-schema";
 import { Readable } from "stream";
 
 interface UploadedResponse {

@@ -1,6 +1,6 @@
 import { Table, getTableName, sql } from "drizzle-orm";
 import { connection, db, DB } from "@/drizzle";
-import envValidationSchema from "@/lib/env-validation-schema";
+import envValidationSchema from "@/shared/lib/env-validation-schema";
 
 import * as schema from "@/drizzle/schemas";
 import * as seeds from "@/drizzle/seeds";

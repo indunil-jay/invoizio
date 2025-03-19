@@ -1,5 +1,5 @@
 import { defineConfig } from "drizzle-kit";
-import envValidationSchema from "@/lib/env-validation-schema";
+import envValidationSchema from "@/shared/lib/env-validation-schema";
 
 export default defineConfig({
     schema: "./drizzle/schemas/index.ts",
