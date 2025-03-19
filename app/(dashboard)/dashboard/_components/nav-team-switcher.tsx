@@ -1,8 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronsUpDown, Plus } from "lucide-react";
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -31,21 +30,21 @@ import {
     DialogTitle,
 } from "@/app/_components/ui/dialog";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
-import { Business } from "@/app/stores/business-store";
+import { Business, useBusinessStore } from "@/app/stores/business-store";
 import { CreateBusinessForm } from "@/app/(dashboard)/dashboard/business/create/_components/create-business-form";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
     const { isMobile } = useSidebar();
     const router = useRouter();
-
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
-    const [activeBusiness, setActiveBusiness] = useState<Business>(
-        businesses[businesses.length - 1]
-    );
 
-    // Update active business and navigate when selecting a business
+    const setActiveBusiness = useBusinessStore(
+        (state) => state.setActiveBusiness
+    );
+    const activeBusiness = useBusinessStore((state) => state.activeBusiness);
+
     const setActiveBusinessHandler = (business: Business) => {
         setActiveBusiness(business);
         router.push(`/dashboard/business/${business.id}/invoices`);
@@ -68,17 +67,19 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
                                 <Avatar className="flex aspect-square size-7 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
                                     <AvatarImage
                                         className="size-7 rounded-md"
-                                        src={activeBusiness.image?.url || " "}
-                                        alt={activeBusiness.name}
+                                        src={activeBusiness?.image?.url || " "}
+                                        alt={activeBusiness?.name || "Business"}
                                     />
                                     <AvatarFallback className="size-7 rounded-md bg-primary">
-                                        {fallbackUsername(activeBusiness.name)}
+                                        {fallbackUsername(
+                                            activeBusiness?.name || "UN"
+                                        )}
                                     </AvatarFallback>
                                 </Avatar>
-
                                 <div className="grid flex-1 text-left text-sm leading-tight">
                                     <span className="truncate font-semibold">
-                                        {activeBusiness.name}
+                                        {activeBusiness?.name ||
+                                            "No Business Selected"}
                                     </span>
                                 </div>
                                 <ChevronsUpDown className="ml-auto" />

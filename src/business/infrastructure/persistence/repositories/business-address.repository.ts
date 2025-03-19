@@ -8,9 +8,27 @@ import {
 import { BusinessAddress } from "@/src/business/domain/business-address.entity";
 import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
 import { BusinessAddressMapper } from "@/src/business/infrastructure/persistence/mappers/business-address.mapper";
+import { eq } from "drizzle-orm";
 
 @injectable()
 export class BusinessAddressRepository implements IBusinessAddressRepository {
+    public async update(
+        businessId: string,
+        properties: Partial<CreateBusinessAddress>
+    ): Promise<BusinessAddress> {
+        try {
+            const [updatedBusinessEntity] = await db
+                .update(businessAddresses)
+                .set(properties)
+                .where(eq(businessAddresses.businessId, businessId))
+                .returning();
+            return BusinessAddressMapper.toDomain(updatedBusinessEntity);
+        } catch (error) {
+            console.log("UPDATE BUSINESS ADDRESS ERROR", error);
+            throw new DataBaseException();
+        }
+    }
+
     public async insert(
         data: CreateBusinessAddress,
         tx?: Transaction

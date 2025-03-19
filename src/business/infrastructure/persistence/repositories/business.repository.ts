@@ -9,6 +9,24 @@ import { eq } from "drizzle-orm";
 
 @injectable()
 export class BusinessRepository implements IBusinessRepository {
+    public async update(
+        id: string,
+        property: Partial<CreateBusiness>
+    ): Promise<Business> {
+        try {
+            const [updatedBusinessEntity] = await db
+                .update(businesses)
+                .set(property)
+                .where(eq(businesses.id, id))
+                .returning();
+
+            return BusinessMapper.toDomain(updatedBusinessEntity);
+        } catch (error) {
+            console.log("UPDATE BUSINESS ERROR (business repository)", error);
+            throw new DataBaseException();
+        }
+    }
+
     public async getAll(userId: string): Promise<Business[] | []> {
         try {
             const businessEntities = await db.query.businesses.findMany({

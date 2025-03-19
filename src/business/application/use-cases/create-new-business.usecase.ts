@@ -3,7 +3,7 @@ import { getInjection } from "@/di/container";
 import { CreateBusinessDto } from "@/src/business/application/dtos/create-new-business.dto";
 import { ICloudinaryService } from "@/src/shared/cloudinary/cloudinary.service.interface";
 import { DataBaseTransactionException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
-import { BusinessNotFoundException } from "@/src/business/application/exceptions/common.exception";
+import { BusinessNotFoundException } from "@/src/business/application/exceptions/specific.exception";
 import { ITransactionManagerService } from "@/src/shared/database-transaction/transaction-manager.service.interface";
 import { IBusinessRepository } from "@/src/business/application/repositories/business.repository";
 import { IBusinessAddressRepository } from "@/src/business/application/repositories/business-address.repository";

@@ -7,4 +7,8 @@ export interface IBusinessAddressRepository {
         data: CreateBusinessAddress,
         tx?: Transaction
     ): Promise<BusinessAddress>;
+    update(
+        businessId: string,
+        properties: Partial<CreateBusinessAddress>
+    ): Promise<BusinessAddress>;
 }

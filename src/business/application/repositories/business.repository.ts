@@ -6,4 +6,5 @@ export interface IBusinessRepository {
     insert(data: CreateBusiness, tx?: Transaction): Promise<Business>;
     get(id: string): Promise<Business | null>;
     getAll(userId: string): Promise<Business[] | []>;
+    update(id: string, property: Partial<CreateBusiness>): Promise<Business>;
 }
