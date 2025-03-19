@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
+
 import { Avatar, AvatarFallback } from "@/app/_components/ui/avatar";
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -16,12 +18,11 @@ import {
     FormMessage,
 } from "@/app/_components/ui/form";
 import { Input } from "@/app/_components/ui/input";
-import { AddressForm } from "../../../../_components/address-form";
+import { AddressForm } from "@/app/(dashboard)/dashboard/business/_components/address-form";
 import { Business, useBusinessStore } from "@/app/stores/business-store";
 import { updateBusinessFormSchema } from "@/shared/validation-schemas/business/update-business-form-schema";
-import { updateBusiness } from "../../actions";
+import { updateBusiness } from "@/app/(dashboard)/dashboard/business/[businessId]/settings/actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
-import { useRouter } from "next/navigation";
 
 interface UpdateBusinessFormProps {
     business: Business;
@@ -63,7 +64,12 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
         // Check for modified fields
         const updatedFields: z.infer<typeof updateBusinessFormSchema> = {};
 
-        if (values.name !== business.name) updatedFields.name = values.name;
+        const formData = new FormData();
+
+        if (values.name && business.name && values.name !== business.name) {
+            updatedFields.name = values.name;
+            formData.append("name", updatedFields.name);
+        }
 
         // Check if address has actually changed
         if (values.address) {
@@ -75,7 +81,13 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
                 values.address.postalCode !== business.address.postalCode
             ) {
                 updatedFields.address = values.address;
+                formData.append("address", JSON.stringify(values.address));
             }
+        }
+
+        if (values.image && values.image instanceof File) {
+            updatedFields.image = values.image;
+            formData.append("image", updatedFields.image);
         }
 
         // If there are no updates, do not submit
@@ -85,7 +97,7 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
         }
 
         // Make the API call here to update the business
-        const response = await updateBusiness(business.id, updatedFields);
+        const response = await updateBusiness(business.id, formData);
         toast(response);
 
         if (response.status) {
