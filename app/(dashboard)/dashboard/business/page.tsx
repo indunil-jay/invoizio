@@ -12,7 +12,9 @@ export default function Page() {
         if (businesses.length === 0) {
             router.replace("/dashboard/business/create");
         } else {
-            router.replace(`/dashboard/business/${businesses[0].id}/invoices`);
+            router.replace(
+                `/dashboard/business/${businesses[businesses.length - 1].id}/invoices`
+            );
         }
     }, [businesses, router]);
 

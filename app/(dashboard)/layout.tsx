@@ -4,13 +4,16 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/app/_components/ui/sidebar";
-import { AppSidebar } from "./_components/app-sidebar";
 import { DynamicBreadCumb } from "../_components/custom/dynamic-breadcumb";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import DashboardClient from "./_components/dashboard-client";
 import { getCurrentUser } from "./dashboard/account/queries";
 import { User } from "../stores/user-store";
+import { getAllBusinesses } from "./dashboard/business/queries";
+import { BusinessClient } from "./dashboard/_components/business-client";
+import { Business } from "../stores/business-store";
+import DashboardClient from "./dashboard/_components/dashboard-client";
+import { AppSidebar } from "./dashboard/_components/app-sidebar";
 
 export default async function DashboardLayout({
     children,
@@ -24,10 +27,16 @@ export default async function DashboardLayout({
     }
 
     const user = await getCurrentUser();
+    const allBusinesses = await getAllBusinesses();
+
+    if (allBusinesses.length === 0) {
+        redirect("/dashboard/business/create");
+    }
 
     return (
         <>
             <DashboardClient user={user as User} />
+            <BusinessClient businesses={allBusinesses as Business[]} />
 
             <SidebarProvider>
                 <AppSidebar />

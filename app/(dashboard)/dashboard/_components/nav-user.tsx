@@ -19,8 +19,8 @@ import {
 } from "@/app/_components/ui/sidebar";
 import { signOut } from "next-auth/react";
 import { useUserStore } from "@/app/stores/user-store";
-import { SidebarProfileAvatarSkelton } from "@/app/(dashboard)/_components/skeltons/sidebar-profile-avatar-skelton";
-import { SidebarProfileAvatar } from "@/app/(dashboard)/_components/sidebar-profile-avatar";
+import { SidebarProfileAvatarSkelton } from "@/app/(dashboard)/dashboard/_components/skeltons/sidebar-profile-avatar-skelton";
+import { SidebarProfileAvatar } from "@/app/(dashboard)/dashboard/_components/sidebar-profile-avatar";
 
 export function NavUser() {
     const { isMobile } = useSidebar();

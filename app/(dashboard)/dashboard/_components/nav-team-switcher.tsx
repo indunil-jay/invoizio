@@ -33,6 +33,7 @@ import {
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import { Business } from "@/app/stores/business-store";
 import { CreateBusinessForm } from "@/app/(dashboard)/dashboard/business/create/_components/create-business-form";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
     const { isMobile } = useSidebar();
@@ -146,7 +147,10 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
                 open={dialogOpen && !dropdownOpen}
                 onOpenChange={setDialogOpen}
             >
-                <DialogTitle>{null}</DialogTitle>
+                <VisuallyHidden>
+                    <DialogTitle>modal hidden title</DialogTitle>
+                </VisuallyHidden>
+
                 <DialogContent className="max-w-lg w-full mx-auto">
                     <CreateBusinessForm
                         onCloseModal={setDialogOpen}

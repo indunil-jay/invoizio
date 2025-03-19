@@ -90,11 +90,15 @@ export const CreateBusinessForm = ({
 
         if (response.status) {
             form.reset();
+            addBusinessStore(response.data);
             if (onCloseModal) {
                 onCloseModal(false);
             }
-            addBusinessStore(response.data);
-            setActiveBusiness(response.data);
+
+            if (setActiveBusiness) {
+                setActiveBusiness(response.data);
+            }
+
             router.push(`/dashboard/business/${response.data.id}/invoices`);
         }
     };
