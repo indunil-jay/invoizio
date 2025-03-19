@@ -34,12 +34,10 @@ import { Business, useBusinessStore } from "@/app/stores/business-store";
 
 interface CreateBusinessFormProps {
     onCloseModal?: (value: boolean) => void;
-    setActiveBusiness?: (business: Business) => void;
 }
 
 export const CreateBusinessForm = ({
     onCloseModal,
-    setActiveBusiness,
 }: CreateBusinessFormProps) => {
     const form = useForm<z.infer<typeof createBusinessFormSchema>>({
         resolver: zodResolver(createBusinessFormSchema),
@@ -93,10 +91,6 @@ export const CreateBusinessForm = ({
             addBusinessStore(response.data);
             if (onCloseModal) {
                 onCloseModal(false);
-            }
-
-            if (setActiveBusiness) {
-                setActiveBusiness(response.data);
             }
 
             router.push(`/dashboard/business/${response.data.id}/invoices`);

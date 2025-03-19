@@ -3,7 +3,7 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/app/_components/ui/avatar";
-import { fallbackUsername } from "@/app/stores/fallback-username";
+import { fallbackUsername } from "@/app/_utils/fallback-username";
 import { User } from "@/app/stores/user-store";
 
 interface SidebarProfileAvatarProps {

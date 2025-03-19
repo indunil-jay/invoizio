@@ -9,7 +9,7 @@ import {
 } from "@/app/_components/ui/card";
 import { UpdateBusinessForm } from "@/app/(dashboard)/dashboard/business/[businessId]/settings/general/_components/update-business.from";
 import { Separator } from "@/app/_components/ui/separator";
-import { DeleteBusiness } from "@/app/(dashboard)/dashboard/business/_components/delete-business";
+import { DeleteBusiness } from "@/app/(dashboard)/dashboard/business/[businessId]/settings/general/_components/delete-business";
 import { useParams } from "next/navigation";
 import { Business, useBusinessStore } from "@/app/stores/business-store";
 import { useEffect, useState } from "react";

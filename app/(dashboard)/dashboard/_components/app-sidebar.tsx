@@ -27,7 +27,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarContent>
                 {storeBusinesses.length > 0 ? (
                     <>
-                        <TeamSwitcher businesses={storeBusinesses} />
+                        <TeamSwitcher />
                         <NavMain />
                     </>
                 ) : (

@@ -7,6 +7,7 @@ import {
     DialogTitle,
 } from "@/app/_components/ui/dialog";
 import { Button } from "../ui/button";
+import SpinnerBtnLoading from "./spinner-btn-loading";
 
 export const ConfirmationModal = ({
     isOpen,
@@ -46,7 +47,14 @@ export const ConfirmationModal = ({
                             variant={"destructive"}
                             onClick={onConfirm}
                         >
-                            {confirmButtonText}
+                            {isPending ? (
+                                <>
+                                    {confirmButtonText}
+                                    <SpinnerBtnLoading />
+                                </>
+                            ) : (
+                                <span>{confirmButtonText}</span>
+                            )}
                         </Button>
                     </div>
                 </DialogFooter>

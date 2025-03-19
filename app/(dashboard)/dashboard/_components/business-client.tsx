@@ -4,7 +4,7 @@ import { Business, useBusinessStore } from "@/app/stores/business-store";
 import { useEffect } from "react";
 
 export interface BusinessClientProps {
-    businesses: Business[];
+    businesses: Business[] | [];
 }
 
 export const BusinessClient = ({ businesses }: BusinessClientProps) => {

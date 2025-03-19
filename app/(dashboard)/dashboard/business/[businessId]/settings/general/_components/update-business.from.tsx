@@ -23,6 +23,7 @@ import { Business, useBusinessStore } from "@/app/stores/business-store";
 import { updateBusinessFormSchema } from "@/shared/validation-schemas/business/update-business-form-schema";
 import { updateBusiness } from "@/app/(dashboard)/dashboard/business/[businessId]/settings/actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
+import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
 
 interface UpdateBusinessFormProps {
     business: Business;
@@ -122,6 +123,7 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
                                     <Input
                                         placeholder="Enter business name"
                                         {...field}
+                                        disabled={form.formState.isSubmitting}
                                     />
                                 </FormControl>
 
@@ -130,7 +132,10 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
                         )}
                     />
 
-                    <AddressForm fieldPrefix="address" />
+                    <AddressForm
+                        fieldPrefix="address"
+                        disabled={form.formState.isSubmitting}
+                    />
 
                     <FormField
                         control={form.control}
@@ -143,6 +148,7 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
                                             <Image
                                                 alt="workspace logo"
                                                 fill
+                                                sizes="72px"
                                                 className="object-cover"
                                                 src={
                                                     field.value instanceof File
@@ -174,6 +180,9 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
                                         />
                                         {field.value ? (
                                             <Button
+                                                disabled={
+                                                    form.formState.isSubmitting
+                                                }
                                                 type="button"
                                                 variant={"destructive"}
                                                 size={"sm"}
@@ -190,6 +199,9 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
                                             </Button>
                                         ) : (
                                             <Button
+                                                disabled={
+                                                    form.formState.isSubmitting
+                                                }
                                                 type="button"
                                                 variant={"secondary"}
                                                 size={"sm"}
@@ -209,16 +221,26 @@ export const UpdateBusinessForm = ({ business }: UpdateBusinessFormProps) => {
                 </div>
 
                 <div className="flex items-center justify-between mt-7">
-                    <Button type="button" size={"lg"} variant={"secondary"}>
+                    <Button
+                        type="button"
+                        size={"lg"}
+                        variant={"secondary"}
+                        disabled={form.formState.isSubmitting}
+                    >
                         Cancel
                     </Button>
-                    <Button type="submit" size={"lg"}>
+                    <Button
+                        type="submit"
+                        size={"lg"}
+                        disabled={form.formState.isSubmitting}
+                    >
                         {form.formState.isSubmitting ? (
                             <span className="flex gap-2 items-center">
                                 <span>Updating Business </span>
+                                <SpinnerBtnLoading />
                             </span>
                         ) : (
-                            "Update Business"
+                            <span>Update Business</span>
                         )}
                     </Button>
                 </div>

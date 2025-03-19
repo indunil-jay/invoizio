@@ -23,7 +23,7 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/app/_components/ui/avatar";
-import { fallbackUsername } from "@/app/stores/fallback-username";
+import { fallbackUsername } from "@/app/_utils/fallback-username";
 import {
     Dialog,
     DialogContent,
@@ -34,11 +34,12 @@ import { Business, useBusinessStore } from "@/app/stores/business-store";
 import { CreateBusinessForm } from "@/app/(dashboard)/dashboard/business/create/_components/create-business-form";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
-export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
+export function TeamSwitcher() {
     const { isMobile } = useSidebar();
     const router = useRouter();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const businesses = useBusinessStore((state) => state.businesses);
 
     const setActiveBusiness = useBusinessStore(
         (state) => state.setActiveBusiness
@@ -51,7 +52,7 @@ export function TeamSwitcher({ businesses }: { businesses: Business[] }) {
     };
 
     return (
-        <SidebarGroup>
+        <SidebarGroup key={businesses.length}>
             <SidebarGroupLabel>Businesses</SidebarGroupLabel>
             <SidebarMenu>
                 <SidebarMenuItem>

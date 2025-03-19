@@ -29,14 +29,14 @@ export default async function DashboardLayout({
     const user = await getCurrentUser();
     const allBusinesses = await getAllBusinesses();
 
-    if (allBusinesses.length === 0) {
-        redirect("/dashboard/business/create");
-    }
+    // if (allBusinesses.length === 0) {
+    //     redirect("/dashboard/business/create");
+    // }
 
     return (
         <>
             <DashboardClient user={user as User} />
-            <BusinessClient businesses={allBusinesses as Business[]} />
+            <BusinessClient businesses={allBusinesses as Business[] | []} />
 
             <SidebarProvider>
                 <AppSidebar />

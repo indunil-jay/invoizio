@@ -7,4 +7,5 @@ export interface IBusinessRepository {
     get(id: string): Promise<Business | null>;
     getAll(userId: string): Promise<Business[] | []>;
     update(id: string, property: Partial<CreateBusiness>): Promise<Business>;
+    remove(businessId: string): Promise<void>;
 }

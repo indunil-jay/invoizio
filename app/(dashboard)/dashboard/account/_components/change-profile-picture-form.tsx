@@ -19,7 +19,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
-import { fallbackUsername } from "@/app/stores/fallback-username";
+import { fallbackUsername } from "@/app/_utils/fallback-username";
 import { User, useUserStore } from "@/app/stores/user-store";
 import { useImageUpload } from "@/app/(dashboard)/dashboard/account/_hooks/use-image-upload";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";

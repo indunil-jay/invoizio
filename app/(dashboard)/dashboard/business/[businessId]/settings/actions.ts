@@ -1,6 +1,7 @@
 "use server";
 
 import { executeAction } from "@/app/_utils/execute.action";
+import { deleteBusinessController } from "@/src/business/presenter/controllers/delete-business.controller";
 import { updateBusinessController } from "@/src/business/presenter/controllers/update-business.controller";
 
 export const updateBusiness = (id: string, formData: FormData) => {
@@ -18,5 +19,13 @@ export const updateBusiness = (id: string, formData: FormData) => {
             }),
         successTitle: "Business Update Success",
         failureTitle: "Business Update Failture",
+    });
+};
+
+export const deleteBusiness = (id: string) => {
+    return executeAction({
+        actionFn: async () => await deleteBusinessController(id),
+        successTitle: "Business Profile Delete Success",
+        failureTitle: "Business Profile Delete Failture",
     });
 };

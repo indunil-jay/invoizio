@@ -9,6 +9,15 @@ import { eq } from "drizzle-orm";
 
 @injectable()
 export class BusinessRepository implements IBusinessRepository {
+    public async remove(businessId: string): Promise<void> {
+        try {
+            await db.delete(businesses).where(eq(businesses.id, businessId));
+        } catch (error) {
+            console.log("DELETE BUSINESS ERROR (business repository)", error);
+            throw new DataBaseException();
+        }
+    }
+
     public async update(
         id: string,
         property: Partial<CreateBusiness>
