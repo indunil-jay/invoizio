@@ -3,11 +3,12 @@
 import { useBusinessStore } from "@/app/stores/business-store";
 import { CreateInvoice } from "./create-invoice";
 import { Skeleton } from "@/app/_components/ui/skeleton";
-import { Invoice } from "../_utils/types";
+import { InvoiceTable } from "./invoice-table";
+import { InvoiceType } from "@/shared/types/invoice-response-type";
 
 interface BusinessInvoicesProps {
     businessId: string;
-    invoices: Invoice[] | [];
+    invoices: InvoiceType[] | [];
 }
 
 export const BusinessInvoices = ({
@@ -51,7 +52,7 @@ export const BusinessInvoices = ({
                     )}
                 </div>
             ) : (
-                JSON.stringify(invoices)
+                <InvoiceTable invoices={invoices} business={business} />
             )}
         </div>
     );

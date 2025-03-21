@@ -78,6 +78,13 @@
       "when": 1742195403228,
       "tag": "0010_dry_tattoo",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1742579942650,
+      "tag": "0011_groovy_boomerang",
+      "breakpoints": true
     }
   ]
 }

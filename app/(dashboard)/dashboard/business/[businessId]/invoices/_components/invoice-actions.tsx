@@ -4,27 +4,18 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
+import { Business } from "@/app/stores/business-store";
+import { InvoiceType } from "@/shared/types/invoice-response-type";
+import { AlertDialog } from "@radix-ui/react-alert-dialog";
 import { DownloadCloudIcon, MoreVertical } from "lucide-react";
 import Link from "next/link";
-import { BusinessWithAddress, InvoiceWithDetails } from "../../../type";
-import { DeleteInvoice } from "./delete-invoice";
-import { TogglePaymentStatus } from "./toggle-payment-status";
-import { SendPaymentReminder } from "./send-payment-reminder";
-import { AlertDialog } from "@/app/_components/ui/alert-dialog";
-import { User } from "@/app/(dashboard)/dashboard/account/types";
-import { UpdateInvoiceModal } from "./update-invoice-modal";
 
 interface InvoiceActionsProps {
-    invoice: InvoiceWithDetails;
-    user: User;
-    business: BusinessWithAddress;
+    invoice: InvoiceType;
+    business: Business;
 }
 
-export const InvoiceActions = ({
-    invoice,
-    user,
-    business,
-}: InvoiceActionsProps) => {
+export const InvoiceActions = ({ invoice, business }: InvoiceActionsProps) => {
     return (
         <DropdownMenu modal={false}>
             <DropdownMenuTrigger>
@@ -37,11 +28,11 @@ export const InvoiceActions = ({
                         e.preventDefault();
                     }}
                 >
-                    <UpdateInvoiceModal
+                    {/* <UpdateInvoiceModal
                         user={user}
                         business={business}
                         invoice={invoice}
-                    />
+                    /> */}
                 </DropdownMenuItem>
 
                 <DropdownMenuItem asChild>
@@ -53,19 +44,19 @@ export const InvoiceActions = ({
 
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     <AlertDialog>
-                        <SendPaymentReminder invoiceId={invoice.id} />
+                        {/* <SendPaymentReminder invoiceId={invoice.id} /> */}
                     </AlertDialog>
                 </DropdownMenuItem>
 
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     <AlertDialog>
-                        <DeleteInvoice invoiceId={invoice.id} />
+                        {/* <DeleteInvoice invoiceId={invoice.id} /> */}
                     </AlertDialog>
                 </DropdownMenuItem>
 
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     <AlertDialog>
-                        <TogglePaymentStatus invoice={invoice} />
+                        {/* <TogglePaymentStatus invoice={invoice} /> */}
                     </AlertDialog>
                 </DropdownMenuItem>
             </DropdownMenuContent>
