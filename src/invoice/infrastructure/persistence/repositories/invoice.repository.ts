@@ -9,6 +9,21 @@ import { eq } from "drizzle-orm";
 
 @injectable()
 export class InvoiceRepository implements IInvoiceRepository {
+    public async getAll(businessId: string): Promise<Invoice[] | []> {
+        try {
+            const invoiceEntities = await db.query.invoices.findMany({
+                where: eq(invoices.businessId, businessId),
+            });
+
+            return invoiceEntities.map((entity) =>
+                InvoiceMapper.toDomain(entity)
+            );
+        } catch (error) {
+            console.log("DATABASE GET ERROR (invoice repository)", error);
+            throw new BadRequestException();
+        }
+    }
+
     public async get(invoiceId: string): Promise<Invoice | null> {
         try {
             const invoiceEntity = await db.query.invoices.findFirst({

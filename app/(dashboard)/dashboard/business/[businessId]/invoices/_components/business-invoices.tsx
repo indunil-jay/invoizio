@@ -3,12 +3,17 @@
 import { useBusinessStore } from "@/app/stores/business-store";
 import { CreateInvoice } from "./create-invoice";
 import { Skeleton } from "@/app/_components/ui/skeleton";
+import { Invoice } from "../_utils/types";
 
 interface BusinessInvoicesProps {
     businessId: string;
+    invoices: Invoice[] | [];
 }
 
-export const BusinessInvoices = ({ businessId }: BusinessInvoicesProps) => {
+export const BusinessInvoices = ({
+    businessId,
+    invoices,
+}: BusinessInvoicesProps) => {
     const business = useBusinessStore((state) =>
         state.getBusinessById(businessId)
     );
@@ -33,17 +38,21 @@ export const BusinessInvoices = ({ businessId }: BusinessInvoicesProps) => {
                 </div>
             )}
 
-            <div className="flex flex-col  h-[150px] w-[300px] items-center justify-center gap-4 rounded-md border border-dashed self-center  mt-20 text-sm">
-                <p className="text-muted-foreground ">
-                    No Invoices Found Start Create One.
-                </p>
+            {invoices.length === 0 ? (
+                <div className="flex flex-col  h-[150px] w-[300px] items-center justify-center gap-4 rounded-md border border-dashed self-center  mt-20 text-sm">
+                    <p className="text-muted-foreground ">
+                        No Invoices Found Start Create One.
+                    </p>
 
-                {business ? (
-                    <CreateInvoice business={business} />
-                ) : (
-                    <Skeleton className="h-9 rounded-md w-[100px]" />
-                )}
-            </div>
+                    {business ? (
+                        <CreateInvoice business={business} />
+                    ) : (
+                        <Skeleton className="h-9 rounded-md w-[100px]" />
+                    )}
+                </div>
+            ) : (
+                JSON.stringify(invoices)
+            )}
         </div>
     );
 };
