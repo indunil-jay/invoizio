@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { addressSchema } from "@/shared/validation-schemas/common/address-schema";
 
 export const businessBaseSchema = z.object({
     name: z
@@ -25,20 +26,5 @@ export const businessBaseSchema = z.object({
             ),
     ]),
 
-    address: z.object({
-        addressLine1: z
-            .string()
-            .min(1, { message: "Address Line 1 is required." }),
-        addressLine2: z.string().optional(),
-        city: z
-            .string()
-            .min(1, { message: "City is required." })
-            .max(100, { message: "City must be 100 characters or less." }),
-        postalCode: z
-            .string()
-            .min(1, { message: "Postal code is required." })
-            .refine((val) => (val ? /^\d{5,6}$/.test(val.toString()) : true), {
-                message: "Postal code must be a valid 5-6 digit number.",
-            }),
-    }),
+    address: addressSchema,
 });

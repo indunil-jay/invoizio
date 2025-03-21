@@ -6,10 +6,10 @@ export class Invoice {
         public readonly description: string,
         public readonly issueDate: Date,
         public readonly dueDate: Date,
-        public readonly totalPrice: number,
-        public readonly totalBasePrice: number,
-        public readonly totalDiscount: number,
-        public readonly totalTax: number,
+        public readonly totalPrice: string,
+        public readonly totalBasePrice: string,
+        public readonly totalDiscount: string,
+        public readonly totalTax: string,
         public readonly statusId: number
     ) {}
 }

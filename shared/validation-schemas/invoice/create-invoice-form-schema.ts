@@ -1,17 +1,6 @@
 import { z } from "zod";
-import { createInvoiceItemFormSchema } from "./create-invoice-item-form-schema";
-
-const addressFormSchema = z.object({
-    addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
-    addressLine2: z.string().optional().nullable(),
-    city: z.string().min(1, { message: "City is required." }),
-    postalCode: z
-        .string()
-        .min(1, { message: "Postal Code is required" })
-        .refine((val) => (val ? /^\d{5,6}$/.test(val.toString()) : true), {
-            message: "Postal code must be a valid 5-6 digit number.",
-        }),
-});
+import { createInvoiceItemFormSchema } from "@/shared/validation-schemas/invoice/create-invoice-item-form-schema";
+import { addressSchema } from "@/shared/validation-schemas/common/address-schema";
 
 export const createInvoiceSchema = z.object({
     user: z.object({
@@ -23,14 +12,14 @@ export const createInvoiceSchema = z.object({
     business: z.object({
         id: z.string(),
         name: z.string(),
-        address: addressFormSchema,
+        address: addressSchema,
     }),
     client: z.object({
         name: z.string().min(1, { message: "Client name is required." }),
         email: z
             .string()
             .email({ message: "Please enter a valid client email address." }),
-        address: addressFormSchema,
+        address: addressSchema,
     }),
     invoice: z.object({
         issueDate: z.date({ message: "Issue date is required." }),

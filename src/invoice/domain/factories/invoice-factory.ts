@@ -9,10 +9,10 @@ export interface IInvoiceFactory {
         description: string,
         issueDate: Date,
         dueDate: Date,
-        totalPrice: number,
-        totalBasePrice: number,
-        totalDiscount: number,
-        totalTax: number,
+        totalPrice: string,
+        totalBasePrice: string,
+        totalDiscount: string,
+        totalTax: string,
         statusId: number
     ): Invoice;
 }
@@ -25,10 +25,10 @@ export class InvoiceFactory implements IInvoiceFactory {
         description: string,
         issueDate: Date,
         dueDate: Date,
-        totalPrice: number,
-        totalBasePrice: number,
-        totalDiscount: number,
-        totalTax: number,
+        totalPrice: string,
+        totalBasePrice: string,
+        totalDiscount: string,
+        totalTax: string,
         statusId: number
     ): Invoice {
         const id = randomUUID();

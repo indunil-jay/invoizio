@@ -1,12 +1,14 @@
-import { IInvoiceItemsRepository } from "@/src/application/repositories/invoice-item-repository.interface";
 import { ContainerModule, interfaces } from "inversify";
 import { DI_SYMBOLS } from "@/di/types";
-import { InvoiceItemsRepository } from "@/src/infastructure/repositories/invoice-item.repository";
+import { IInvoiceItemRepository } from "@/src/invoice/application/repositories/invoice-item.repository";
+import { InvoiceItemRepository } from "@/src/invoice/infrastructure/persistence/repositories/invoice-item.repository";
 
 const initializeModule = (bind: interfaces.Bind) => {
-  bind<IInvoiceItemsRepository>(DI_SYMBOLS.IInvoiceItemsRepository).to(
-    InvoiceItemsRepository
-  );
+    bind<IInvoiceItemRepository>(DI_SYMBOLS.IInvoiceItemRepository).to(
+        InvoiceItemRepository
+    );
 };
 
-export const InvoiceItemsRepositoryModule = new ContainerModule(initializeModule);
+export const InvoiceItemsRepositoryModule = new ContainerModule(
+    initializeModule
+);

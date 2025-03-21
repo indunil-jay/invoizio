@@ -1,6 +1,4 @@
 import { IActivityRepository } from "@/src/application/repositories/activities-repository.interface";
-import { IInvoiceItemsRepository } from "@/src/application/repositories/invoice-item-repository.interface";
-import { IInvoiceRepository } from "@/src/application/repositories/invoice-repository.interface";
 
 import { IUserSignedUpEventHandler } from "@/src/iam/application/handlers/user-signed-up.event-handler";
 
@@ -39,6 +37,8 @@ import { IClientRepository } from "@/src/client-user/application/repositories/cl
 import { IClientAddressRepository } from "@/src/client-user/application/repositories/client-address-repository";
 import { IInvoiceFactory } from "@/src/invoice/domain/factories/invoice-factory";
 import { IInvoiceItemFactory } from "@/src/invoice/domain/factories/invoice-item.factory";
+import { IInvoiceItemRepository } from "@/src/invoice/application/repositories/invoice-item.repository";
+import { IInvoiceRepository } from "@/src/invoice/application/repositories/invoice.repository";
 
 export const DI_SYMBOLS = {
     // Services
@@ -59,7 +59,7 @@ export const DI_SYMBOLS = {
     IClientRepository: Symbol.for("IClientRepository"),
     IClientAddressRepository: Symbol.for("IClientAddressRepository"),
     IInvoiceRepository: Symbol.for("IInvoiceRepository"),
-    IInvoiceItemsRepository: Symbol.for("IInvoiceItemsRepository"),
+    IInvoiceItemRepository: Symbol.for("IInvoiceItemRepository"),
     IActivityRepository: Symbol.for("IActivityRepository"),
     IUserCoverImageRepository: Symbol.for("IUserCoverImageRepository"),
     IUserProfileImageRepository: Symbol.for("IUserProfileImageRepository"),
@@ -120,7 +120,7 @@ export interface DI_RETURN_TYPES {
     IClientAddressRepository: IClientAddressRepository;
 
     IInvoiceRepository: IInvoiceRepository;
-    IInvoiceItemsRepository: IInvoiceItemsRepository;
+    IInvoiceItemRepository: IInvoiceItemRepository;
     IActivityRepository: IActivityRepository;
 
     //Handlers

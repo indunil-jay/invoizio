@@ -1,10 +1,11 @@
-import { createInvoiceSchema } from "@/shared/validation-schemas/invoice/create-invoice-form-schema";
+import { invoiceValidationSchema } from "@/shared/validation-schemas/invoice/invoice-validation-schema";
 import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
+import { createInvoiceUseCase } from "../../application/use-cases/create-invoice.usecase";
 
 export const createInvoiceController = async (request: unknown) => {
-    const { data, error } = createInvoiceSchema.safeParse(request);
+    const { data, error } = invoiceValidationSchema.safeParse(request);
     if (error) {
         throw new BadRequestException();
     }
-    console.log({ data });
+    await createInvoiceUseCase.execute(data);
 };

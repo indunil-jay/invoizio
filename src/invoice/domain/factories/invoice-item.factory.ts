@@ -6,10 +6,10 @@ export interface IInvoiceItemFactory {
     create(
         invoiceId: string,
         name: string,
-        price: number,
+        price: string,
         quantity: number,
-        taxRate: number,
-        discountRate: number
+        taxRate: string,
+        discountRate: string
     ): InvoiceItem;
 }
 
@@ -18,10 +18,10 @@ export class InvoiceItemFactory implements IInvoiceItemFactory {
     create(
         invoiceId: string,
         name: string,
-        price: number,
+        price: string,
         quantity: number,
-        taxRate: number,
-        discountRate: number
+        taxRate: string,
+        discountRate: string
     ): InvoiceItem {
         const id = randomUUID();
         return new InvoiceItem(
