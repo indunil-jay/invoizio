@@ -1,4 +1,6 @@
 "use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,8 +26,6 @@ import { Separator } from "@/app/_components/ui/separator";
 import { Textarea } from "@/app/_components/ui/textarea";
 import { Label } from "@/app/_components/ui/label";
 import { cn } from "@/app/_lib/tailwind-css/utils";
-
-// import { type User } from "@/app/(dashboard)/dashboard/account/types";
 import {
     createProductFormSchema,
     Product,
@@ -33,11 +33,9 @@ import {
 import { ProductsList } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/product-list";
 import { useProducts } from "../_contexts/product.context";
 import { createNewInvoice } from "../create/actions";
-import { BusinessWithAddress, InvoiceWithDetails } from "../../../type";
-// import { useShowToast } from "@/app/_hooks/custom/use-toast-message";
-import { useEffect } from "react";
 import { updateInvoice } from "../actions";
-import { useRouter } from "next/navigation";
+import { User } from "@/app/stores/user-store";
+import { Business } from "@/app/stores/business-store";
 
 const addressSchema = z.object({
     addressLine1: z.string().min(1, { message: "Address line 1 is required." }),
@@ -82,7 +80,7 @@ export const createInvoiceSchema = z.object({
 
 interface InvoiceFormProps {
     user: User;
-    business: BusinessWithAddress;
+    business: Business;
     invoiceId?: string;
     mode: "create" | "update";
     existingInvoice?: InvoiceWithDetails;
@@ -159,7 +157,6 @@ export const InvoiceForm = ({
         },
     });
 
-    //   const toast = useShowToast();
     const router = useRouter();
     useEffect(() => {
         if (existingInvoice && mode === "update") {
@@ -192,12 +189,12 @@ export const InvoiceForm = ({
             },
             invoiceItems: data.invoiceItems,
         };
-        const response =
-            mode === "create"
-                ? await createNewInvoice(obj)
-                : await updateInvoice(obj);
+        // const response =
+        //     mode === "create"
+        //         ? await createNewInvoice(obj)
+        //         : await updateInvoice(obj);
 
-        toast(response);
+        // toast(response);
         onClose?.();
         router.refresh();
     };
