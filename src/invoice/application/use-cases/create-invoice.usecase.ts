@@ -74,7 +74,7 @@ export const createInvoiceUseCase = {
         );
 
         // inset into database
-        transactionManagerService.startTransaction(async (tx) => {
+        await transactionManagerService.startTransaction(async (tx) => {
             try {
                 await clientRepository.insert(newClient, tx);
                 await clientAddressRepository.insert(newClientAddress, tx);
@@ -94,6 +94,9 @@ export const createInvoiceUseCase = {
 
         //send email to client with,creation details and PDF
         //...TODO:
+        const invoiceDoc = await invoiceRepository.get(newInvoice.id);
+        if (!invoiceDoc) throw new Error("Invoice not found");
+        return invoiceDoc;
     },
 
     getServices() {

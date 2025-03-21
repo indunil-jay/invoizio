@@ -17,7 +17,7 @@ export const invoices = pgTable("invoice", {
     id: text("id").notNull().primaryKey(),
     clientId: text("clientId")
         .notNull()
-        .references(() => clients.id),
+        .references(() => clients.id, { onDelete: "cascade" }),
     businessId: text("businessId")
         .notNull()
         .references(() => businesses.id, { onDelete: "cascade" }),
@@ -30,8 +30,8 @@ export const invoices = pgTable("invoice", {
 
     totalPrice: decimal("totalPrice").notNull(),
     totalBasePrice: decimal("totalBasePrice").notNull(),
-    totalTax: decimal("totalTax").notNull(),
-    totalDiscount: decimal("totalDiscount").notNull(),
+    totalTax: decimal("totalTax"),
+    totalDiscount: decimal("totalDiscount"),
 
     createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),

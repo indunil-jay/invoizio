@@ -27,8 +27,8 @@ export class InvoiceFactory implements IInvoiceFactory {
         dueDate: Date,
         totalPrice: string,
         totalBasePrice: string,
-        totalDiscount: string,
-        totalTax: string,
+        totalDiscount: string | null,
+        totalTax: string | null,
         statusId: number
     ): Invoice {
         const id = randomUUID();

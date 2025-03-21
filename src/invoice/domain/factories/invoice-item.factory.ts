@@ -8,8 +8,8 @@ export interface IInvoiceItemFactory {
         name: string,
         price: string,
         quantity: number,
-        taxRate: string,
-        discountRate: string
+        taxRate: string | null,
+        discountRate: string | null
     ): InvoiceItem;
 }
 

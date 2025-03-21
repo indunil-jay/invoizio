@@ -9,4 +9,6 @@ export const createInvoice = (
 ) =>
     executeAction({
         actionFn: async () => await createInvoiceController(values),
+        successTitle: "Invoice Create Successfull",
+        failureTitle: "Invoice Create Failure",
     });

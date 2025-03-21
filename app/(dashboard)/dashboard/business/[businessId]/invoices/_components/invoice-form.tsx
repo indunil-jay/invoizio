@@ -17,6 +17,8 @@ import { BillDetailsFormSection } from "./bill-details-form-section";
 import { InvoiceItemsList } from "./invoice-items-list";
 import { InvoiceItem } from "../_utils/types";
 import { createInvoice } from "../actions";
+import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
+import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
 
 interface InvoiceFormProps {
     user: User;
@@ -98,7 +100,7 @@ export const InvoiceForm = ({
                 : invoiceItems,
         },
     });
-
+    const { toast } = useShowToast();
     const router = useRouter();
 
     useEffect(() => {
@@ -133,13 +135,14 @@ export const InvoiceForm = ({
             invoiceItems: data.invoiceItems,
         };
 
-        console.log({ obj });
-        const response = mode === "create" && (await createInvoice(obj));
+        const response = await createInvoice(obj);
 
-        // toast(response);
+        toast(response);
 
         // onClose?.();
-        // router.refresh();
+        if (response.status) {
+            router.refresh();
+        }
     };
     return (
         <FormProvider {...form}>
@@ -176,13 +179,14 @@ export const InvoiceForm = ({
                         type="submit"
                         size={"lg"}
                     >
-                        {form.formState.isSubmitting
-                            ? mode === "create"
-                                ? "Creating Invoice..."
-                                : "Updating Invoice..."
-                            : mode === "create"
-                              ? "Create Invoice"
-                              : "Update Invoice"}
+                        {form.formState.isSubmitting ? (
+                            <>
+                                <span>Creating Invoice</span>
+                                <SpinnerBtnLoading />
+                            </>
+                        ) : (
+                            <span>Create Invoice</span>
+                        )}
                     </Button>
                 </div>
             </form>

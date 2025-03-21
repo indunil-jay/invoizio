@@ -52,6 +52,7 @@ export const invoiceItemsSchema = createInsertSchema(invoiceItems, {
     discountRate: (schema) =>
         schema.min(0, "Discount rate must be a non-negative number."),
 }).pick({
+    id: true,
     invoiceId: true,
     name: true,
     quantity: true,
