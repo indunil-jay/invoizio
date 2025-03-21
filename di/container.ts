@@ -23,7 +23,6 @@ import { ClientRepositoryModule } from "@/di/modules/repositories/client-reposit
 import { ClientAddressRepositoryModule } from "@/di/modules/repositories/client-address-repository.module";
 import { InvoiceRepositoryModule } from "@/di/modules/repositories/invoice-repository.module";
 import { InvoiceItemsRepositoryModule } from "@/di/modules/repositories/invoice-items-repository.module";
-import { ActivityRepositoryModule } from "@/di/modules/repositories/activity-repository.module";
 import { ResendVerifyEmailEventHandlerModule } from "@/di/modules/handlers/resend-verify-email.event-handler.module";
 import { PasswordResetTokenFactoryModule } from "./modules/factrories/password-reset-token-factory.module";
 import { SendResetPasswordEmailEventHandlerModule } from "./modules/handlers/send-reset-password-email.event-handler.module";
@@ -93,7 +92,6 @@ export const initializeContainer = () => {
     ApplicationContainer.load(ClientAddressRepositoryModule);
     ApplicationContainer.load(InvoiceRepositoryModule);
     ApplicationContainer.load(InvoiceItemsRepositoryModule);
-    ApplicationContainer.load(ActivityRepositoryModule);
     ApplicationContainer.load(UserCoverImageRepositoryModule);
     ApplicationContainer.load(UserProfileImageRepositoryModule);
     ApplicationContainer.load(BusinessProfileImageRepositoryModule);
@@ -145,7 +143,6 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(ClientAddressRepositoryModule);
     ApplicationContainer.unload(InvoiceRepositoryModule);
     ApplicationContainer.unload(InvoiceItemsRepositoryModule);
-    ApplicationContainer.unload(ActivityRepositoryModule);
     ApplicationContainer.unload(UserCoverImageRepositoryModule);
     ApplicationContainer.unload(UserProfileImageRepositoryModule);
     ApplicationContainer.unload(BusinessProfileImageRepositoryModule);

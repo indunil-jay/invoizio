@@ -1,5 +1,3 @@
-import { IActivityRepository } from "@/src/application/repositories/activities-repository.interface";
-
 import { IUserSignedUpEventHandler } from "@/src/iam/application/handlers/user-signed-up.event-handler";
 
 import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
@@ -60,7 +58,6 @@ export const DI_SYMBOLS = {
     IClientAddressRepository: Symbol.for("IClientAddressRepository"),
     IInvoiceRepository: Symbol.for("IInvoiceRepository"),
     IInvoiceItemRepository: Symbol.for("IInvoiceItemRepository"),
-    IActivityRepository: Symbol.for("IActivityRepository"),
     IUserCoverImageRepository: Symbol.for("IUserCoverImageRepository"),
     IUserProfileImageRepository: Symbol.for("IUserProfileImageRepository"),
     IBusinessProfileImageRepository: Symbol.for(
@@ -118,10 +115,8 @@ export interface DI_RETURN_TYPES {
     IBusinessAddressRepository: IBusinessAddressRepository;
     IClientRepository: IClientRepository;
     IClientAddressRepository: IClientAddressRepository;
-
     IInvoiceRepository: IInvoiceRepository;
     IInvoiceItemRepository: IInvoiceItemRepository;
-    IActivityRepository: IActivityRepository;
 
     //Handlers
     IUserSignedUpEventHandler: IUserSignedUpEventHandler;
