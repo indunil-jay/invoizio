@@ -5,10 +5,7 @@ import { z } from "zod";
 import { clientAddresses, invoices } from "@/drizzle/schemas";
 
 export const clients = pgTable("client", {
-    id: text("id")
-        .notNull()
-        .primaryKey()
-        .$defaultFn(() => crypto.randomUUID()),
+    id: text("id").notNull().primaryKey(),
     name: text("name").notNull(),
     email: text("email").notNull(),
     createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
@@ -22,21 +19,15 @@ export const defineClientRelations = relations(clients, ({ many }) => ({
 }));
 
 export const clientSchema = createInsertSchema(clients, {
+    id: (schema) => schema.min(1),
     name: (schema) => schema.min(1),
     email: (schema) => schema.min(1).email(),
 }).pick({
     name: true,
     email: true,
+    id: true,
 });
 
-export type CreateClientInput = z.infer<typeof clientSchema>;
+export type CreateClient = z.infer<typeof clientSchema>;
 
-export type ClientsCollectionDocument = InferSelectModel<typeof clients>;
-
-export type ClientsCollectionWithAddressDocument = ClientsCollectionDocument & {
-    clientAddresses: InferSelectModel<typeof clientAddresses>[];
-};
-
-export type PartialUpdateClientsCollectionDocument = Partial<
-    Omit<ClientsCollectionDocument, "id">
->;
+export type ClientEntity = InferSelectModel<typeof clients>;

@@ -1,7 +1,7 @@
-import { IClientRepository } from "@/src/application/repositories/client-repository.interface";
-import { ClientRepository } from "@/src/infastructure/repositories/client-repository";
 import { ContainerModule, interfaces } from "inversify";
-import { DI_SYMBOLS } from "../../types";
+import { DI_SYMBOLS } from "@/di/types";
+import { IClientRepository } from "@/src/client-user/application/repositories/client-repository";
+import { ClientRepository } from "@/src/client-user/infrastructure/persistance/repositories/client.repository";
 
 const initializeModule = (bind: interfaces.Bind) => {
     bind<IClientRepository>(DI_SYMBOLS.IClientRepository).to(ClientRepository);

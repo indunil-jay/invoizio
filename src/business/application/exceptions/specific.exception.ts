@@ -3,7 +3,7 @@ import { AppError } from "@/shared/utils/base.exeception";
 export class BusinessNotFoundException extends AppError {
     constructor() {
         super(
-            "The business document does not exist. Please verify the ID and try again."
+            "The specified business could not be found. Please verify the details and try again."
         );
         this.name = this.constructor.name;
     }

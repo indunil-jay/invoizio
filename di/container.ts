@@ -39,6 +39,8 @@ import { BusinessProfileImageFactoryModule } from "./modules/factrories/business
 import { BusinessProfileImageRepositoryModule } from "./modules/repositories/business-profile-image-repository.module";
 import { BusinessFactoryModule } from "./modules/factrories/business-factory.module";
 import { BusinessAddressFactoryModule } from "./modules/factrories/business-address-factory.module";
+import { ClientFactoryModule } from "./modules/factrories/client-factory.module";
+import { ClientAddressFactoryModule } from "./modules/factrories/client-address-factory.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -57,6 +59,8 @@ export const initializeContainer = () => {
     ApplicationContainer.load(BusinessProfileImageFactoryModule);
     ApplicationContainer.load(BusinessFactoryModule);
     ApplicationContainer.load(BusinessAddressFactoryModule);
+    ApplicationContainer.load(ClientFactoryModule);
+    ApplicationContainer.load(ClientAddressFactoryModule);
 
     //handlers
     ApplicationContainer.load(UserSignedUpEventHandlerModule);
@@ -107,6 +111,8 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(BusinessProfileImageFactoryModule);
     ApplicationContainer.unload(BusinessFactoryModule);
     ApplicationContainer.unload(BusinessAddressFactoryModule);
+    ApplicationContainer.unload(ClientFactoryModule);
+    ApplicationContainer.unload(ClientAddressFactoryModule);
 
     //handlers
     ApplicationContainer.unload(UserSignedUpEventHandlerModule);

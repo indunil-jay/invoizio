@@ -6,10 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Button } from "@/app/_components/ui/button";
-import {
-    useInvoiceItems,
-    useProducts,
-} from "../_contexts/invoice-items-context";
+import { useInvoiceItems } from "../_contexts/invoice-items-context";
 import { User } from "@/app/stores/user-store";
 import { Business } from "@/app/stores/business-store";
 import { createInvoiceSchema } from "@/shared/validation-schemas/invoice/create-invoice-form-schema";
@@ -19,6 +16,7 @@ import { Separator } from "@/app/_components/ui/separator";
 import { BillDetailsFormSection } from "./bill-details-form-section";
 import { InvoiceItemsList } from "./invoice-items-list";
 import { InvoiceItem } from "../_utils/types";
+import { createInvoice } from "../actions";
 
 interface InvoiceFormProps {
     user: User;
@@ -136,10 +134,7 @@ export const InvoiceForm = ({
         };
 
         console.log({ obj });
-        // const response =
-        //     mode === "create"
-        //         ? await createNewInvoice(obj)
-        //         : await updateInvoice(obj);
+        const response = mode === "create" && (await createInvoice(obj));
 
         // toast(response);
 

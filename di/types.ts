@@ -1,6 +1,4 @@
 import { IActivityRepository } from "@/src/application/repositories/activities-repository.interface";
-import { IClientAddressRepository } from "@/src/application/repositories/client-address-repository.interface";
-import { IClientRepository } from "@/src/application/repositories/client-repository.interface";
 import { IInvoiceItemsRepository } from "@/src/application/repositories/invoice-item-repository.interface";
 import { IInvoiceRepository } from "@/src/application/repositories/invoice-repository.interface";
 
@@ -35,6 +33,10 @@ import { IBusinessRepository } from "@/src/business/application/repositories/bus
 import { IBusinessAddressRepository } from "@/src/business/application/repositories/business-address.repository";
 import { IBusinessFactory } from "@/src/business/domain/factories/business.factory";
 import { IBusinessAddressFactory } from "@/src/business/domain/factories/business-address-factory";
+import { IClientFactory } from "@/src/client-user/domain/factories/client-factory";
+import { IClientAddressFactory } from "@/src/client-user/domain/factories/client-address-factory";
+import { IClientRepository } from "@/src/client-user/application/repositories/client-repository";
+import { IClientAddressRepository } from "@/src/client-user/application/repositories/client-address-repository";
 
 export const DI_SYMBOLS = {
     // Services
@@ -87,6 +89,8 @@ export const DI_SYMBOLS = {
     IBusinessProfileImageFactory: Symbol.for("IBusinessProfileImageFactory"),
     IBusinessFactory: Symbol.for("IBusinessFactory"),
     IBusinessAddressFactory: Symbol.for("IBusinessAddressFactory"),
+    IClientFactory: Symbol.for("IClientFactory"),
+    IClientAddressFactory: Symbol.for("IClientAddressFactory"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -108,9 +112,9 @@ export interface DI_RETURN_TYPES {
     IBusinessProfileImageRepository: IBusinessProfileImageRepository;
     IBusinessRepository: IBusinessRepository;
     IBusinessAddressRepository: IBusinessAddressRepository;
-
     IClientRepository: IClientRepository;
     IClientAddressRepository: IClientAddressRepository;
+
     IInvoiceRepository: IInvoiceRepository;
     IInvoiceItemsRepository: IInvoiceItemsRepository;
     IActivityRepository: IActivityRepository;
@@ -135,4 +139,6 @@ export interface DI_RETURN_TYPES {
     IBusinessProfileImageFactory: IBusinessProfileImageFactory;
     IBusinessFactory: IBusinessFactory;
     IBusinessAddressFactory: IBusinessAddressFactory;
+    IClientFactory: IClientFactory;
+    IClientAddressFactory: IClientAddressFactory;
 }
