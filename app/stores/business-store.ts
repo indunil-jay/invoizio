@@ -84,9 +84,13 @@ export const useBusinessStore = create<BusinessStore>()((set, get) => ({
             };
         }),
 
-    getBusinessById: (id: string) =>
-        get().businesses.find((business) => business.id === id),
+    getBusinessById: (id: string) => {
+        const business = get().businesses.find(
+            (business) => business.id === id
+        );
 
+        return business;
+    },
     setActiveBusiness: (business: Business | null) => {
         set({ activeBusiness: business });
     },
