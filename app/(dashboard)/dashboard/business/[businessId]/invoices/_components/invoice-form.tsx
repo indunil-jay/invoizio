@@ -14,11 +14,11 @@ import { BillFromFormSection } from "./bill-from-form-section";
 import { BillToFormSection } from "./bill-to-form-section";
 import { Separator } from "@/app/_components/ui/separator";
 import { BillDetailsFormSection } from "./bill-details-form-section";
-import { InvoiceItemsList } from "./invoice-items-list";
 import { InvoiceItem } from "../_utils/types";
 import { createInvoice } from "../actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
+import { CreateInvoiceItemsList } from "./create-invoice-items-list";
 
 interface InvoiceFormProps {
     user: User;
@@ -156,7 +156,7 @@ export const InvoiceForm = ({
 
                 <Separator />
 
-                <InvoiceItemsList
+                <CreateInvoiceItemsList
                     products={invoiceItems || form.getValues("invoiceItems")}
                     onAddProduct={handleAddProduct}
                 />

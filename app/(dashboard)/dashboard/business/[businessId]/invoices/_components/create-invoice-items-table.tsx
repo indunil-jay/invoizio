@@ -19,7 +19,7 @@ import {
 import { Separator } from "@/app/_components/ui/separator";
 import { useInvoiceItems } from "../_contexts/invoice-items-context";
 
-export const InvoiceItemsTable = () => {
+export const CreateInvoiceItemsTable = () => {
     const {
         grandTotal,
         invoiceItems,

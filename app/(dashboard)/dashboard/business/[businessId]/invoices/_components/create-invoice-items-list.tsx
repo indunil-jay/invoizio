@@ -8,10 +8,10 @@ import {
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { AddProductForm } from "./add-invoice-item-form";
-import { InvoiceItemsTable } from "./invoice-items-table";
 import { InvoiceItem } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_utils/types";
+import { CreateInvoiceItemsTable } from "./create-invoice-items-table";
 
-export const InvoiceItemsList = ({
+export const CreateInvoiceItemsList = ({
     products,
     onAddProduct,
 }: {
@@ -52,7 +52,7 @@ export const InvoiceItemsList = ({
                 </Popover>
             </div>
 
-            {products.length > 0 && <InvoiceItemsTable />}
+            {products.length > 0 && <CreateInvoiceItemsTable />}
         </>
     );
 };
