@@ -11,8 +11,15 @@ export const createInvoiceUseCase = {
         invoice,
         invoiceItems,
     }: CreateInvoiceDto) {
-        const { authenticationService, businessRepository } =
-            this.getServices();
+        const {
+            authenticationService,
+            businessRepository,
+            transactionManagerService,
+            clientAddressFactory,
+            clientFactory,
+            clientRepository,
+            clientAddressRepository,
+        } = this.getServices();
         // verify the user
         const user = await authenticationService.verifySessionUser();
 
@@ -27,11 +34,35 @@ export const createInvoiceUseCase = {
         if (!existingBusiness) {
             throw new BusinessNotFoundException();
         }
+
+        //create domain models
+        const newClient = clientFactory.create(client.name, client.email);
+        const newClientAddress = clientAddressFactory.create(
+            newClient.id,
+            client.address.addressLine1,
+            client.address.city,
+            client.address.postalCode,
+            client.address.addressLine2
+        );
+
+        // inset into database
+        transactionManagerService.startTransaction(async (tx) => {
+            await clientRepository.insert(newClient, tx);
+            await clientAddressRepository.insert(newClientAddress, tx);
+        });
     },
+
     getServices() {
         return {
             authenticationService: getInjection("IAuthenticationService"),
             businessRepository: getInjection("IBusinessRepository"),
+            transactionManagerService: getInjection(
+                "ITransactionManagerService"
+            ),
+            clientFactory: getInjection("IClientFactory"),
+            clientAddressFactory: getInjection("IClientAddressFactory"),
+            clientRepository: getInjection("IClientRepository"),
+            clientAddressRepository: getInjection("IClientAddressRepository"),
         };
     },
 };

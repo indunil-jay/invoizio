@@ -41,6 +41,8 @@ import { BusinessFactoryModule } from "./modules/factrories/business-factory.mod
 import { BusinessAddressFactoryModule } from "./modules/factrories/business-address-factory.module";
 import { ClientFactoryModule } from "./modules/factrories/client-factory.module";
 import { ClientAddressFactoryModule } from "./modules/factrories/client-address-factory.module";
+import { InvoiceItemFactoryModule } from "./modules/factrories/invoice-item-factory.module";
+import { InvoiceFactoryModule } from "./modules/factrories/invoice-factory.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -61,6 +63,8 @@ export const initializeContainer = () => {
     ApplicationContainer.load(BusinessAddressFactoryModule);
     ApplicationContainer.load(ClientFactoryModule);
     ApplicationContainer.load(ClientAddressFactoryModule);
+    ApplicationContainer.load(InvoiceFactoryModule);
+    ApplicationContainer.load(InvoiceItemFactoryModule);
 
     //handlers
     ApplicationContainer.load(UserSignedUpEventHandlerModule);

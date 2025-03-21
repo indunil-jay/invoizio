@@ -37,6 +37,8 @@ import { IClientFactory } from "@/src/client-user/domain/factories/client-factor
 import { IClientAddressFactory } from "@/src/client-user/domain/factories/client-address-factory";
 import { IClientRepository } from "@/src/client-user/application/repositories/client-repository";
 import { IClientAddressRepository } from "@/src/client-user/application/repositories/client-address-repository";
+import { IInvoiceFactory } from "@/src/invoice/domain/factories/invoice-factory";
+import { IInvoiceItemFactory } from "@/src/invoice/domain/factories/invoice-item.factory";
 
 export const DI_SYMBOLS = {
     // Services
@@ -91,6 +93,8 @@ export const DI_SYMBOLS = {
     IBusinessAddressFactory: Symbol.for("IBusinessAddressFactory"),
     IClientFactory: Symbol.for("IClientFactory"),
     IClientAddressFactory: Symbol.for("IClientAddressFactory"),
+    IInvoiceFactory: Symbol.for("IInvoiceFactory"),
+    IInvoiceItemFactory: Symbol.for("IInvoiceItemFactory"),
 };
 
 export interface DI_RETURN_TYPES {
@@ -141,4 +145,6 @@ export interface DI_RETURN_TYPES {
     IBusinessAddressFactory: IBusinessAddressFactory;
     IClientFactory: IClientFactory;
     IClientAddressFactory: IClientAddressFactory;
+    IInvoiceFactory: IInvoiceFactory;
+    IInvoiceItemFactory: IInvoiceItemFactory;
 }
