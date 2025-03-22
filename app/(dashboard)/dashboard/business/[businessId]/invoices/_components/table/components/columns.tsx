@@ -34,7 +34,6 @@ export const columns: ColumnDef<Invoice>[] = [
             />
         ),
         enableSorting: false,
-        enableHiding: false,
     },
     {
         accessorKey: "id",
@@ -47,7 +46,6 @@ export const columns: ColumnDef<Invoice>[] = [
             </div>
         ),
         enableSorting: false,
-        enableHiding: false,
     },
     {
         accessorKey: "client",
@@ -69,7 +67,6 @@ export const columns: ColumnDef<Invoice>[] = [
             );
         },
         enableSorting: false,
-        enableHiding: false,
 
         filterFn: (row, id, value) => {
             const client = row.original.client;
@@ -100,8 +97,11 @@ export const columns: ColumnDef<Invoice>[] = [
                 <div className="text-right font-medium px-4">{formatted}</div>
             );
         },
-        filterFn: (row, id, value) => {
-            return value.includes(row.getValue(id));
+        sortingFn: (rowA, rowB, columnId) => {
+            const amountA = parseFloat(rowA.getValue(columnId));
+            const amountB = parseFloat(rowB.getValue(columnId));
+
+            return amountA - amountB;
         },
     },
 
@@ -141,6 +141,12 @@ export const columns: ColumnDef<Invoice>[] = [
                 </div>
             );
         },
+        sortingFn: (rowA, rowB) => {
+            const dueDateA = new Date(rowA.original.date.dueDate).getTime();
+            const dueDateB = new Date(rowB.original.date.dueDate).getTime();
+
+            return dueDateA - dueDateB;
+        },
     },
 
     {
@@ -173,6 +179,7 @@ export const columns: ColumnDef<Invoice>[] = [
 
             return value.includes(status.label.toLowerCase());
         },
+        enableSorting: false,
     },
     {
         id: "actions",

@@ -2,13 +2,14 @@
 
 import { Table } from "@tanstack/react-table";
 import { X } from "lucide-react";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+
 import { Input } from "@/app/_components/ui/input";
-import { DataTableViewOptions } from "./data-table-view-options";
 import { Button } from "@/app/_components/ui/button";
-import { invoiceStatus } from "../data/data";
-import { CreateInvoice } from "../../create-invoice";
 import { Business } from "@/app/stores/business-store";
+import { DataTableViewOptions } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/table/components/data-table-view-options";
+import { DataTableFacetedFilter } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/table/components/data-table-faceted-filter";
+import { invoiceStatus } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/table//data/data";
+import { CreateInvoice } from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/_components/create-invoice";
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>;
