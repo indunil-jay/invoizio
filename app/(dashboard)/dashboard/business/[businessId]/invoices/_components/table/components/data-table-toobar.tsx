@@ -1,19 +1,23 @@
 "use client";
 
 import { Table } from "@tanstack/react-table";
-import { Search, X } from "lucide-react";
+import { X } from "lucide-react";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { Input } from "@/app/_components/ui/input";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { Button } from "@/app/_components/ui/button";
 import { invoiceStatus } from "../data/data";
+import { CreateInvoice } from "../../create-invoice";
+import { Business } from "@/app/stores/business-store";
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>;
+    business: Business;
 }
 
 export function DataTableToolbar<TData>({
     table,
+    business,
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -54,7 +58,10 @@ export function DataTableToolbar<TData>({
                     </Button>
                 )}
             </div>
-            <DataTableViewOptions table={table} />
+            <div className="flex gap-3 items-center">
+                <DataTableViewOptions table={table} />
+                <CreateInvoice business={business} />
+            </div>
         </div>
     );
 }

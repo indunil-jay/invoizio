@@ -1,13 +1,13 @@
 "use client";
 
-import { useBusinessStore } from "@/app/stores/business-store";
+import { Business, useBusinessStore } from "@/app/stores/business-store";
 import { CreateInvoice } from "./create-invoice";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { InvoiceType } from "@/shared/types/invoice-response-type";
 import { DataTable } from "./table/components/data-table";
 import { columns } from "./table/components/columns";
-import { tasksList } from "./table/data/tasks";
 import { Card, CardContent } from "@/app/_components/ui/card";
+import { Invoice } from "./table/data/schema";
 
 interface BusinessInvoicesProps {
     businessId: string;
@@ -71,12 +71,33 @@ export const BusinessInvoices = ({
             )}
 
             {hasInvoices && business && (
-                <Card className="my-4">
-                    <CardContent>
-                        <DataTable data={formatedInvoices} columns={columns} />
-                    </CardContent>
-                </Card>
+                <InvoiceDataTable
+                    invoices={formatedInvoices}
+                    business={business}
+                />
             )}
         </div>
+    );
+};
+
+interface InvoiceDataTableProps {
+    invoices: Invoice[];
+    business: Business;
+}
+
+export const InvoiceDataTable = ({
+    invoices,
+    business,
+}: InvoiceDataTableProps) => {
+    return (
+        <Card className="my-4">
+            <CardContent>
+                <DataTable
+                    data={invoices}
+                    columns={columns}
+                    business={business}
+                />
+            </CardContent>
+        </Card>
     );
 };

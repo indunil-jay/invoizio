@@ -139,7 +139,7 @@ export const InvoiceForm = ({
 
         toast(response);
 
-        // onClose?.();
+        onClose?.();
         if (response.status) {
             router.refresh();
         }

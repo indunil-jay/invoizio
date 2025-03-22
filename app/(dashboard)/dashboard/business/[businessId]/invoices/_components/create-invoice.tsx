@@ -35,9 +35,12 @@ export const CreateInvoice = ({ business }: CreateInvoiceProps) => {
 
     useEffect(() => {
         setInvoiceId(nanoid(16).toUpperCase());
-    }, []);
+    }, [setInvoiceId]);
 
-    const handleClose = () => setIsDialogOpen(false);
+    const handleClose = () => {
+        setIsDialogOpen(false);
+        setInvoiceId("");
+    };
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>

@@ -42,7 +42,7 @@ export const columns: ColumnDef<Invoice>[] = [
             <DataTableColumnHeader column={column} title="Invoice No" />
         ),
         cell: ({ row }) => (
-            <div className="w-[140px]">
+            <div className="w-[180px]">
                 <Badge variant={"secondary"}>#{row.getValue("id")}</Badge>
             </div>
         ),
@@ -91,8 +91,9 @@ export const columns: ColumnDef<Invoice>[] = [
         ),
         cell: ({ row }) => {
             const amount = parseFloat(row.getValue("amount"));
+
             const formatted = new Intl.NumberFormat("en-US", {
-                style: "currency",
+                style: "decimal",
                 currency: "USD",
             }).format(amount);
             return (
