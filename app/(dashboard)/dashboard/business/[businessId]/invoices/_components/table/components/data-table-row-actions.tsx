@@ -2,23 +2,16 @@
 
 import { Row } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-
-import { labels } from "../data/data";
 import { invoiceSchema } from "../data/schema";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
 import { Button } from "@/app/_components/ui/button";
+import { DeleteInvoice } from "./delete-invoice";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -27,7 +20,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
     row,
 }: DataTableRowActionsProps<TData>) {
-    // const invoice = invoiceSchema.parse(row.original);
+    const invoice = invoiceSchema.parse(row.original);
 
     return (
         <DropdownMenu>
@@ -42,28 +35,24 @@ export function DataTableRowActions<TData>({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
                 <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem>Make a copy</DropdownMenuItem>
-                <DropdownMenuItem>Favorite</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-                    <DropdownMenuSubContent>
-                        {/* <DropdownMenuRadioGroup value={task.label}>
-                            {labels.map((label) => (
-                                <DropdownMenuRadioItem
-                                    key={label.value}
-                                    value={label.value}
-                                >
-                                    {label.label}
-                                </DropdownMenuRadioItem>
-                            ))}
-                        </DropdownMenuRadioGroup> */}
-                    </DropdownMenuSubContent>
-                </DropdownMenuSub>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                    Delete
-                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                    Download
+                    {/*
+                    <Link href={`/api/invoice/${invoice.id}`} target="_blank">
+                                            <DownloadCloudIcon className="size-4 mr-2 shrink-0" />
+                                            Download Invoice
+                                        </Link> */}
+                </DropdownMenuItem>
+                <DropdownMenuItem>Send Reminder</DropdownMenuItem>
+                <DropdownMenuItem>Toggle Payments</DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                    className="focus:bg-destructive focus:text-destructive-foreground cursor-pointer"
+                    onSelect={(e) => e.preventDefault()}
+                >
+                    <DeleteInvoice invoiceId={invoice.id} />
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

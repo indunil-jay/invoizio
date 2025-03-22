@@ -5,14 +5,25 @@ import { IInvoiceRepository } from "@/src/invoice/application/repositories/invoi
 import { Invoice } from "@/src/invoice/domain/invoice.entity";
 import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
 import { InvoiceMapper } from "../mappers/invoice.mapper";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
+import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
 
 @injectable()
 export class InvoiceRepository implements IInvoiceRepository {
+    public async remove(invoiceId: string): Promise<void> {
+        try {
+            await db.delete(invoices).where(eq(invoices.id, invoiceId));
+        } catch (error) {
+            console.log("DATABASE DELETE ERROR (invoice repository)", error);
+            throw new BadRequestException();
+        }
+    }
+
     public async getAll(businessId: string): Promise<Invoice[] | []> {
         try {
             const invoiceEntities = await db.query.invoices.findMany({
                 where: eq(invoices.businessId, businessId),
+                orderBy: [desc(invoices.createdAt)],
             });
 
             return invoiceEntities.map((entity) =>
@@ -54,7 +65,7 @@ export class InvoiceRepository implements IInvoiceRepository {
             return InvoiceMapper.toDomain(insertedEntity);
         } catch (error) {
             console.log("DATABASE INSERT ERROR (invoice repository)", error);
-            throw new BadRequestException();
+            throw new DataBaseException();
         }
     }
 }
