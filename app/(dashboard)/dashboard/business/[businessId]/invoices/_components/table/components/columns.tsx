@@ -93,7 +93,7 @@ export const columns: ColumnDef<Invoice>[] = [
             const amount = parseFloat(row.getValue("amount"));
 
             const formatted = new Intl.NumberFormat("en-US", {
-                style: "decimal",
+                style: "currency",
                 currency: "USD",
             }).format(amount);
             return (

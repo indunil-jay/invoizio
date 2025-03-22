@@ -18,7 +18,7 @@ export const invoiceValidationSchema = z.object({
         address: addressSchema,
     }),
     invoice: z.object({
-        id: z.string(),
+        id: z.string().min(15, { message: "Invalid invoice ID." }),
         grandTotal: z
             .number()
             .min(0, { message: "Grand total cannot be negative." }),

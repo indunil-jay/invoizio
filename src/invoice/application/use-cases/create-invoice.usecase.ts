@@ -56,10 +56,10 @@ export const createInvoiceUseCase = {
             invoice.description,
             invoice.issueDate,
             invoice.dueDate,
-            invoice.grandTotal.toPrecision(2),
-            invoice.totalBasePrice.toPrecision(2),
-            invoice.totalDiscount.toPrecision(2),
-            invoice.totalTax.toPrecision(2),
+            invoice.grandTotal.toString(),
+            invoice.totalBasePrice.toString(),
+            invoice.totalDiscount.toString(),
+            invoice.totalTax.toString(),
             INVOICE_STATUS.PENDING
         );
 

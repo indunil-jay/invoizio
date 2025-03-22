@@ -39,7 +39,7 @@ export const CreateInvoice = ({ business }: CreateInvoiceProps) => {
 
     const handleClose = () => {
         setIsDialogOpen(false);
-        setInvoiceId("");
+        setInvoiceId(nanoid(16).toUpperCase());
     };
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
