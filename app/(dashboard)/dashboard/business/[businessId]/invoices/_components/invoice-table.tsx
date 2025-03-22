@@ -10,6 +10,7 @@ import {
 import { Business } from "@/app/stores/business-store";
 import { InvoiceType } from "@/shared/types/invoice-response-type";
 import { InvoiceActions } from "./invoice-actions";
+import { Card, CardContent } from "@/app/_components/ui/card";
 
 interface InvoiceTableProps {
     invoices: InvoiceType[];
@@ -18,42 +19,53 @@ interface InvoiceTableProps {
 
 export const InvoiceTable = ({ invoices, business }: InvoiceTableProps) => {
     return (
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead>Invoice ID</TableHead>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {!invoices ? (
-                    <TableRow>
-                        <TableCell colSpan={6} className="text-center">
-                            No Invoice data. Start creating the first one.
-                        </TableCell>
-                    </TableRow>
-                ) : (
-                    invoices.map((invoice) => (
-                        <TableRow key={invoice.id}>
-                            <TableCell>{invoice.id}</TableCell>
-                            <TableCell>{invoice.client.name}</TableCell>
-                            <TableCell>{invoice.totalPrice}</TableCell>
-                            <TableCell>{invoice.statusId}</TableCell>
-                            <TableCell>{invoice.dueDate.toString()}</TableCell>
-                            <TableCell className="text-right">
-                                <InvoiceActions
-                                    invoice={invoice}
-                                    business={business}
-                                />
-                            </TableCell>
+        <Card className="my-10">
+            <CardContent>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Invoice ID</TableHead>
+                            <TableHead>Customer</TableHead>
+                            <TableHead>Amount</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead>Date</TableHead>
+                            <TableHead className="text-right">
+                                Actions
+                            </TableHead>
                         </TableRow>
-                    ))
-                )}
-            </TableBody>
-        </Table>
+                    </TableHeader>
+                    <TableBody>
+                        {invoices.map((invoice) => (
+                            <TableRow key={invoice.id}>
+                                <TableCell className="text-left ">
+                                    <p className="text-xs bg-neutral-100 rounded-md w-fit px-2 py-[1px] uppercase">
+                                        #{invoice.id}
+                                    </p>
+                                </TableCell>
+                                <TableCell className="text-left">
+                                    {invoice.client.name}
+                                </TableCell>
+                                <TableCell className="text-left">
+                                    {invoice.totalPrice}
+                                </TableCell>
+                                <TableCell className="text-left">
+                                    {invoice.statusId}
+                                </TableCell>
+                                <TableCell className="text-left">
+                                    {invoice.dueDate.toString()}
+                                </TableCell>
+
+                                <TableCell className="text-right">
+                                    <InvoiceActions
+                                        invoice={invoice}
+                                        business={business}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </CardContent>
+        </Card>
     );
 };

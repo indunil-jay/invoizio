@@ -50,6 +50,7 @@ export const createInvoiceUseCase = {
             client.address.addressLine2
         );
         const newInvoice = invoiceFactory.create(
+            invoice.id,
             business.id,
             newClient.id,
             invoice.description,

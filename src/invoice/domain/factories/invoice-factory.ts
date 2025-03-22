@@ -4,6 +4,7 @@ import { injectable } from "inversify";
 
 export interface IInvoiceFactory {
     create(
+        id: string,
         businessId: string,
         clientId: string,
         description: string,
@@ -20,6 +21,7 @@ export interface IInvoiceFactory {
 @injectable()
 export class InvoiceFactory implements IInvoiceFactory {
     create(
+        id: string,
         businessId: string,
         clientId: string,
         description: string,
@@ -31,7 +33,6 @@ export class InvoiceFactory implements IInvoiceFactory {
         totalTax: string | null,
         statusId: number
     ): Invoice {
-        const id = randomUUID();
         return new Invoice(
             id,
             businessId,

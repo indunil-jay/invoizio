@@ -34,7 +34,7 @@ export const CreateInvoice = ({ business }: CreateInvoiceProps) => {
     const [invoiceId, setInvoiceId] = useState("");
 
     useEffect(() => {
-        setInvoiceId(nanoid().toUpperCase());
+        setInvoiceId(nanoid(16).toUpperCase());
     }, []);
 
     const handleClose = () => setIsDialogOpen(false);

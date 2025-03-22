@@ -3,12 +3,15 @@
 import { useBusinessStore } from "@/app/stores/business-store";
 import { CreateInvoice } from "./create-invoice";
 import { Skeleton } from "@/app/_components/ui/skeleton";
-import { InvoiceTable } from "./invoice-table";
 import { InvoiceType } from "@/shared/types/invoice-response-type";
+import { DataTable } from "./table/components/data-table";
+import { columns } from "./table/components/columns";
+import { tasksList } from "./table/data/tasks";
+import { Card, CardContent } from "@/app/_components/ui/card";
 
 interface BusinessInvoicesProps {
     businessId: string;
-    invoices: InvoiceType[] | [];
+    invoices: InvoiceType[];
 }
 
 export const BusinessInvoices = ({
@@ -18,9 +21,24 @@ export const BusinessInvoices = ({
     const business = useBusinessStore((state) =>
         state.getBusinessById(businessId)
     );
+    const hasInvoices = invoices.length > 0;
+
+    const formatedInvoices = invoices.map((invo) => ({
+        id: invo.id,
+        client: {
+            name: invo.client.name,
+            email: invo.client.email,
+        },
+        amount: invo.totalPrice,
+        statusId: invo.statusId,
+        date: {
+            issueDate: invo.issueDate,
+            dueDate: invo.dueDate,
+        },
+    }));
 
     return (
-        <div className="mt-4 flex flex-col ">
+        <div className="mt-4 flex flex-col">
             <h2 className="text-xl font-semibold text-neutral-800">
                 Invoice Management
             </h2>
@@ -28,31 +46,36 @@ export const BusinessInvoices = ({
             {business ? (
                 <p className="text-muted-foreground">
                     View and manage all invoices for{" "}
-                    <span className="font-medium">{business?.name}</span>{" "}
-                    business. Keep track of transactions, payments, and pending
-                    invoices efficiently.
+                    <span className="font-medium">{business.name}</span>. Keep
+                    track of transactions, payments, and pending invoices
+                    efficiently.
                 </p>
             ) : (
                 <div className="flex flex-col gap-3 mt-2">
-                    <Skeleton className="h-4 w-[70%] " />
+                    <Skeleton className="h-4 w-[70%]" />
                     <Skeleton className="h-4 w-[40%]" />
                 </div>
             )}
 
-            {invoices.length === 0 ? (
-                <div className="flex flex-col  h-[150px] w-[300px] items-center justify-center gap-4 rounded-md border border-dashed self-center  mt-20 text-sm">
-                    <p className="text-muted-foreground ">
-                        No Invoices Found Start Create One.
+            {!hasInvoices && (
+                <div className="flex flex-col h-[150px] w-[300px] items-center justify-center gap-4 rounded-md border border-dashed self-center mt-20 text-sm">
+                    <p className="text-muted-foreground">
+                        No invoices found. Start by creating one.
                     </p>
-
                     {business ? (
                         <CreateInvoice business={business} />
                     ) : (
-                        <Skeleton className="h-9 rounded-md w-[100px]" />
+                        <Skeleton className="h-9 w-[100px] rounded-md" />
                     )}
                 </div>
-            ) : (
-                <InvoiceTable invoices={invoices} business={business} />
+            )}
+
+            {hasInvoices && business && (
+                <Card className="my-4">
+                    <CardContent>
+                        <DataTable data={formatedInvoices} columns={columns} />
+                    </CardContent>
+                </Card>
             )}
         </div>
     );
