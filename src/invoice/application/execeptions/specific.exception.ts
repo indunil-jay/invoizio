@@ -13,3 +13,12 @@ export class InvoiceCreateUnauthorizedException extends UnauthorizedException {
         this.name = this.constructor.name;
     }
 }
+
+export class InvoiceNotFoundException extends AppError {
+    constructor() {
+        super(
+            "The specified Invoice could not be found. Please verify the details and try again."
+        );
+        this.name = this.constructor.name;
+    }
+}

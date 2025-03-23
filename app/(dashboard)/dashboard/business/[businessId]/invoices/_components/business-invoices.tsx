@@ -35,6 +35,7 @@ export const BusinessInvoices = ({
             issueDate: invo.issueDate,
             dueDate: invo.dueDate,
         },
+        lastEmailSentAt: invo.lastEmailSentAt,
     }));
 
     return (

@@ -12,6 +12,7 @@ export const invoiceSchema = z.object({
         issueDate: z.coerce.date(),
         dueDate: z.coerce.date(),
     }),
+    lastEmailSentAt: z.coerce.date().optional(),
 });
 
 export type Invoice = z.infer<typeof invoiceSchema>;

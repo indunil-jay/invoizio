@@ -11,5 +11,6 @@ export type InvoiceType = {
     totalDiscount: string | null;
     totalTax: string | null;
     statusId: number;
+    lastEmailSentAt: Date;
     client: ClientType;
 };

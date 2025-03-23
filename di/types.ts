@@ -1,5 +1,4 @@
 import { IUserSignedUpEventHandler } from "@/src/iam/application/handlers/user-signed-up.event-handler";
-
 import { IUserRepository } from "@/src/iam/application/repositories/user.repository";
 import { IAuthenticationService } from "@/src/iam/application/services/authentication.service";
 import { IHashingService } from "@/src/iam/application/services/hashing.service";
@@ -37,6 +36,7 @@ import { IInvoiceFactory } from "@/src/invoice/domain/factories/invoice-factory"
 import { IInvoiceItemFactory } from "@/src/invoice/domain/factories/invoice-item.factory";
 import { IInvoiceItemRepository } from "@/src/invoice/application/repositories/invoice-item.repository";
 import { IInvoiceRepository } from "@/src/invoice/application/repositories/invoice.repository";
+import { IInvoicePaymentReminderSentEventHandler } from "@/src/invoice/application/handlers/invoice-payment-reminder-sent.event-handler";
 
 export const DI_SYMBOLS = {
     // Services
@@ -75,6 +75,9 @@ export const DI_SYMBOLS = {
     IPasswordResetedEventHandler: Symbol.for("IPasswordResetedEventHandler"),
     IEmailUpdatedEventHandler: Symbol.for("IEmailUpdatedEventHandler"),
     IPasswordChangedEventHandler: Symbol.for("IPasswordChangedEventHandler"),
+    IInvoicePaymentReminderSentEventHandler: Symbol.for(
+        "IInvoicePaymentReminderSentEventHandler"
+    ),
 
     //Event Bus
     IEventBus: Symbol.for("IEventBus"),
@@ -125,6 +128,7 @@ export interface DI_RETURN_TYPES {
     IPasswordResetedEventHandler: IPasswordResetedEventHandler;
     IEmailUpdatedEventHandler: IEmailUpdatedEventHandler;
     IPasswordChangedEventHandler: IPasswordChangedEventHandler;
+    IInvoicePaymentReminderSentEventHandler: IInvoicePaymentReminderSentEventHandler;
 
     //event bus
     IEventBus: IEventBus;

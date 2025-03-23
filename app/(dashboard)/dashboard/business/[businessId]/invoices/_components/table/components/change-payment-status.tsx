@@ -88,7 +88,7 @@ export const ChangeInvoiceStatus = ({
                     className="flex gap-2 cursor-pointer"
                     onClick={() => setOpen(true)}
                 >
-                    <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                    <status.icon className="mr-2 h-4 w-4 " />
                     {status.label}
                 </div>
             </DialogTrigger>

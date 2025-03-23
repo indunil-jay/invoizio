@@ -10,6 +10,9 @@ import InvoizioResetPassword from "@/src/shared/resend/presenter/templates/reset
 import InvoizioPasswordResetSuccess from "../presenter/templates/password-reset-done";
 import InvoizioVerifyNewEmail from "../presenter/templates/verify-new-email";
 import InvoizioPasswordChangeSuccess from "../presenter/templates/changed-password";
+import { InvoicePaymentReminder } from "../presenter/templates/invoice-payment-reminder";
+import { Invoice } from "@/src/invoice/domain/invoice.entity";
+import { Client } from "@/src/client-user/domain/client.entity";
 
 const COMPANY_NAME = "invoizio";
 const HOST = `http://localhost:3000`;
@@ -19,6 +22,27 @@ export class EmailService implements IEmailService {
     private static readonly resend = new Resend(
         envValidationSchema.RESEND_API_KEY
     );
+
+    public async sendPaymentReminderEmail(
+        client: Client,
+        invoice: Invoice
+    ): Promise<void> {
+        try {
+            const { error } = await EmailService.resend.emails.send({
+                from: `${COMPANY_NAME} <onboarding@resend.dev>`,
+                to: client.email,
+                subject: "Please Pay Your Pending Invoice",
+                react: InvoicePaymentReminder(),
+            });
+
+            if (error) {
+                throw error;
+            }
+        } catch {
+            throw new EmailSendingException();
+        }
+    }
+
     public async sendPasswordChangedEmail(user: User): Promise<void> {
         const loginUrl = `${HOST}/auth/sign-in`;
 

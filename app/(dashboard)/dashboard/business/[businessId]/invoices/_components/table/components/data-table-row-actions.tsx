@@ -13,6 +13,7 @@ import {
 import { Button } from "@/app/_components/ui/button";
 import { DeleteInvoice } from "./delete-invoice";
 import { ChangePaymentStatus } from "./change-payment-status";
+import { SendPaymentReminder } from "./send-payment-reminder";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -44,7 +45,9 @@ export function DataTableRowActions<TData>({
                                             Download Invoice
                                         </Link> */}
                 </DropdownMenuItem>
-                <DropdownMenuItem>Send Reminder</DropdownMenuItem>
+                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    <SendPaymentReminder invoice={invoice} />
+                </DropdownMenuItem>
 
                 <ChangePaymentStatus invoice={invoice} />
                 <DropdownMenuSeparator />

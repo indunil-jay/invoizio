@@ -42,6 +42,7 @@ import { ClientFactoryModule } from "./modules/factrories/client-factory.module"
 import { ClientAddressFactoryModule } from "./modules/factrories/client-address-factory.module";
 import { InvoiceItemFactoryModule } from "./modules/factrories/invoice-item-factory.module";
 import { InvoiceFactoryModule } from "./modules/factrories/invoice-factory.module";
+import { InvoicePaymentReminderSentEventHandlerModule } from "./modules/handlers/invoice-payment-reminder-sent.event-handler.module";
 
 const ApplicationContainer = new Container({
     defaultScope: "Singleton",
@@ -72,6 +73,7 @@ export const initializeContainer = () => {
     ApplicationContainer.load(PasswordResetedEventHandlerModule);
     ApplicationContainer.load(EmailUpdatedEventHandlerModule);
     ApplicationContainer.load(PasswordChangedEventHandlerModule);
+    ApplicationContainer.load(InvoicePaymentReminderSentEventHandlerModule);
 
     //services
     ApplicationContainer.load(AuthenticationServiceModule);
@@ -123,6 +125,7 @@ export const destroyContainer = () => {
     ApplicationContainer.unload(PasswordResetedEventHandlerModule);
     ApplicationContainer.unload(EmailUpdatedEventHandlerModule);
     ApplicationContainer.unload(PasswordChangedEventHandlerModule);
+    ApplicationContainer.unload(InvoicePaymentReminderSentEventHandlerModule);
 
     //services
     ApplicationContainer.unload(AuthenticationServiceModule);

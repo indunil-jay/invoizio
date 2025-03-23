@@ -1,4 +1,5 @@
 export class Invoice {
+    private _lastEmailSentAt?: Date | null;
     constructor(
         public readonly id: string,
         public readonly businessId: string,
@@ -12,4 +13,12 @@ export class Invoice {
         public readonly totalTax: string | null,
         public readonly statusId: number
     ) {}
+
+    public setLastEmailSent(date: Date) {
+        this._lastEmailSentAt = date;
+    }
+
+    public get lastEmailSentAt() {
+        return this._lastEmailSentAt;
+    }
 }

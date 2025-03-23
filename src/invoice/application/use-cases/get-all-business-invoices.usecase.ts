@@ -13,6 +13,7 @@ export const getAllBusinessInvoicesUseCase = {
                 return {
                     ...invoice,
                     client,
+                    lastEmailSentAt: invoice.lastEmailSentAt,
                 };
             })
         );

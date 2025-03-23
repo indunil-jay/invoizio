@@ -16,7 +16,8 @@ export class InvoiceMapper {
             totalTax,
             totalPrice,
         } = invoiceEntity;
-        return new Invoice(
+
+        const invoice = new Invoice(
             id,
             businessId,
             clientId,
@@ -29,6 +30,12 @@ export class InvoiceMapper {
             totalTax,
             statusId
         );
+
+        if (invoiceEntity.lastEmailSentAt) {
+            invoice.setLastEmailSent(invoiceEntity.lastEmailSentAt);
+        }
+
+        return invoice;
     }
 
     static toPersistence(data: CreateInvoice): CreateInvoice {

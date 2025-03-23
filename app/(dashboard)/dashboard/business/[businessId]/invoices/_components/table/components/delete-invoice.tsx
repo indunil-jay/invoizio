@@ -42,7 +42,7 @@ export const DeleteInvoice = ({ invoiceId }: DeleteInvoiceProps) => {
                     className="flex gap-2 cursor-pointer"
                     onClick={() => setOpen(true)}
                 >
-                    <Trash className="size-4 mr-2 shrink-0" />
+                    <Trash className="mr-2 h-4 w-4 " />
                     Delete Invoice
                 </div>
             </DialogTrigger>

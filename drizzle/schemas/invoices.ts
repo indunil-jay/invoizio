@@ -32,7 +32,7 @@ export const invoices = pgTable("invoice", {
     totalBasePrice: decimal("totalBasePrice").notNull(),
     totalTax: decimal("totalTax"),
     totalDiscount: decimal("totalDiscount"),
-
+    lastEmailSentAt: timestamp("last_email_sent_at", { mode: "date" }),
     createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updatedAt", { mode: "date" }).defaultNow().notNull(),
 });
@@ -101,6 +101,7 @@ export const invoicesSchema = createInsertSchema(invoices, {
     totalPrice: true,
     totalTax: true,
     totalBasePrice: true,
+    lastEmailSentAt: true,
 });
 
 export type CreateInvoice = z.infer<typeof invoicesSchema>;

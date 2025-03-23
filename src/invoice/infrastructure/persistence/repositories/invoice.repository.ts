@@ -12,7 +12,7 @@ import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common
 export class InvoiceRepository implements IInvoiceRepository {
     public async update(
         invoiceId: string,
-        properties: Pick<CreateInvoice, "statusId">
+        properties: Partial<Pick<CreateInvoice, "statusId" | "lastEmailSentAt">>
     ): Promise<Invoice> {
         try {
             const [updatedInvoiceEntity] = await db

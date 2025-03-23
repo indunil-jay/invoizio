@@ -5,6 +5,7 @@ import { createInvoiceController } from "@/src/invoice/presenter/controllers/cre
 import { invoiceValidationSchema } from "@/shared/validation-schemas/invoice/invoice-validation-schema";
 import { deleteInvoiceController } from "@/src/invoice/presenter/controllers/delete-invoice.controller";
 import { updateInvoiceStatusController } from "@/src/invoice/presenter/controllers/update-invoice-status.controller";
+import { sendPaymentReminderController } from "@/src/invoice/presenter/controllers/send-payment-reminder.controller";
 
 export const createInvoice = (
     values: z.infer<typeof invoiceValidationSchema>
@@ -28,4 +29,11 @@ export const changeInvoiceStatus = (invoiceId: string, statusId: number) =>
             await updateInvoiceStatusController(invoiceId, statusId),
         successTitle: "Invoice Status Update Successfull",
         failureTitle: "Invoice Status Update Failure",
+    });
+
+export const sendPaymentReminder = (invoiceId: string) =>
+    executeAction({
+        actionFn: async () => await sendPaymentReminderController(invoiceId),
+        successTitle: "Payment Reminder Sent Successfull",
+        failureTitle: "Payment Reminder Sent Failure",
     });

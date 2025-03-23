@@ -5,6 +5,7 @@ import { PasswordResetedEvent } from "@/src/iam/domain/events/password-reseted.e
 import { ResendVerifyEmailEvent } from "@/src/iam/domain/events/resend-verify-email.event";
 import { SendResetPasswordEmailEvent } from "@/src/iam/domain/events/send-reset-password-email.event";
 import { UserSignedUpEvent } from "@/src/iam/domain/events/user-signed-up.event";
+import { InvoicePaymentReminderSentEvent } from "@/src/invoice/domain/events/invoice-payment-reminder-sent.event";
 
 const eventBus = getInjection("IEventBus");
 
@@ -45,6 +46,13 @@ eventBus.subscribe(
     PasswordChangedEvent,
     async (event: PasswordChangedEvent) => {
         const handler = getInjection("IPasswordChangedEventHandler");
+        await handler.handle(event);
+    }
+);
+eventBus.subscribe(
+    InvoicePaymentReminderSentEvent,
+    async (event: InvoicePaymentReminderSentEvent) => {
+        const handler = getInjection("IInvoicePaymentReminderSentEventHandler");
         await handler.handle(event);
     }
 );
