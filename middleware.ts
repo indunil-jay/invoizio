@@ -1,3 +1,4 @@
+import "@/di/reflect-metadata";
 import { NextResponse } from "next/server";
 import {
     apiAuthPrefix,
