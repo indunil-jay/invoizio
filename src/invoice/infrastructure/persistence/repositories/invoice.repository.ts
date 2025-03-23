@@ -1,15 +1,52 @@
 import { injectable } from "inversify";
 import { db, Transaction } from "@/drizzle";
-import { CreateInvoice, invoices } from "@/drizzle/schemas/invoices";
+import {
+    CreateInvoice,
+    InvoiceEntityWithAllRelations,
+    invoices,
+} from "@/drizzle/schemas/invoices";
 import { IInvoiceRepository } from "@/src/invoice/application/repositories/invoice.repository";
 import { Invoice } from "@/src/invoice/domain/invoice.entity";
 import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
 import { InvoiceMapper } from "../mappers/invoice.mapper";
 import { desc, eq } from "drizzle-orm";
 import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
+import { inspect } from "util";
 
 @injectable()
 export class InvoiceRepository implements IInvoiceRepository {
+    public async getInvoiceDetails(
+        invoiceId: string
+    ): Promise<InvoiceEntityWithAllRelations | null> {
+        try {
+            const invoiceEntity = await db.query.invoices.findFirst({
+                where: eq(invoices.id, invoiceId),
+                with: {
+                    business: {
+                        with: {
+                            user: true,
+                            address: true,
+                        },
+                    },
+                    client: {
+                        with: {
+                            address: true,
+                        },
+                    },
+                    status: true,
+                    invoiceItems: true,
+                },
+            });
+
+            if (!invoiceEntity) return null;
+
+            return invoiceEntity;
+        } catch (error) {
+            console.log("DATABASE GET ERROR (invoice repository)", error);
+            throw new BadRequestException();
+        }
+    }
+
     public async update(
         invoiceId: string,
         properties: Partial<Pick<CreateInvoice, "statusId" | "lastEmailSentAt">>

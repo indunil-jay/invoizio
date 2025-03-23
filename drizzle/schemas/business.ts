@@ -23,27 +23,24 @@ export const businesses = pgTable("business", {
 });
 
 //define relations
-export const defineBusinessRelations = relations(
-    businesses,
-    ({ one, many }) => ({
-        //one business belong to one user
-        users: one(users, {
-            fields: [businesses.userId],
-            references: [users.id],
-        }),
-        // One business has one address
-        address: one(businessAddresses, {
-            fields: [businesses.id],
-            references: [businessAddresses.businessId],
-        }),
+export const defineBusinessRelations = relations(businesses, ({ one }) => ({
+    //one business belong to one user
+    user: one(users, {
+        fields: [businesses.userId],
+        references: [users.id],
+    }),
+    // One business has one address
+    address: one(businessAddresses, {
+        fields: [businesses.id],
+        references: [businessAddresses.businessId],
+    }),
 
-        //one business has one image
-        image: one(businessProfileImages, {
-            fields: [businesses.id],
-            references: [businessProfileImages.businessId],
-        }),
-    })
-);
+    //one business has one image
+    image: one(businessProfileImages, {
+        fields: [businesses.id],
+        references: [businessProfileImages.businessId],
+    }),
+}));
 
 export const businessSchema = createInsertSchema(businesses, {
     id: (schema) => schema.min(1),

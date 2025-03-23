@@ -39,7 +39,7 @@ export const DeleteInvoice = ({ invoiceId }: DeleteInvoiceProps) => {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <div
-                    className="flex gap-2 cursor-pointer"
+                    className="flex  cursor-pointer"
                     onClick={() => setOpen(true)}
                 >
                     <Trash className="mr-2 h-4 w-4 " />

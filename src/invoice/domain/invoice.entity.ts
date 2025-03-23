@@ -1,5 +1,6 @@
 export class Invoice {
     private _lastEmailSentAt?: Date | null;
+
     constructor(
         public readonly id: string,
         public readonly businessId: string,

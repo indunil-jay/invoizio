@@ -19,7 +19,7 @@ export const userProfileImages = pgTable("userProfileImage", {
 export const defineUserProfileImagesRelations = relations(
     userProfileImages,
     ({ one }) => ({
-        users: one(users, {
+        user: one(users, {
             fields: [userProfileImages.userId],
             references: [users.id],
         }),

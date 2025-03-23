@@ -21,6 +21,7 @@ export const BusinessInvoices = ({
     const business = useBusinessStore((state) =>
         state.getBusinessById(businessId)
     );
+
     const hasInvoices = invoices.length > 0;
 
     const formatedInvoices = invoices.map((invo) => ({

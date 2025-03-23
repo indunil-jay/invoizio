@@ -4,7 +4,7 @@ import { users } from "@/drizzle/schemas";
 import { InferSelectModel, relations } from "drizzle-orm";
 
 export const accounts = pgTable(
-    "account",
+    "accounts",
     {
         userId: text("userId")
             .notNull()
@@ -29,7 +29,7 @@ export const accounts = pgTable(
 
 export const defineAccountsRelations = relations(accounts, ({ one }) => ({
     //one user has one account
-    users: one(users, {
+    user: one(users, {
         fields: [accounts.userId],
         references: [users.id],
     }),

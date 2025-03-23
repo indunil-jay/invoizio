@@ -1,5 +1,8 @@
 import { Transaction } from "@/drizzle";
-import { CreateInvoice } from "@/drizzle/schemas/invoices";
+import {
+    CreateInvoice,
+    InvoiceEntityWithAllRelations,
+} from "@/drizzle/schemas/invoices";
 import { Invoice } from "@/src/invoice/domain/invoice.entity";
 
 export interface IInvoiceRepository {
@@ -11,4 +14,7 @@ export interface IInvoiceRepository {
         invoiceId: string,
         properties: Partial<Pick<CreateInvoice, "statusId" | "lastEmailSentAt">>
     ): Promise<Invoice>;
+    getInvoiceDetails(
+        invoiceId: string
+    ): Promise<InvoiceEntityWithAllRelations | null>;
 }

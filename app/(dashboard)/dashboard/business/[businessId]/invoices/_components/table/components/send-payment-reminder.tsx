@@ -76,7 +76,7 @@ export const SendPaymentReminder = ({ invoice }: SendPaymentReminderProps) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <div
-                className={`flex gap-x-2 items-center ${
+                className={`flex  items-center ${
                     remainingTime
                         ? "opacity-50 cursor-not-allowed"
                         : "cursor-pointer"

@@ -2,7 +2,6 @@ import { ClientEntity, CreateClient } from "@/drizzle/schemas/client";
 import { ClientAddressEntity } from "@/drizzle/schemas/client-address";
 import { Client } from "@/src/client-user/domain/client.entity";
 import { ClientAddressMapper } from "./client-address.mapper";
-import { inspect } from "util";
 
 export class ClientMapper {
     static toDomain(

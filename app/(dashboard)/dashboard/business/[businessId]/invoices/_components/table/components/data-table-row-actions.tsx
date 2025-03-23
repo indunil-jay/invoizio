@@ -1,8 +1,8 @@
 "use client";
 
 import { Row } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-import { invoiceSchema } from "../data/schema";
+import { DownloadCloudIcon, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -14,7 +14,7 @@ import { Button } from "@/app/_components/ui/button";
 import { DeleteInvoice } from "./delete-invoice";
 import { ChangePaymentStatus } from "./change-payment-status";
 import { SendPaymentReminder } from "./send-payment-reminder";
-import { invoiceStatus } from "../data/data";
+import { invoiceSchema } from "../data/schema";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -36,17 +36,19 @@ export function DataTableRowActions<TData>({
                     <span className="sr-only">Open menu</span>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[12rem]">
+            <DropdownMenuContent align="end" className="w-[11rem]">
                 <DropdownMenuItem disabled={invoice.statusId === 2}>
                     Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                    Download
-                    {/*
-                    <Link href={`/api/invoice/${invoice.id}`} target="_blank">
-                                            <DownloadCloudIcon className="size-4 mr-2 shrink-0" />
-                                            Download Invoice
-                                        </Link> */}
+                    <Link
+                        href={`/api/invoice/${invoice.id}`}
+                        target="_blank"
+                        className="flex"
+                    >
+                        <DownloadCloudIcon className="size-4 mr-2 shrink-0" />
+                        Download Invoice
+                    </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                     disabled={invoice.statusId === 2}

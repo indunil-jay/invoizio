@@ -9,7 +9,15 @@ import {
 import { InferSelectModel, relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
-import { statuses, invoiceItems, businesses, clients } from "@/drizzle/schemas";
+import {
+    statuses,
+    invoiceItems,
+    businesses,
+    clients,
+    businessAddresses,
+    users,
+    clientAddresses,
+} from "@/drizzle/schemas";
 
 export const statusEnum = pgEnum("status", ["pending", "paid", "expired"]);
 
@@ -107,3 +115,15 @@ export const invoicesSchema = createInsertSchema(invoices, {
 export type CreateInvoice = z.infer<typeof invoicesSchema>;
 
 export type InvoiceEntity = InferSelectModel<typeof invoices>;
+
+export type InvoiceEntityWithAllRelations = InvoiceEntity & {
+    client: InferSelectModel<typeof clients> & {
+        address: InferSelectModel<typeof clientAddresses>;
+    };
+    business: InferSelectModel<typeof businesses> & {
+        address: InferSelectModel<typeof businessAddresses>;
+        user: InferSelectModel<typeof users>;
+    };
+    status: InferSelectModel<typeof statuses>;
+    invoiceItems: InferSelectModel<typeof invoiceItems>[];
+};

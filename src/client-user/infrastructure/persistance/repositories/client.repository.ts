@@ -6,7 +6,6 @@ import { Client } from "@/src/client-user/domain/client.entity";
 import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
 import { ClientMapper } from "@/src/client-user/infrastructure/persistance/mappers/client.mapper";
 import { eq } from "drizzle-orm";
-import { inspect } from "util";
 
 @injectable()
 export class ClientRepository implements IClientRepository {
@@ -14,8 +13,9 @@ export class ClientRepository implements IClientRepository {
         try {
             const clientEntity = await db.query.clients.findFirst({
                 where: eq(clients.id, id),
-                with: { clientAddresses: true },
+                with: { address: true },
             });
+
             if (!clientEntity) return null;
 
             return ClientMapper.toDomain(clientEntity);

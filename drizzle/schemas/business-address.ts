@@ -25,7 +25,7 @@ export const defineBusinessAddressesRelations = relations(
     businessAddresses,
     ({ one }) => ({
         //one address belongs to a one client
-        businesses: one(businesses, {
+        business: one(businesses, {
             fields: [businessAddresses.businessId],
             references: [businesses.id],
         }),

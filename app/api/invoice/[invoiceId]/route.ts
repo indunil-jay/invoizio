@@ -1,13 +1,7 @@
 import { NextResponse } from "next/server";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { getBusinessById } from "@/app/(dashboard)/dashboard/business/[businessId]/queries";
-import {
-    getAllInvoiceItemsByInvoiceId,
-    getClientById,
-    getInvoiceById,
-} from "@/app/(dashboard)/dashboard/business/[businessId]/invoices/queries";
-import { getUserById } from "@/app/(dashboard)/dashboard/account/queries";
+import { getInjection } from "@/di/container";
 
 export async function GET(
     request: Request,
@@ -19,7 +13,10 @@ export async function GET(
 ) {
     const { invoiceId } = await params;
 
-    const invoice = await getInvoiceById(invoiceId);
+    const invoiceRepository = getInjection("IInvoiceRepository");
+
+    const invoice = await invoiceRepository.getInvoiceDetails(invoiceId);
+
     if (!invoice) {
         return NextResponse.json(
             { error: "Invoice not found" },
@@ -27,61 +24,30 @@ export async function GET(
         );
     }
 
-    const invoiceItems = await getAllInvoiceItemsByInvoiceId(invoice.id);
-    if (!invoiceItems) {
-        return NextResponse.json(
-            { error: "Invoice items not found" },
-            { status: 404 }
-        );
-    }
-
-    // Get client
-    const client = await getClientById(invoice.clientId);
-    if (!client) {
-        return NextResponse.json(
-            { error: "Client not found" },
-            { status: 404 }
-        );
-    }
-
-    // Get business
-    const business = await getBusinessById(invoice.businessId);
-    if (!business) {
-        return NextResponse.json(
-            { error: "Business not found" },
-            { status: 404 }
-        );
-    }
-
-    // Get business owner
-    const owner = await getUserById(business.userId);
-    if (!owner) {
-        return NextResponse.json(
-            { error: "Business owner not found" },
-            { status: 404 }
-        );
-    }
-
-    //build business details
     const businessName =
-        business.name[0].toUpperCase() + business.name.slice(1);
+        invoice.business.name[0].toUpperCase() + invoice.business.name.slice(1);
     const businessAddress = [
-        business.address.addressLine1,
-        business.address.addressLine2 ? business.address.addressLine2 : "",
-        business.address.city,
-        business.address.postalCode,
+        invoice.business.address.addressLine1,
+        invoice.business.address.addressLine2
+            ? invoice.business.address.addressLine2
+            : "",
+        invoice.business.address.city,
+        invoice.business.address.postalCode,
     ]
         .filter(Boolean)
         .join(", ");
-    const businessEmail = owner.email;
+
+    const businessEmail = invoice.business.user.email;
     const businessPhone = "+94 77 123 4567";
 
     //client address
     const clientAddress = [
-        client.address.addressLine1,
-        client.address.addressLine2 ? client.address.addressLine2 : "",
-        client.address.city,
-        client.address.postalCode,
+        invoice.client.address.addressLine1,
+        invoice.client.address.addressLine2
+            ? invoice.client.address.addressLine2
+            : "",
+        invoice.client.address.city,
+        invoice.client.address.postalCode,
     ]
         .filter(Boolean)
         .join(", ");
@@ -126,8 +92,8 @@ export async function GET(
     doc.setFont("helvetica", "bold");
     doc.text("Bill To:", 14, 65);
     doc.setFont("helvetica", "normal");
-    doc.text(`Client Name: ${client.name}`, 14, 70);
-    doc.text(`Client Email: ${client.email}`, 14, 75);
+    doc.text(`Client Name: ${invoice.client.name}`, 14, 70);
+    doc.text(`Client Email: ${invoice.client.email}`, 14, 75);
     doc.text(`Client Address:${clientAddress} `, 14, 80);
 
     // Client description
@@ -142,7 +108,7 @@ export async function GET(
     let totalTax = 0;
     let totalDiscount = 0;
 
-    let items = invoiceItems.map((item, index) => {
+    let items = invoice.invoiceItems.map((item, index) => {
         const baseTotal = +item.price * +item.quantity;
 
         const taxRate = Number(item.taxRate) ?? 0; // Default to 0 if null
