@@ -4,6 +4,7 @@ import { executeAction } from "@/app/_utils/execute.action";
 import { createInvoiceController } from "@/src/invoice/presenter/controllers/create-invoice.controller";
 import { invoiceValidationSchema } from "@/shared/validation-schemas/invoice/invoice-validation-schema";
 import { deleteInvoiceController } from "@/src/invoice/presenter/controllers/delete-invoice.controller";
+import { updateInvoiceStatusController } from "@/src/invoice/presenter/controllers/update-invoice-status.controller";
 
 export const createInvoice = (
     values: z.infer<typeof invoiceValidationSchema>
@@ -19,4 +20,12 @@ export const deleteInvoice = (invoiceId: string) =>
         actionFn: async () => await deleteInvoiceController(invoiceId),
         successTitle: "Invoice Delete Successfull",
         failureTitle: "Invoice Delete Failure",
+    });
+
+export const changeInvoiceStatus = (invoiceId: string, statusId: number) =>
+    executeAction({
+        actionFn: async () =>
+            await updateInvoiceStatusController(invoiceId, statusId),
+        successTitle: "Invoice Status Update Successfull",
+        failureTitle: "Invoice Status Update Failure",
     });

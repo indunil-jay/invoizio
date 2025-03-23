@@ -12,6 +12,7 @@ import {
 } from "@/app/_components/ui/dropdown-menu";
 import { Button } from "@/app/_components/ui/button";
 import { DeleteInvoice } from "./delete-invoice";
+import { ChangePaymentStatus } from "./change-payment-status";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -33,7 +34,7 @@ export function DataTableRowActions<TData>({
                     <span className="sr-only">Open menu</span>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[160px]">
+            <DropdownMenuContent align="end" className="w-[12rem]">
                 <DropdownMenuItem>Edit</DropdownMenuItem>
                 <DropdownMenuItem>
                     Download
@@ -44,8 +45,8 @@ export function DataTableRowActions<TData>({
                                         </Link> */}
                 </DropdownMenuItem>
                 <DropdownMenuItem>Send Reminder</DropdownMenuItem>
-                <DropdownMenuItem>Toggle Payments</DropdownMenuItem>
 
+                <ChangePaymentStatus invoice={invoice} />
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem

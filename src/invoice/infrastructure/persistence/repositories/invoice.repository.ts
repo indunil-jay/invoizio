@@ -10,6 +10,24 @@ import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common
 
 @injectable()
 export class InvoiceRepository implements IInvoiceRepository {
+    public async update(
+        invoiceId: string,
+        properties: Pick<CreateInvoice, "statusId">
+    ): Promise<Invoice> {
+        try {
+            const [updatedInvoiceEntity] = await db
+                .update(invoices)
+                .set(properties)
+                .where(eq(invoices.id, invoiceId))
+                .returning();
+
+            return InvoiceMapper.toDomain(updatedInvoiceEntity);
+        } catch (error) {
+            console.log("DATABASE UPDATE ERROR (invoice repository)", error);
+            throw new BadRequestException();
+        }
+    }
+
     public async remove(invoiceId: string): Promise<void> {
         try {
             await db.delete(invoices).where(eq(invoices.id, invoiceId));

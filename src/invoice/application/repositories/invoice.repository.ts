@@ -7,4 +7,8 @@ export interface IInvoiceRepository {
     get(invoiceId: string): Promise<Invoice | null>;
     getAll(businessId: string): Promise<Invoice[] | []>;
     remove(invoiceId: string): Promise<void>;
+    update(
+        invoiceId: string,
+        properties: Pick<CreateInvoice, "statusId">
+    ): Promise<Invoice>;
 }
