@@ -32,7 +32,10 @@ interface ChangePaymentStatusProps {
 export const ChangePaymentStatus = ({ invoice }: ChangePaymentStatusProps) => {
     return (
         <DropdownMenuSub>
-            <DropdownMenuSubTrigger>
+            <DropdownMenuSubTrigger
+                disabled={invoice.statusId === 2}
+                className="data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0"
+            >
                 <Settings2 />
                 Change Status
             </DropdownMenuSubTrigger>
