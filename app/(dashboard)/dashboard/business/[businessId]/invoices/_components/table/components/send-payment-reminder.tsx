@@ -12,7 +12,6 @@ import {
     DialogTitle,
 } from "@/app/_components/ui/dialog";
 import { Button } from "@/app/_components/ui/button";
-import { Invoice } from "../data/schema";
 import { addMilliseconds, isBefore, differenceInMinutes } from "date-fns";
 import { sendPaymentReminder } from "../../../actions";
 import { COOLDOWN_PERIOD } from "@/shared/constants";
