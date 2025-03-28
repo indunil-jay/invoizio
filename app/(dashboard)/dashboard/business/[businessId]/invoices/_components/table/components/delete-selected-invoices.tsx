@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Trash } from "lucide-react";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import { useState } from "react";
 import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";

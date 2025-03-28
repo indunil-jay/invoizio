@@ -13,9 +13,10 @@ import {
 } from "@/app/_components/ui/dialog";
 import { Button } from "@/app/_components/ui/button";
 import { addMilliseconds, isBefore, differenceInMinutes } from "date-fns";
-import { sendPaymentReminder } from "../../../actions";
+
 import { COOLDOWN_PERIOD } from "@/shared/constants";
 import { InvoiceType } from "@/shared/types/invoice-response-type";
+import { sendPaymentReminder } from "../../../../actions";
 
 interface SendPaymentReminderProps {
     invoice: InvoiceType;

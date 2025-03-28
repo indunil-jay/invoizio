@@ -2,12 +2,12 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/app/_components/ui/checkbox";
-import { DataTableColumnHeader } from "./data-table-columns-header";
 import { Badge } from "@/app/_components/ui/badge";
-import { DataTableRowActions } from "./data-table-row-actions";
 import { format } from "date-fns";
-import { invoiceStatus } from "../data/data";
 import { InvoiceType } from "@/shared/types/invoice-response-type";
+import { DataTableColumnHeader } from "../data-table-columns-header";
+import { invoiceStatus } from "../../data/data";
+import { DataTableRowActions } from "./data-table-row-actions";
 
 export const columns: ColumnDef<InvoiceType>[] = [
     {

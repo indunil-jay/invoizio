@@ -5,8 +5,9 @@ import { CreateInvoice } from "./create-invoice";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 import { InvoiceType } from "@/shared/types/invoice-response-type";
 import { DataTable } from "./table/components/data-table";
-import { columns } from "./table/components/columns";
+
 import { Card, CardContent } from "@/app/_components/ui/card";
+import { columns } from "./table/components/invoices-table/columns";
 
 interface BusinessInvoicesProps {
     businessId: string;

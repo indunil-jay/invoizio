@@ -14,7 +14,7 @@ import {
     DialogTrigger,
 } from "@/app/_components/ui/dialog";
 import { Button } from "@/app/_components/ui/button";
-import { deleteInvoice } from "../../../actions";
+import { deleteInvoice } from "../../../../actions";
 
 interface DeleteInvoiceProps {
     invoiceId: string;
