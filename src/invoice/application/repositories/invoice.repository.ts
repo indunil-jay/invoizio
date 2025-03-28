@@ -12,6 +12,6 @@ export interface IInvoiceRepository {
     remove(invoiceId: string): Promise<void>;
     update(
         invoiceId: string,
-        properties: Partial<Pick<CreateInvoice, "statusId" | "lastEmailSentAt">>
+        properties: Partial<CreateInvoice>
     ): Promise<Invoice>;
 }

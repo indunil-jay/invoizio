@@ -4,4 +4,9 @@ import { ClientAddress } from "@/src/client-user/domain/client-address.entity";
 
 export interface IClientAddressRepository {
     insert(data: CreateClientAddress, tx?: Transaction): Promise<ClientAddress>;
+    update(
+        id: string,
+        properties: Partial<CreateClientAddress>,
+        tx?: Transaction
+    ): Promise<ClientAddress>;
 }

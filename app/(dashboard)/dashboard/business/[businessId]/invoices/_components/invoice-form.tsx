@@ -7,7 +7,7 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { Button } from "@/app/_components/ui/button";
 import { useInvoiceItems } from "../_contexts/invoice-items-context";
-import { User } from "@/app/stores/user-store";
+import { useUserStore } from "@/app/stores/user-store";
 import { Business } from "@/app/stores/business-store";
 import { createInvoiceSchema } from "@/shared/validation-schemas/invoice/create-invoice-form-schema";
 import { BillFromFormSection } from "./bill-from-form-section";
@@ -15,29 +15,40 @@ import { BillToFormSection } from "./bill-to-form-section";
 import { Separator } from "@/app/_components/ui/separator";
 import { BillDetailsFormSection } from "./bill-details-form-section";
 import { InvoiceItem } from "../_utils/types";
-import { createInvoice } from "../actions";
+import { createInvoice, updateInvoice } from "../actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
 import { CreateInvoiceItemsList } from "./create-invoice-items-list";
+import { InvoiceType } from "@/shared/types/invoice-response-type";
 
-interface InvoiceFormProps {
-    user: User;
-    business: Business;
-    invoiceId?: string;
-    mode: "create" | "update";
+interface BaseProps {
     onClose?: () => void;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    existingInvoice?: any;
 }
 
+interface CreateModeProps extends BaseProps {
+    mode: "create";
+    invoiceId: string;
+    existingInvoice?: never;
+    business: Business;
+}
+
+interface UpdateModeProps extends BaseProps {
+    mode: "update";
+    invoiceId?: never;
+    existingInvoice: InvoiceType;
+    business?: never;
+}
+
+type InvoiceFormProps = CreateModeProps | UpdateModeProps;
+
 export const InvoiceForm = ({
-    user,
     business,
     invoiceId,
     mode,
     existingInvoice,
     onClose,
 }: InvoiceFormProps) => {
+    const user = useUserStore((state) => state.user);
     const {
         invoiceItems,
         setInvoiceItems,
@@ -50,19 +61,22 @@ export const InvoiceForm = ({
         resolver: zodResolver(createInvoiceSchema),
         defaultValues: {
             user: {
-                id: user.id,
-                email: user.email,
+                id: user!.id || existingInvoice?.business.user.id,
+                email: user!.email || existingInvoice?.business.user.email,
             },
-            business: {
-                address: {
-                    addressLine1: business.address.addressLine1,
-                    addressLine2: business.address.addressLine2 ?? "",
-                    city: business.address.city,
-                    postalCode: business.address.postalCode,
-                },
-                id: business.id,
-                name: business.name,
-            },
+            business:
+                mode === "create"
+                    ? {
+                          address: {
+                              addressLine1: business.address.addressLine1,
+                              addressLine2: business.address.addressLine2 ?? "",
+                              city: business.address.city,
+                              postalCode: business.address.postalCode,
+                          },
+                          id: business.id,
+                          name: business.name,
+                      }
+                    : existingInvoice?.business,
 
             client: {
                 name: existingInvoice ? existingInvoice.client.name : "",
@@ -136,7 +150,10 @@ export const InvoiceForm = ({
             invoiceItems: data.invoiceItems,
         };
 
-        const response = await createInvoice(obj);
+        const response =
+            mode === "create"
+                ? await createInvoice(obj)
+                : await updateInvoice(obj);
 
         toast(response);
 
@@ -173,7 +190,7 @@ export const InvoiceForm = ({
                             onClose?.();
                         }}
                     >
-                        Cancle
+                        Cancel
                     </Button>
                     <Button
                         disabled={form.formState.isSubmitting}
@@ -182,11 +199,19 @@ export const InvoiceForm = ({
                     >
                         {form.formState.isSubmitting ? (
                             <>
-                                <span>Creating Invoice</span>
+                                <span>
+                                    {mode === "create"
+                                        ? "Creating Invoice"
+                                        : "Updating Invoice"}
+                                </span>
                                 <SpinnerBtnLoading />
                             </>
                         ) : (
-                            <span>Create Invoice</span>
+                            <span>
+                                {mode === "create"
+                                    ? "Create Invoice"
+                                    : "Update Invoice"}
+                            </span>
                         )}
                     </Button>
                 </div>

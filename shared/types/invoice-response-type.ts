@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { BusinessSchema } from "./business-response-type";
-import { clientSchema } from "@/drizzle/schemas/client";
 import { InvoiceItemSchema } from "./invoice-item-response";
+import { ClientSchema } from "./client-response-type";
 
 export const InvoiceSchema = z.object({
     id: z.string(),
@@ -16,7 +16,7 @@ export const InvoiceSchema = z.object({
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
     business: BusinessSchema,
-    client: clientSchema,
+    client: ClientSchema,
     status: z.object({ id: z.number().int(), status: z.string() }),
     invoiceItems: z.array(InvoiceItemSchema),
 });

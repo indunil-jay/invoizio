@@ -1,4 +1,5 @@
 import { injectable } from "inversify";
+import { eq } from "drizzle-orm";
 import { db, Transaction } from "@/drizzle";
 import {
     clientAddresses,
@@ -11,6 +12,27 @@ import { ClientAddressMapper } from "@/src/client-user/infrastructure/persistanc
 
 @injectable()
 export class ClientAddressRepository implements IClientAddressRepository {
+    public async update(
+        id: string,
+        properties: Partial<CreateClientAddress>,
+        tx?: Transaction
+    ): Promise<ClientAddress> {
+        const invoker = tx ?? db;
+        try {
+            const mutation = invoker
+                .update(clientAddresses)
+                .set(properties)
+                .where(eq(clientAddresses.id, id))
+                .returning();
+
+            const [updatedEntity] = await mutation.execute();
+            return ClientAddressMapper.toDomain(updatedEntity);
+        } catch (error) {
+            console.log("UPDATE DATABASE ERROR,(client repository)", error);
+            throw new DataBaseException();
+        }
+    }
+
     public async insert(
         data: CreateClientAddress,
         tx?: Transaction

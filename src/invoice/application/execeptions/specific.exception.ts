@@ -13,6 +13,12 @@ export class InvoiceCreateUnauthorizedException extends UnauthorizedException {
         this.name = this.constructor.name;
     }
 }
+export class InvoiceUpdateUnauthorizedException extends UnauthorizedException {
+    constructor() {
+        super("You are not authorized to update an invoice for this user.");
+        this.name = this.constructor.name;
+    }
+}
 
 export class InvoiceNotFoundException extends AppError {
     constructor() {

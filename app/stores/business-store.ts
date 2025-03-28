@@ -4,15 +4,17 @@ export type Business = {
     id: string;
     name: string;
     userId: string;
-    image: {
-        id: string;
-        type: string;
-        url: string;
-        publicId: string;
-        size: string;
-        mimeType: string;
-        businessId: string;
-    };
+    image:
+        | {
+              id: string;
+              type: string;
+              url: string;
+              publicId: string;
+              size: string;
+              mimeType: string;
+              businessId: string;
+          }
+        | undefined;
     address: {
         id: string;
         businessId: string;

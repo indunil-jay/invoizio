@@ -7,7 +7,6 @@ import { InvoiceType } from "@/shared/types/invoice-response-type";
 import { DataTable } from "./table/components/data-table";
 import { columns } from "./table/components/columns";
 import { Card, CardContent } from "@/app/_components/ui/card";
-import { Invoice } from "./table/data/schema";
 
 interface BusinessInvoicesProps {
     businessId: string;
@@ -23,21 +22,6 @@ export const BusinessInvoices = ({
     );
 
     const hasInvoices = invoices.length > 0;
-
-    // const formatedInvoices = invoices.map((invo) => ({
-    //     id: invo.id,
-    //     client: {
-    //         name: invo.client.name,
-    //         email: invo.client.email,
-    //     },
-    //     amount: invo.totalPrice,
-    //     statusId: invo.statusId,
-    //     date: {
-    //         issueDate: invo.issueDate,
-    //         dueDate: invo.dueDate,
-    //     },
-    //     lastEmailSentAt: invo.lastEmailSentAt,
-    // }));
 
     return (
         <div className="mt-4 flex flex-col">

@@ -11,6 +11,15 @@ import { InvoiceType } from "@/shared/types/invoice-response-type";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Pencil } from "lucide-react";
 import { useState } from "react";
+import { InvoiceForm } from "../../invoice-form";
+import { InvoiceItemsProvider } from "../../../_contexts/invoice-items-context";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/app/_components/ui/card";
 
 interface UpdateInvoiceProps {
     invoice: InvoiceType;
@@ -36,7 +45,25 @@ export const UpdateInvoice = ({ invoice }: UpdateInvoiceProps) => {
                 onKeyDown={(e) => e.stopPropagation()}
                 className="max-w-2xl h-[90vh] p-0 overflow-clip"
             >
-                <ScrollArea>{JSON.stringify(invoice)}</ScrollArea>
+                <ScrollArea>
+                    <Card>
+                        <CardHeader className="p-6 lg:p-8">
+                            <CardTitle>{invoice.business.name}</CardTitle>
+                            <CardDescription className="uppercase">
+                                #{invoice.id}
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent className="p-6 lg:p-8">
+                            <InvoiceItemsProvider>
+                                <InvoiceForm
+                                    mode="update"
+                                    existingInvoice={invoice}
+                                    onClose={handleClose}
+                                />
+                            </InvoiceItemsProvider>
+                        </CardContent>
+                    </Card>
+                </ScrollArea>
             </DialogContent>
         </Dialog>
     );
