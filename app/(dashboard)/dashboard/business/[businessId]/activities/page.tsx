@@ -1,4 +1,4 @@
-import { ActivitiesHistory } from "../_components/activities-history-card";
+import { ActivitiesHistory } from "../invoices/_components/activities-history-card";
 
 export default async function Page({
     params,
