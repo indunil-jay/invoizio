@@ -10,6 +10,7 @@ interface SpinnerProps extends React.SVGProps<SVGSVGElement> {
     fill?: string;
 }
 
+// eslint-disable-next-line prefer-spread, @typescript-eslint/no-explicit-any
 const repeat = (count: number): any[] => Array.apply(null, Array(count));
 
 const Spinner = ({

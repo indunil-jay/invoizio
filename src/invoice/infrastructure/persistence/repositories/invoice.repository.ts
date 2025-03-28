@@ -11,7 +11,6 @@ import { BadRequestException } from "@/src/shared/presenter/exceptions/common.ex
 import { InvoiceMapper } from "../mappers/invoice.mapper";
 import { desc, eq } from "drizzle-orm";
 import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common.exceptions";
-import { inspect } from "util";
 
 @injectable()
 export class InvoiceRepository implements IInvoiceRepository {

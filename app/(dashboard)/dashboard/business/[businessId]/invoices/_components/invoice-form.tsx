@@ -26,6 +26,7 @@ interface InvoiceFormProps {
     invoiceId?: string;
     mode: "create" | "update";
     onClose?: () => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     existingInvoice?: any;
 }
 

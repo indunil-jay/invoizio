@@ -6,7 +6,7 @@ import { ConfirmationModal } from "@/app/_components/custom/modal";
 import { Button } from "@/app/_components/ui/button";
 import { deleteBusiness } from "@/app/(dashboard)/dashboard/business/[businessId]/settings/actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
-import { Business, useBusinessStore } from "@/app/stores/business-store";
+import { useBusinessStore } from "@/app/stores/business-store";
 
 export const DeleteBusiness = ({ businessId }: { businessId: string }) => {
     const [showModal, setShowModal] = useState(false);

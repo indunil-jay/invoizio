@@ -1,5 +1,4 @@
 import { Ban, CalendarClock, CheckCheck, CircleDotDashed } from "lucide-react";
-import { z } from "zod";
 // value for database returns status ID
 export const invoiceStatus = [
     {

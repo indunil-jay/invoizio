@@ -30,7 +30,7 @@ import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import { createNewBusiness } from "@/app/(dashboard)/dashboard/business/create/actions";
 import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
 import { useRouter } from "next/navigation";
-import { Business, useBusinessStore } from "@/app/stores/business-store";
+import { useBusinessStore } from "@/app/stores/business-store";
 
 interface CreateBusinessFormProps {
     onCloseModal?: (value: boolean) => void;
@@ -43,7 +43,7 @@ export const CreateBusinessForm = ({
         resolver: zodResolver(createBusinessFormSchema),
         defaultValues: {
             name: "",
-            image: "",
+            image: undefined,
             address: {
                 addressLine1: "",
                 addressLine2: "",
@@ -62,7 +62,7 @@ export const CreateBusinessForm = ({
         const file = e.target.files?.[0];
 
         if (file) {
-            form.setValue("image", file);
+            form.setValue("image", file, { shouldValidate: true });
         }
     };
 
@@ -79,7 +79,7 @@ export const CreateBusinessForm = ({
 
         // Convert nested address object into FormData
         Object.entries(values.address).forEach(([key, value]) => {
-            formData.append(`address[${key}]`, value);
+            formData.append(`address[${key}]`, String(value ?? ""));
         });
 
         const response = await createNewBusiness(formData);

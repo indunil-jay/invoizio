@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import {
@@ -154,10 +154,7 @@ export function TeamSwitcher() {
                 </VisuallyHidden>
 
                 <DialogContent className="max-w-lg w-full mx-auto">
-                    <CreateBusinessForm
-                        onCloseModal={setDialogOpen}
-                        setActiveBusiness={setActiveBusiness}
-                    />
+                    <CreateBusinessForm onCloseModal={setDialogOpen} />
                 </DialogContent>
             </Dialog>
         </SidebarGroup>

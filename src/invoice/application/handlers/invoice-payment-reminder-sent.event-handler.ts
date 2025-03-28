@@ -16,6 +16,10 @@ export class InvoicePaymentReminderSentEventHandler
 
         const client = await clientRepository.get(event.invoice.clientId);
 
+        if (!client) {
+            throw new Error("client not found");
+        }
+
         emailService.sendPaymentReminderEmail(client, event.invoice);
     }
 }

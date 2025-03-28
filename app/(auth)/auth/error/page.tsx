@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader } from "@/app/_components/ui/card";
 import { Button } from "@/app/_components/ui/button";
 import { cn } from "@/app/_lib/tailwind-css/utils";
 
-export default function ErrorPage({ errorMessage }: { errorMessage?: string }) {
+export default function ErrorPage() {
     const [isLoading, setIsLoading] = useState(false);
 
     const refreshWindow = () => {
@@ -28,8 +28,9 @@ export default function ErrorPage({ errorMessage }: { errorMessage?: string }) {
                 </CardHeader>
                 <CardContent className="space-y-6 text-center">
                     <p className="text-lg text-gray-600" aria-live="polite">
-                        {errorMessage ||
-                            "Something went wrong while processing your request. Please try again."}
+                        {
+                            "Something went wrong while processing your request. Please try again."
+                        }
                     </p>
                     <div className="flex flex-col gap-3">
                         <Button asChild variant="default">

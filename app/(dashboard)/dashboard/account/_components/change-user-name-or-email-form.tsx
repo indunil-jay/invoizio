@@ -86,14 +86,14 @@ export const ChangeUserNameOrEmailForm = ({
 
             if (response.status) {
                 // TODO:
-                setUser(response.data as User);
+                setUser(response.data as unknown as User);
                 console.log(response?.data);
             }
         } else if (value.name) {
             response = await updateProfile({ name: value.name });
             toast(response);
             if (response.status) {
-                setUser(response.data as User);
+                setUser(response.data as unknown as User);
                 console.log(response?.data);
             }
         }

@@ -11,7 +11,7 @@ import InvoizioPasswordResetSuccess from "../presenter/templates/password-reset-
 import InvoizioVerifyNewEmail from "../presenter/templates/verify-new-email";
 import InvoizioPasswordChangeSuccess from "../presenter/templates/changed-password";
 import { InvoicePaymentReminder } from "../presenter/templates/invoice-payment-reminder";
-import { Invoice } from "@/src/invoice/domain/invoice.entity";
+// import { Invoice } from "@/src/invoice/domain/invoice.entity";
 import { Client } from "@/src/client-user/domain/client.entity";
 
 const COMPANY_NAME = "invoizio";
@@ -24,8 +24,8 @@ export class EmailService implements IEmailService {
     );
 
     public async sendPaymentReminderEmail(
-        client: Client,
-        invoice: Invoice
+        client: Client
+        // invoice: Invoice
     ): Promise<void> {
         try {
             const { error } = await EmailService.resend.emails.send({

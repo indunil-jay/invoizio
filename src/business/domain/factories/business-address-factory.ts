@@ -8,7 +8,7 @@ export interface IBusinessAddressFactory {
         addressLine1: string,
         city: string,
         postalCode: string,
-        addressLine2?: string
+        addressLine2?: string | null
     ): BusinessAddress;
 }
 

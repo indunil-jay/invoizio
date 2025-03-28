@@ -1,9 +1,5 @@
 "use client";
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from "@/app/_components/ui/avatar";
+import { Avatar } from "@/app/_components/ui/avatar";
 import {
     Card,
     CardContent,
