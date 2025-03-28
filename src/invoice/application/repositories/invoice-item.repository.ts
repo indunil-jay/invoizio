@@ -4,4 +4,5 @@ import { InvoiceItem } from "@/src/invoice/domain/invoice-item.entity";
 
 export interface IInvoiceItemRepository {
     insert(data: CreateInvoiceItem, tx?: Transaction): Promise<InvoiceItem>;
+    getAll(invoiceId: string, tx?: Transaction): Promise<InvoiceItem[] | []>;
 }

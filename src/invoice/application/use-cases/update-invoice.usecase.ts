@@ -21,66 +21,79 @@ export const updateInvoiceUseCase = {
             transactionManagerService,
             clientRepository,
             clientAddressRepository,
-            invoiceFactory,
-            clientAddressFactory,
             invoiceRepository,
-            invoiceItemFactory,
             invoiceItemRepository,
         } = this.getServices();
 
-        // verify the user
         const user = await authenticationService.verifySessionUser();
-
-        // Ensure the session user matches the submitted data
         if (user.id !== requestedUser.id) {
             throw new InvoiceUpdateUnauthorizedException();
         }
 
-        // Verify that the specified business exists
         const existingBusiness = await businessRepository.get(business.id);
         if (!existingBusiness) {
             throw new BusinessNotFoundException();
         }
-
-        // Verify that the invoice exists
 
         const existingInvoice = await invoiceRepository.get(invoice.id);
         if (!existingInvoice) {
             throw new InvoiceNotFoundException();
         }
 
-        //update the client address if it is modified
         const existingClient = await clientRepository.get(
             existingInvoice.clientId
         );
-
         if (!existingClient || !existingClient.address) {
             throw new ClientNotFoundException();
         }
 
-        // Check if the client address  is changed
-
-        if (
-            (client.address.addressLine1 !==
-                existingClient.address?.addressLine1 ||
+        await transactionManagerService.startTransaction(async (tx) => {
+            if (
+                client.address.addressLine1 !==
+                    existingClient.address?.addressLine1 ||
                 client.address.addressLine2 !==
-                    existingClient.address?.addressLine2 ||
-                client.address.city !== existingClient.address?.city,
-            client.address.postalCode !== existingClient.address?.postalCode)
-        ) {
-            await clientAddressRepository.update(existingClient.address.id, {
-                addressLine1: client.address.addressLine1,
-                addressLine2: client.address.addressLine2,
-                city: client.address.city,
-                postalCode: client.address.postalCode,
-            });
-        }
+                    existingClient.address.addressLine2 ||
+                client.address.city !== existingClient.address.city ||
+                client.address.postalCode !== existingClient.address.postalCode
+            ) {
+                await clientAddressRepository.update(
+                    existingClient.address!.id,
+                    {
+                        addressLine1: client.address.addressLine1,
+                        addressLine2: client.address.addressLine2,
+                        city: client.address.city,
+                        postalCode: client.address.postalCode,
+                    },
+                    tx
+                );
+            }
 
-        //TODO:
+            const existingInvoiceItems = await invoiceItemRepository.getAll(
+                invoice.id
+            );
 
-        //check if description and dueDate and issueDate is changed, then update
-        //check if invoice items are changed and update
-        //update the invoice
+            const existingItemIds = new Set(
+                existingInvoiceItems.map((item) => item.id)
+            );
+            const newItemIds = new Set(invoiceItems.map((item) => item.id));
+
+            for (const item of invoiceItems) {
+                if (!existingItemIds.has(item.id)) {
+                    await invoiceItemRepository.create({
+                        ...item,
+                        invoiceId: invoice.id,
+                    });
+                } else {
+                    await invoiceItemRepository.update(item.id, item);
+                }
+            }
+
+            for (const existingItem of existingInvoiceItems) {
+                if (!newItemIds.has(existingItem.id)) {
+                    await invoiceItemRepository.delete(existingItem.id);
+                }
+            }
+        });
     },
 
     getServices() {
@@ -90,12 +103,8 @@ export const updateInvoiceUseCase = {
             transactionManagerService: getInjection(
                 "ITransactionManagerService"
             ),
-            clientFactory: getInjection("IClientFactory"),
-            clientAddressFactory: getInjection("IClientAddressFactory"),
             clientRepository: getInjection("IClientRepository"),
             clientAddressRepository: getInjection("IClientAddressRepository"),
-            invoiceFactory: getInjection("IInvoiceFactory"),
-            invoiceItemFactory: getInjection("IInvoiceItemFactory"),
             invoiceRepository: getInjection("IInvoiceRepository"),
             invoiceItemRepository: getInjection("IInvoiceItemRepository"),
         };

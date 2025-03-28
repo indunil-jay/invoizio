@@ -18,7 +18,7 @@ import {
 import { Plus } from "lucide-react";
 import { Button } from "@/app/_components/ui/button";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Business } from "@/app/stores/business-store";
 
 import { InvoiceItemsProvider } from "../_contexts/invoice-items-context";
@@ -30,16 +30,7 @@ export interface CreateInvoiceProps {
 
 export const CreateInvoice = ({ business }: CreateInvoiceProps) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [invoiceId, setInvoiceId] = useState("");
 
-    useEffect(() => {
-        setInvoiceId(nanoid(16).toUpperCase());
-    }, [setInvoiceId]);
-
-    const handleClose = () => {
-        setIsDialogOpen(false);
-        setInvoiceId(nanoid(16).toUpperCase());
-    };
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
@@ -54,26 +45,53 @@ export const CreateInvoice = ({ business }: CreateInvoiceProps) => {
             </VisuallyHidden>
             <DialogContent className="max-w-2xl h-[90vh] p-0 overflow-clip">
                 <ScrollArea>
-                    <Card className="">
-                        <CardHeader className="p-6 lg:p-8">
-                            <CardTitle>{business.name}</CardTitle>
-                            <CardDescription className="uppercase">
-                                #{invoiceId}
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="p-6 lg:p-8">
-                            <InvoiceItemsProvider>
-                                <InvoiceForm
-                                    business={business}
-                                    invoiceId={invoiceId}
-                                    mode="create"
-                                    onClose={handleClose}
-                                />
-                            </InvoiceItemsProvider>
-                        </CardContent>
-                    </Card>
+                    <InvoiceCreateCard
+                        business={business}
+                        setIsDialogOpen={setIsDialogOpen}
+                    />
                 </ScrollArea>
             </DialogContent>
         </Dialog>
+    );
+};
+export interface InvoiceCreateCardProps {
+    business: Business;
+    setIsDialogOpen?: Dispatch<SetStateAction<boolean>>;
+    refresh?: boolean;
+}
+
+export const InvoiceCreateCard = ({
+    business,
+    setIsDialogOpen,
+}: InvoiceCreateCardProps) => {
+    const [invoiceId, setInvoiceId] = useState("");
+
+    useEffect(() => {
+        setInvoiceId(nanoid(16).toUpperCase());
+    }, [setInvoiceId]);
+
+    const handleClose = () => {
+        setInvoiceId(nanoid(16).toUpperCase());
+        setIsDialogOpen?.(false);
+    };
+    return (
+        <Card className="">
+            <CardHeader className="p-6 lg:p-8">
+                <CardTitle className="capitalize">{business.name}</CardTitle>
+                <CardDescription className="uppercase">
+                    #{invoiceId}
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="p-6">
+                <InvoiceItemsProvider>
+                    <InvoiceForm
+                        business={business}
+                        invoiceId={invoiceId}
+                        mode="create"
+                        onClose={handleClose}
+                    />
+                </InvoiceItemsProvider>
+            </CardContent>
+        </Card>
     );
 };

@@ -8,9 +8,27 @@ import { IInvoiceItemRepository } from "@/src/invoice/application/repositories/i
 import { InvoiceItem } from "@/src/invoice/domain/invoice-item.entity";
 import { BadRequestException } from "@/src/shared/presenter/exceptions/common.exceptions";
 import { InvoiceItemMapper } from "../mappers/invoice-item.mapper";
+import { eq } from "drizzle-orm";
 
 @injectable()
 export class InvoiceItemRepository implements IInvoiceItemRepository {
+    public async getAll(
+        invoiceId: string,
+        tx?: Transaction
+    ): Promise<InvoiceItem[] | []> {
+        const invoker = tx ?? db;
+        try {
+            const query = invoker.query.invoiceItems.findMany({
+                where: eq(invoiceItems.invoiceId, invoiceId),
+            });
+            const entities = await query.execute();
+            return entities.map((entity) => InvoiceItemMapper.toDomain(entity));
+        } catch (error) {
+            console.log("DATABASE GET ALL ERROR (invoice repository)", error);
+            throw new BadRequestException();
+        }
+    }
+
     public async insert(
         data: CreateInvoiceItem,
         tx?: Transaction

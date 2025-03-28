@@ -157,10 +157,12 @@ export const InvoiceForm = ({
 
         toast(response);
 
-        onClose?.();
         if (response.status) {
+            form.reset();
+            setInvoiceItems([]);
             router.refresh();
         }
+        onClose?.();
     };
     return (
         <FormProvider {...form}>
