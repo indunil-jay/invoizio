@@ -1,15 +1,15 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Invoice } from "../data/schema";
 import { Checkbox } from "@/app/_components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-columns-header";
 import { Badge } from "@/app/_components/ui/badge";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { format } from "date-fns";
 import { invoiceStatus } from "../data/data";
+import { InvoiceType } from "@/shared/types/invoice-response-type";
 
-export const columns: ColumnDef<Invoice>[] = [
+export const columns: ColumnDef<InvoiceType>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -42,7 +42,7 @@ export const columns: ColumnDef<Invoice>[] = [
         ),
         cell: ({ row }) => (
             <div className="w-[180px]">
-                <Badge variant={"secondary"}>#{row.getValue("id")}</Badge>
+                <Badge variant={"secondary"}>#{row.original.id}</Badge>
             </div>
         ),
         enableSorting: false,
@@ -87,7 +87,7 @@ export const columns: ColumnDef<Invoice>[] = [
             />
         ),
         cell: ({ row }) => {
-            const amount = parseFloat(row.getValue("amount"));
+            const amount = parseFloat(row.original.totalPrice);
 
             const formatted = new Intl.NumberFormat("en-US", {
                 style: "currency",
@@ -115,8 +115,8 @@ export const columns: ColumnDef<Invoice>[] = [
             />
         ),
         cell: ({ row }) => {
-            const issueDate = row.original.date.issueDate;
-            const dueDate = row.original.date.dueDate;
+            const issueDate = row.original.issueDate;
+            const dueDate = row.original.dueDate;
             const formattedIssueDate = format(issueDate, "PPpp");
             const formattedDueDate = format(dueDate, "PPpp");
             return (
@@ -142,8 +142,8 @@ export const columns: ColumnDef<Invoice>[] = [
             );
         },
         sortingFn: (rowA, rowB) => {
-            const dueDateA = new Date(rowA.original.date.dueDate).getTime();
-            const dueDateB = new Date(rowB.original.date.dueDate).getTime();
+            const dueDateA = new Date(rowA.original.dueDate).getTime();
+            const dueDateB = new Date(rowB.original.dueDate).getTime();
 
             return dueDateA - dueDateB;
         },
@@ -156,7 +156,7 @@ export const columns: ColumnDef<Invoice>[] = [
         ),
         cell: ({ row }) => {
             const status = invoiceStatus.find(
-                (i) => i.id === row.original.statusId
+                (i) => i.id === row.original.status.id
             );
 
             if (!status) return null;
@@ -172,7 +172,7 @@ export const columns: ColumnDef<Invoice>[] = [
         },
         filterFn: (row, id, value) => {
             const status = invoiceStatus.find(
-                (i) => i.id === row.original.statusId
+                (i) => i.id === row.original.status.id
             );
 
             if (!status) return false;

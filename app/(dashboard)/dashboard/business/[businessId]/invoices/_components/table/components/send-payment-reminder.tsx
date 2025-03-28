@@ -16,13 +16,13 @@ import { Invoice } from "../data/schema";
 import { addMilliseconds, isBefore, differenceInMinutes } from "date-fns";
 import { sendPaymentReminder } from "../../../actions";
 import { COOLDOWN_PERIOD } from "@/shared/constants";
+import { InvoiceType } from "@/shared/types/invoice-response-type";
 
 interface SendPaymentReminderProps {
-    invoice: Invoice;
+    invoice: InvoiceType;
 }
 
 export const SendPaymentReminder = ({ invoice }: SendPaymentReminderProps) => {
-    console.log({ invoice });
     const router = useRouter();
     const { toast } = useShowToast();
     const [isLoading, setIsLoading] = useState(false);

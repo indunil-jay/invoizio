@@ -14,12 +14,12 @@ import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common
 
 @injectable()
 export class InvoiceRepository implements IInvoiceRepository {
-    public async getInvoiceDetails(
-        invoiceId: string
-    ): Promise<InvoiceEntityWithAllRelations | null> {
+    public async getAll(
+        businessId: string
+    ): Promise<InvoiceEntityWithAllRelations[] | []> {
         try {
-            const invoiceEntity = await db.query.invoices.findFirst({
-                where: eq(invoices.id, invoiceId),
+            const invoiceEntities = await db.query.invoices.findMany({
+                where: eq(invoices.businessId, businessId),
                 with: {
                     business: {
                         with: {
@@ -35,11 +35,9 @@ export class InvoiceRepository implements IInvoiceRepository {
                     status: true,
                     invoiceItems: true,
                 },
+                orderBy: [desc(invoices.createdAt)],
             });
-
-            if (!invoiceEntity) return null;
-
-            return invoiceEntity;
+            return invoiceEntities;
         } catch (error) {
             console.log("DATABASE GET ERROR (invoice repository)", error);
             throw new BadRequestException();
@@ -69,22 +67,6 @@ export class InvoiceRepository implements IInvoiceRepository {
             await db.delete(invoices).where(eq(invoices.id, invoiceId));
         } catch (error) {
             console.log("DATABASE DELETE ERROR (invoice repository)", error);
-            throw new BadRequestException();
-        }
-    }
-
-    public async getAll(businessId: string): Promise<Invoice[] | []> {
-        try {
-            const invoiceEntities = await db.query.invoices.findMany({
-                where: eq(invoices.businessId, businessId),
-                orderBy: [desc(invoices.createdAt)],
-            });
-
-            return invoiceEntities.map((entity) =>
-                InvoiceMapper.toDomain(entity)
-            );
-        } catch (error) {
-            console.log("DATABASE GET ERROR (invoice repository)", error);
             throw new BadRequestException();
         }
     }

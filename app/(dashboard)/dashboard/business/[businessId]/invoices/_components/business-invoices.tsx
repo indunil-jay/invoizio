@@ -24,20 +24,20 @@ export const BusinessInvoices = ({
 
     const hasInvoices = invoices.length > 0;
 
-    const formatedInvoices = invoices.map((invo) => ({
-        id: invo.id,
-        client: {
-            name: invo.client.name,
-            email: invo.client.email,
-        },
-        amount: invo.totalPrice,
-        statusId: invo.statusId,
-        date: {
-            issueDate: invo.issueDate,
-            dueDate: invo.dueDate,
-        },
-        lastEmailSentAt: invo.lastEmailSentAt,
-    }));
+    // const formatedInvoices = invoices.map((invo) => ({
+    //     id: invo.id,
+    //     client: {
+    //         name: invo.client.name,
+    //         email: invo.client.email,
+    //     },
+    //     amount: invo.totalPrice,
+    //     statusId: invo.statusId,
+    //     date: {
+    //         issueDate: invo.issueDate,
+    //         dueDate: invo.dueDate,
+    //     },
+    //     lastEmailSentAt: invo.lastEmailSentAt,
+    // }));
 
     return (
         <div className="mt-4 flex flex-col">
@@ -73,17 +73,14 @@ export const BusinessInvoices = ({
             )}
 
             {hasInvoices && business && (
-                <InvoiceDataTable
-                    invoices={formatedInvoices}
-                    business={business}
-                />
+                <InvoiceDataTable invoices={invoices} business={business} />
             )}
         </div>
     );
 };
 
 interface InvoiceDataTableProps {
-    invoices: Invoice[];
+    invoices: InvoiceType[];
     business: Business;
 }
 

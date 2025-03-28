@@ -5,7 +5,6 @@ import { getAllBusinessInvoicesController } from "@/src/invoice/presenter/contro
 
 export const getAllBusinessInvoices = (businessId: string) => {
     return executeQuery<InvoiceType[] | []>({
-        queryFn: async () =>
-            JSON.parse(await getAllBusinessInvoicesController(businessId)),
+        queryFn: async () => await getAllBusinessInvoicesController(businessId),
     });
 };

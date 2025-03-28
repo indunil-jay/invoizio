@@ -8,7 +8,7 @@ import {
 } from "@/app/_components/ui/dropdown-menu";
 import { Settings2 } from "lucide-react";
 import { InvoiceStatus, invoiceStatus } from "../data/data";
-import { Invoice } from "../data/schema";
+
 import {
     Dialog,
     DialogContent,
@@ -24,16 +24,17 @@ import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
 import { useRouter } from "next/navigation";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import { changeInvoiceStatus } from "../../../actions";
+import { InvoiceType } from "@/shared/types/invoice-response-type";
 
 interface ChangePaymentStatusProps {
-    invoice: Invoice;
+    invoice: InvoiceType;
 }
 
 export const ChangePaymentStatus = ({ invoice }: ChangePaymentStatusProps) => {
     return (
         <DropdownMenuSub>
             <DropdownMenuSubTrigger
-                disabled={invoice.statusId === 2}
+                disabled={invoice.status.id === 2}
                 className="data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&>svg]:size-4 [&>svg]:shrink-0"
             >
                 <Settings2 />
@@ -45,7 +46,7 @@ export const ChangePaymentStatus = ({ invoice }: ChangePaymentStatusProps) => {
                         <DropdownMenuItem
                             onSelect={(e) => e.preventDefault()}
                             disabled={
-                                status.id === invoice.statusId || status.disable
+                                status.id === invoice.status.id || status.disable
                             }
                             key={status.id}
                         >
@@ -62,7 +63,7 @@ export const ChangePaymentStatus = ({ invoice }: ChangePaymentStatusProps) => {
 };
 
 interface ChangeInvoiceStatusProps {
-    invoice: Invoice;
+    invoice: InvoiceType;
     status: InvoiceStatus;
 }
 

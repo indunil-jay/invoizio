@@ -14,7 +14,8 @@ import { Button } from "@/app/_components/ui/button";
 import { DeleteInvoice } from "./delete-invoice";
 import { ChangePaymentStatus } from "./change-payment-status";
 import { SendPaymentReminder } from "./send-payment-reminder";
-import { invoiceSchema } from "../data/schema";
+import { UpdateInvoice } from "./update-invoice";
+import { InvoiceSchema } from "@/shared/types/invoice-response-type";
 
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>;
@@ -23,7 +24,7 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions<TData>({
     row,
 }: DataTableRowActionsProps<TData>) {
-    const invoice = invoiceSchema.parse(row.original);
+    const invoice = InvoiceSchema.parse(row.original);
 
     return (
         <DropdownMenu>
@@ -37,9 +38,13 @@ export function DataTableRowActions<TData>({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[11rem]">
-                <DropdownMenuItem disabled={invoice.statusId === 2}>
-                    Edit
+                <DropdownMenuItem
+                    disabled={invoice.status.id === 2}
+                    onSelect={(e) => e.preventDefault()}
+                >
+                    <UpdateInvoice invoice={invoice} />
                 </DropdownMenuItem>
+
                 <DropdownMenuItem>
                     <Link
                         href={`/api/invoice/${invoice.id}`}
@@ -51,7 +56,7 @@ export function DataTableRowActions<TData>({
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    disabled={invoice.statusId === 2}
+                    disabled={invoice.status.id === 2}
                     onSelect={(e) => e.preventDefault()}
                 >
                     <SendPaymentReminder invoice={invoice} />
