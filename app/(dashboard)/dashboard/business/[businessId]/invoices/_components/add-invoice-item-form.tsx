@@ -17,6 +17,7 @@ import { Input } from "@/app/_components/ui/input";
 import { Button } from "@/app/_components/ui/button";
 import { createInvoiceItemFormSchema } from "@/shared/validation-schemas/invoice/create-invoice-item-form-schema";
 import { InvoiceItem } from "../_utils/types";
+import { nanoid } from "nanoid";
 
 export const AddProductForm = ({
     onAddProduct,
@@ -28,6 +29,7 @@ export const AddProductForm = ({
     const form = useForm<z.infer<typeof createInvoiceItemFormSchema>>({
         resolver: zodResolver(createInvoiceItemFormSchema),
         defaultValues: {
+            id: "",
             price: 0,
             name: "",
             quantity: 1,
@@ -39,7 +41,9 @@ export const AddProductForm = ({
     const handleOnSubmit = (
         values: z.infer<typeof createInvoiceItemFormSchema>
     ) => {
-        onAddProduct(values);
+        const id = nanoid();
+
+        onAddProduct({ ...values, id });
         form.reset();
         handleClose();
     };

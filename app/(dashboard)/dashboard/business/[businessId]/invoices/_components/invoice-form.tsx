@@ -6,20 +6,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Button } from "@/app/_components/ui/button";
-import { useInvoiceItems } from "../_contexts/invoice-items-context";
 import { useUserStore } from "@/app/stores/user-store";
 import { Business } from "@/app/stores/business-store";
 import { createInvoiceSchema } from "@/shared/validation-schemas/invoice/create-invoice-form-schema";
-import { BillFromFormSection } from "./bill-from-form-section";
-import { BillToFormSection } from "./bill-to-form-section";
 import { Separator } from "@/app/_components/ui/separator";
-import { BillDetailsFormSection } from "./bill-details-form-section";
-import { InvoiceItem } from "../_utils/types";
-import { createInvoice, updateInvoice } from "../actions";
 import { useShowToast } from "@/app/_hooks/custom/use-show-toast";
 import SpinnerBtnLoading from "@/app/_components/custom/spinner-btn-loading";
-import { CreateInvoiceItemsList } from "./create-invoice-items-list";
 import { InvoiceType } from "@/shared/types/invoice-response-type";
+
+import { useInvoiceItems } from "../_contexts/invoice-items-context";
+import { BillFromFormSection } from "./bill-from-form-section";
+import { BillToFormSection } from "./bill-to-form-section";
+import { BillDetailsFormSection } from "./bill-details-form-section";
+import { InvoiceItem } from "../_utils/types";
+import { CreateInvoiceItemsList } from "./create-invoice-items-list";
+import { createInvoice, updateInvoice } from "../actions";
 
 interface BaseProps {
     onClose?: () => void;
@@ -119,17 +120,19 @@ export const InvoiceForm = ({
     const router = useRouter();
 
     useEffect(() => {
-        if (existingInvoice && mode === "update") {
+        if (
+            existingInvoice &&
+            existingInvoice.invoiceItems &&
+            mode === "update"
+        ) {
             setInvoiceItems([...existingInvoice.invoiceItems] as InvoiceItem[]);
         }
     }, [existingInvoice, mode, setInvoiceItems]);
 
     const handleAddProduct = (product: InvoiceItem) => {
-        setInvoiceItems((prevProducts) => {
-            const updatedProducts = [...prevProducts, product];
-            form.setValue("invoiceItems", updatedProducts);
-            return updatedProducts;
-        });
+        const updatedProducts = [...invoiceItems, product];
+        setInvoiceItems(updatedProducts);
+        form.setValue("invoiceItems", updatedProducts);
     };
 
     const onSubmit = async (data: z.infer<typeof createInvoiceSchema>) => {

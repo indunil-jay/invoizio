@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const createInvoiceItemFormSchema = z.object({
+    id: z.string().optional(),
     name: z
         .string()
         .min(1, { message: "Product name is required and cannot be empty." }),

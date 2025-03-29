@@ -4,6 +4,7 @@ import { InvoiceItem } from "@/src/invoice/domain/invoice-item.entity";
 
 export interface IInvoiceItemFactory {
     create(
+        id: string,
         invoiceId: string,
         name: string,
         price: string,
@@ -16,6 +17,7 @@ export interface IInvoiceItemFactory {
 @injectable()
 export class InvoiceItemFactory implements IInvoiceItemFactory {
     create(
+        id: string,
         invoiceId: string,
         name: string,
         price: string,
@@ -23,7 +25,6 @@ export class InvoiceItemFactory implements IInvoiceItemFactory {
         taxRate: string,
         discountRate: string
     ): InvoiceItem {
-        const id = randomUUID();
         return new InvoiceItem(
             id,
             invoiceId,

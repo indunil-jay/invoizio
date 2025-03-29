@@ -7,8 +7,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/app/_components/ui/table";
-import { TableHeaderSkelton } from "./table-header-skelton";
 import { Card, CardContent, CardHeader } from "@/app/_components/ui/card";
+import { TableHeaderSkelton } from "./table-header-skelton";
 import { TableFooterSkelton } from "./table-footer-skelton";
 
 export const TableSkelton = () => {

@@ -6,7 +6,12 @@ export interface IClientAddressRepository {
     insert(data: CreateClientAddress, tx?: Transaction): Promise<ClientAddress>;
     update(
         id: string,
-        properties: Partial<CreateClientAddress>,
+        properties: Partial<
+            Pick<
+                CreateClientAddress,
+                "addressLine1" | "addressLine2" | "postalCode" | "city"
+            >
+        >,
         tx?: Transaction
     ): Promise<ClientAddress>;
 }

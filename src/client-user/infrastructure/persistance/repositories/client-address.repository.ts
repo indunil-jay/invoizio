@@ -14,7 +14,12 @@ import { ClientAddressMapper } from "@/src/client-user/infrastructure/persistanc
 export class ClientAddressRepository implements IClientAddressRepository {
     public async update(
         id: string,
-        properties: Partial<CreateClientAddress>,
+        properties: Partial<
+            Pick<
+                CreateClientAddress,
+                "addressLine1" | "addressLine2" | "postalCode" | "city"
+            >
+        >,
         tx?: Transaction
     ): Promise<ClientAddress> {
         const invoker = tx ?? db;

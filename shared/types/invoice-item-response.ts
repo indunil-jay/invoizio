@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const InvoiceItemSchema = z.object({
-    id: z.string().uuid(),
+    id: z.string(),
     invoiceId: z.string(),
     name: z.string(),
     quantity: z.number().int(),

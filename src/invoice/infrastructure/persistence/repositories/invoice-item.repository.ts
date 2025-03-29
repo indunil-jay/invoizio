@@ -12,6 +12,22 @@ import { eq } from "drizzle-orm";
 
 @injectable()
 export class InvoiceItemRepository implements IInvoiceItemRepository {
+    public async remove(itemId: string, tx?: Transaction): Promise<void> {
+        const invoker = tx ?? db;
+        try {
+            const mutation = invoker
+                .delete(invoiceItems)
+                .where(eq(invoiceItems.id, itemId));
+            await mutation.execute();
+        } catch (error) {
+            console.log(
+                "DATABASE REMOVE ERROR (invoice items repository)",
+                error
+            );
+            throw new BadRequestException();
+        }
+    }
+
     public async getAll(
         invoiceId: string,
         tx?: Transaction
@@ -24,7 +40,10 @@ export class InvoiceItemRepository implements IInvoiceItemRepository {
             const entities = await query.execute();
             return entities.map((entity) => InvoiceItemMapper.toDomain(entity));
         } catch (error) {
-            console.log("DATABASE GET ALL ERROR (invoice repository)", error);
+            console.log(
+                "DATABASE GET ALL ERROR (invoice items repository)",
+                error
+            );
             throw new BadRequestException();
         }
     }
@@ -43,7 +62,10 @@ export class InvoiceItemRepository implements IInvoiceItemRepository {
             const [insertedEntity] = await mutation.execute();
             return InvoiceItemMapper.toDomain(insertedEntity);
         } catch (error) {
-            console.log("DATABASE INSERT ERROR (invoice repository)", error);
+            console.log(
+                "DATABASE INSERT ERROR (invoice items repository)",
+                error
+            );
             throw new BadRequestException();
         }
     }

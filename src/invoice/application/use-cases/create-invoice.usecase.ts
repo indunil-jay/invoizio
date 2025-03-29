@@ -65,6 +65,7 @@ export const createInvoiceUseCase = {
 
         const newItemList = invoiceItems.map((item) =>
             invoiceItemFactory.create(
+                item.id!,
                 newInvoice.id,
                 item.name,
                 item.price.toPrecision(2),
@@ -95,9 +96,9 @@ export const createInvoiceUseCase = {
 
         //send email to client with,creation details and PDF
         //...TODO:
-        const invoiceDoc = await invoiceRepository.get(newInvoice.id);
-        if (!invoiceDoc) throw new Error("Invoice not found");
-        return invoiceDoc;
+        // const invoiceDoc = await invoiceRepository.get(newInvoice.id);
+        // if (!invoiceDoc) throw new Error("Invoice not found");
+        // return invoiceDoc;
     },
 
     getServices() {

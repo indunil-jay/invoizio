@@ -14,6 +14,38 @@ import { DataBaseException } from "@/src/shared/infrastructure/exceptions/common
 
 @injectable()
 export class InvoiceRepository implements IInvoiceRepository {
+    public async getDetailsInvoice(
+        invoiceId: string
+    ): Promise<InvoiceEntityWithAllRelations | null> {
+        try {
+            const invoiceEntity = await db.query.invoices.findFirst({
+                where: eq(invoices.id, invoiceId),
+                with: {
+                    business: {
+                        with: {
+                            user: true,
+                            address: true,
+                        },
+                    },
+                    client: {
+                        with: {
+                            address: true,
+                        },
+                    },
+                    status: true,
+                    invoiceItems: true,
+                },
+                orderBy: [desc(invoices.createdAt)],
+            });
+
+            if (!invoiceEntity) return null;
+            return invoiceEntity;
+        } catch (error) {
+            console.log("DATABASE GET ERROR (invoice repository)", error);
+            throw new BadRequestException();
+        }
+    }
+
     public async getAll(
         businessId: string
     ): Promise<InvoiceEntityWithAllRelations[] | []> {
@@ -46,7 +78,7 @@ export class InvoiceRepository implements IInvoiceRepository {
 
     public async update(
         invoiceId: string,
-        properties: Partial<Pick<CreateInvoice, "statusId" | "lastEmailSentAt">>
+        properties: Partial<CreateInvoice>
     ): Promise<Invoice> {
         try {
             const [updatedInvoiceEntity] = await db

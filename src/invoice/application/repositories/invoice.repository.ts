@@ -14,4 +14,7 @@ export interface IInvoiceRepository {
         invoiceId: string,
         properties: Partial<CreateInvoice>
     ): Promise<Invoice>;
+    getDetailsInvoice(
+        invoiceId: string
+    ): Promise<InvoiceEntityWithAllRelations | null>;
 }

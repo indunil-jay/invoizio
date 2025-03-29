@@ -6,7 +6,7 @@ import { InvoiceItem } from "@/app/(dashboard)/dashboard/business/[businessId]/i
 interface InvoiceContextType {
     invoiceItems: InvoiceItem[];
     setInvoiceItems: React.Dispatch<React.SetStateAction<InvoiceItem[]>>;
-    removeItem(index: number): void;
+    removeItem(id: string): void;
     totalBasePrice: number;
     totalTax: number;
     totalDiscount: number;
@@ -49,8 +49,8 @@ export const InvoiceItemsProvider = ({
     );
     const grandTotal = totalBasePrice + totalTax - totalDiscount;
 
-    const removeItem = (index: number) => {
-        setInvoiceItems(invoiceItems.filter((i, inNo) => inNo !== index));
+    const removeItem = (id: string) => {
+        setInvoiceItems(invoiceItems.filter((item) => item.id !== id));
     };
 
     return (

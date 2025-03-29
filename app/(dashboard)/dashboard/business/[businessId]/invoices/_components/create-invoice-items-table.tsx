@@ -73,7 +73,7 @@ export const CreateInvoiceItemsTable = () => {
                         );
 
                         return (
-                            <TableRow key={index} className="text-sm">
+                            <TableRow key={product.id} className="text-sm">
                                 <TableCell className="text-center">{`#${index + 1}`}</TableCell>
                                 <TableCell>{product.name}</TableCell>
                                 <TableCell className="text-right">
@@ -109,7 +109,7 @@ export const CreateInvoiceItemsTable = () => {
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        onClick={() => removeItem(index)}
+                                        onClick={() => removeItem(product.id!)}
                                     >
                                         <Trash2 className="w-4 h-4 text-red-500 hover:text-red-700" />
                                     </Button>
