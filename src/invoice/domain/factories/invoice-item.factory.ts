@@ -1,5 +1,4 @@
 import { injectable } from "inversify";
-import { randomUUID } from "crypto";
 import { InvoiceItem } from "@/src/invoice/domain/invoice-item.entity";
 
 export interface IInvoiceItemFactory {

@@ -15,7 +15,7 @@ export async function GET(
 
     const invoiceRepository = getInjection("IInvoiceRepository");
 
-    const invoice = await invoiceRepository.getInvoiceDetails(invoiceId);
+    const invoice = await invoiceRepository.getDetailsInvoice(invoiceId);
 
     if (!invoice) {
         return NextResponse.json(
