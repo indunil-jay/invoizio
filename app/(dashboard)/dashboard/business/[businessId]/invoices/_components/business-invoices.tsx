@@ -8,6 +8,7 @@ import { DataTable } from "./table/components/data-table";
 
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { columns } from "./table/components/invoices-table/columns";
+import { TableSkelton } from "./table/components/skeltons/table-skelton";
 
 interface BusinessInvoicesProps {
     businessId: string;
@@ -38,10 +39,14 @@ export const BusinessInvoices = ({
                     efficiently.
                 </p>
             ) : (
-                <div className="flex flex-col gap-3 mt-2">
-                    <Skeleton className="h-4 w-[70%]" />
-                    <Skeleton className="h-4 w-[40%]" />
-                </div>
+                <>
+                    <div className="flex flex-col gap-3 mt-2">
+                        <Skeleton className="h-4 w-[70%]" />
+                        <Skeleton className="h-4 w-[40%]" />
+                    </div>
+
+                    <TableSkelton />
+                </>
             )}
 
             {!hasInvoices && (
