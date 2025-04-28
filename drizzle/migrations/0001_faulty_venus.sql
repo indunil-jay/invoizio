@@ -1,1 +1,0 @@
-ALTER TABLE "client" DROP CONSTRAINT "client_email_unique";

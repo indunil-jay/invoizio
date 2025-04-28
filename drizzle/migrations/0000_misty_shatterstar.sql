@@ -13,6 +13,15 @@ CREATE TABLE "account" (
 	CONSTRAINT "account_provider_providerAccountId_pk" PRIMARY KEY("provider","providerAccountId")
 );
 --> statement-breakpoint
+CREATE TABLE "activities" (
+	"id" text PRIMARY KEY NOT NULL,
+	"invoiceId" text NOT NULL,
+	"clientId" text NOT NULL,
+	"businessId" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE "authenticator" (
 	"credentialID" text NOT NULL,
 	"userId" text NOT NULL,
@@ -28,7 +37,7 @@ CREATE TABLE "authenticator" (
 --> statement-breakpoint
 CREATE TABLE "businessAddress" (
 	"id" text PRIMARY KEY NOT NULL,
-	"businessId" text,
+	"businessId" text NOT NULL,
 	"addressLine1" text NOT NULL,
 	"addressLine2" text,
 	"city" text NOT NULL,
@@ -37,10 +46,19 @@ CREATE TABLE "businessAddress" (
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE "businessProfileImage" (
+	"id" text PRIMARY KEY NOT NULL,
+	"businessId" text NOT NULL,
+	"url" text NOT NULL,
+	"publicId" text NOT NULL,
+	"size" text NOT NULL,
+	"type" text NOT NULL,
+	"mimeType" text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE "business" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
-	"image" text,
 	"userId" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
@@ -62,8 +80,7 @@ CREATE TABLE "client" (
 	"name" text NOT NULL,
 	"email" text NOT NULL,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
-	"updatedAt" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "client_email_unique" UNIQUE("email")
+	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "invoice_items" (
@@ -90,6 +107,7 @@ CREATE TABLE "invoice" (
 	"totalBasePrice" numeric NOT NULL,
 	"totalTax" numeric,
 	"totalDiscount" numeric,
+	"last_email_sent_at" timestamp,
 	"createdAt" timestamp DEFAULT now() NOT NULL,
 	"updatedAt" timestamp DEFAULT now() NOT NULL
 );
@@ -108,9 +126,29 @@ CREATE TABLE "status" (
 	CONSTRAINT "status_status_unique" UNIQUE("status")
 );
 --> statement-breakpoint
+CREATE TABLE "userCoverImage" (
+	"id" text PRIMARY KEY NOT NULL,
+	"userId" text NOT NULL,
+	"url" text NOT NULL,
+	"publicId" text NOT NULL,
+	"size" text NOT NULL,
+	"type" text NOT NULL,
+	"mimeType" text NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "userProfileImage" (
+	"id" text PRIMARY KEY NOT NULL,
+	"userId" text NOT NULL,
+	"url" text NOT NULL,
+	"publicId" text NOT NULL,
+	"size" text NOT NULL,
+	"type" text NOT NULL,
+	"mimeType" text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE "user" (
 	"id" text PRIMARY KEY NOT NULL,
-	"name" text,
+	"name" text NOT NULL,
 	"email" text NOT NULL,
 	"emailVerified" timestamp,
 	"image" text,
@@ -129,11 +167,17 @@ CREATE TABLE "verificationToken" (
 );
 --> statement-breakpoint
 ALTER TABLE "account" ADD CONSTRAINT "account_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "activities" ADD CONSTRAINT "activities_invoiceId_invoice_id_fk" FOREIGN KEY ("invoiceId") REFERENCES "public"."invoice"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "activities" ADD CONSTRAINT "activities_clientId_client_id_fk" FOREIGN KEY ("clientId") REFERENCES "public"."client"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "activities" ADD CONSTRAINT "activities_businessId_business_id_fk" FOREIGN KEY ("businessId") REFERENCES "public"."business"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "authenticator" ADD CONSTRAINT "authenticator_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "businessAddress" ADD CONSTRAINT "businessAddress_businessId_business_id_fk" FOREIGN KEY ("businessId") REFERENCES "public"."business"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "businessProfileImage" ADD CONSTRAINT "businessProfileImage_businessId_business_id_fk" FOREIGN KEY ("businessId") REFERENCES "public"."business"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "business" ADD CONSTRAINT "business_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "clientAddress" ADD CONSTRAINT "clientAddress_clientId_client_id_fk" FOREIGN KEY ("clientId") REFERENCES "public"."client"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "invoice_items" ADD CONSTRAINT "invoice_items_invoiceId_invoice_id_fk" FOREIGN KEY ("invoiceId") REFERENCES "public"."invoice"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "invoice" ADD CONSTRAINT "invoice_clientId_client_id_fk" FOREIGN KEY ("clientId") REFERENCES "public"."client"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "invoice" ADD CONSTRAINT "invoice_clientId_client_id_fk" FOREIGN KEY ("clientId") REFERENCES "public"."client"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "invoice" ADD CONSTRAINT "invoice_businessId_business_id_fk" FOREIGN KEY ("businessId") REFERENCES "public"."business"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "invoice" ADD CONSTRAINT "invoice_statusId_status_id_fk" FOREIGN KEY ("statusId") REFERENCES "public"."status"("id") ON DELETE no action ON UPDATE no action;
+ALTER TABLE "invoice" ADD CONSTRAINT "invoice_statusId_status_id_fk" FOREIGN KEY ("statusId") REFERENCES "public"."status"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "userCoverImage" ADD CONSTRAINT "userCoverImage_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "userProfileImage" ADD CONSTRAINT "userProfileImage_userId_user_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
