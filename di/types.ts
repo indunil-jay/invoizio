@@ -37,6 +37,7 @@ import { IInvoiceItemFactory } from "@/src/invoice/domain/factories/invoice-item
 import { IInvoiceItemRepository } from "@/src/invoice/application/repositories/invoice-item.repository";
 import { IInvoiceRepository } from "@/src/invoice/application/repositories/invoice.repository";
 import { IInvoicePaymentReminderSentEventHandler } from "@/src/invoice/application/handlers/invoice-payment-reminder-sent.event-handler";
+import { IInvoiceCreatedEventHandler } from "@/src/invoice/application/handlers/invoice-created.event-handler";
 
 export const DI_SYMBOLS = {
     // Services
@@ -78,6 +79,8 @@ export const DI_SYMBOLS = {
     IInvoicePaymentReminderSentEventHandler: Symbol.for(
         "IInvoicePaymentReminderSentEventHandler"
     ),
+
+    IInvoiceCreatedEventHandler: Symbol.for("IInvoiceCreatedEventHandler"),
 
     //Event Bus
     IEventBus: Symbol.for("IEventBus"),
@@ -129,6 +132,7 @@ export interface DI_RETURN_TYPES {
     IEmailUpdatedEventHandler: IEmailUpdatedEventHandler;
     IPasswordChangedEventHandler: IPasswordChangedEventHandler;
     IInvoicePaymentReminderSentEventHandler: IInvoicePaymentReminderSentEventHandler;
+    IInvoiceCreatedEventHandler: IInvoiceCreatedEventHandler;
 
     //event bus
     IEventBus: IEventBus;
